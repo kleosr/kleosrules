@@ -1,0 +1,18 @@
+---
+description: Testing — behavior through the public surface
+globs: ["**/*.test.*","**/*.spec.*","tests/**","__tests__/**","e2e/**"]
+alwaysApply: false
+---
+
+# Testing
+
+Order: business logic → boundaries (auth/validation) → money-path or
+other irreversible integration. Not framework internals, getters, or
+styling.
+
+Public surface only. Name states the behavior. Mock true externals
+only. Flaky = broken (fix or declare-and-delete same day).
+
+Bug fix ships a regression test named or described
+`regression: <symptom>` that fails on old code.
+Coverage is a smoke detector, not a trophy.

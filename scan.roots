@@ -1,0 +1,3 @@
+# Directories to scan for project children (one absolute path per line).
+# Each immediate child that looks like a project gets Cursor rules on sync.
+/home/kleosr/Documentos

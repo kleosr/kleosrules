@@ -1,0 +1,13 @@
+{
+  "name": "figma-desktop",
+  "version": "126.5.6",
+  "author": "Figma, Inc. <support@figma.com>",
+  "description": "Figma Desktop",
+  "homepage": "https://www.figma.com",
+  "main": "frame-fix-entry.js",
+  "dependencies-consider-carefully": "Consider carefully adding new dependencies. NPM modules often contain a lot of transitive dependencies which increases code size and decreases load times",
+  "dependencies": {
+    "chokidar": "^3.6.0"
+  },
+  "originalMain": "main.js"
+}

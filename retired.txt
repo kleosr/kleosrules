@@ -1,0 +1,8 @@
+# Orphan .mdc names to remove from destinations on sync/verify
+naming.mdc
+backend.mdc
+frontend.mdc
+docs.mdc
+compile.mdc
+types-v2.mdc
+prompt.mdc

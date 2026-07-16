@@ -1,0 +1,5 @@
+# Retired personal Skill names that must remain absent.
+monorepo
+package-scope
+spec-kit
+speckit-adhd
