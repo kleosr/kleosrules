@@ -1,9 +1,31 @@
 {
   "version": 1,
   "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": "python3 ./hooks/block-secrets.py",
+        "failClosed": true
+      }
+    ],
     "beforeShellExecution": [
       {
         "command": "./hooks/block-dangerous-git.sh",
+        "failClosed": true
+      },
+      {
+        "command": "./hooks/deny-danger.sh",
+        "failClosed": true
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "python3 ./hooks/block-secrets.py",
+        "matcher": "Write|StrReplace|EditNotebook",
+        "failClosed": true
+      },
+      {
+        "command": "python3 ./hooks/deny-prose-comments.py",
+        "matcher": "Write|StrReplace|EditNotebook",
         "failClosed": true
       }
     ]

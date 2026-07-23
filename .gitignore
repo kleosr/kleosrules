@@ -1,2 +1,6 @@
 .scan-and-sync.log
 .cursor/
+**/__pycache__/
+*.pyc
+glob
+node_modules/

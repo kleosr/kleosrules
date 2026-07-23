@@ -19,7 +19,7 @@ Prefer one active handoff:
 2. `.cursor/handoff/<slug>.md` when several features run in parallel
 
 Template: `skills/session-handoff/references/handoff-template.md`
-(SSOT under Documentos/rules).
+(SSOT under this rules pack).
 
 ## Resume
 

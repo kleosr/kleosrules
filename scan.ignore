@@ -1,8 +1,0 @@
-# Basename or path substring to skip during discovery (one per line).
-# The rules SSOT is always ignored as a destination (handled separately).
-RECUPERADOS_PDF
-rules
-# Non-project clutter under Documentos
-Mario_Pulice_CV.html
-Mario_Pulice_CV.pdf
-Mario_Pulice_CV.txt

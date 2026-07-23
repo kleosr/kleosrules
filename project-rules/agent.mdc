@@ -1,0 +1,73 @@
+---
+description: Capsule floor — safety, scope, Native Lean craft, reporting (always)
+alwaysApply: true
+---
+
+# Agent capsule
+
+Project craft law for synced repos. User Rules (Option C V9.2) own RISK /
+MUST-NEVER / OBEDIENCE STACK. Ops protocols are Skills, not always-on.
+Edit this pack and re-sync; never hand-edit downstream copies.
+Craft yields to TOOLCHAIN.md / house style / vernacular on conflict.
+Defaults, not religion: override with one line of why when context wins.
+
+## SESSION
+
+- Prefer **one model for the whole conversation**. Mid-chat model switches
+  burn cache. To change models: new chat or a subagent with a written handoff.
+- Multi-session work: Read `HANDOFF.md` if present. Non-trivial features →
+  Skill `ship-loop`. Continuity → `session-handoff`.
+
+## SAFETY
+
+- No force-push. Ever. If asked: refuse and warn; do not execute.
+- Git writes only when explicitly requested. Reads always allowed.
+- No MCP additions unless asked. Read before edit.
+- Never weaken a failing test to pass unless factually wrong — say so.
+- Secrets never in code, diffs, logs, or chat.
+- Pause and ask: diffs >100 lines, public API changes, deleting still-referenced
+  code, migrations / destructive ops.
+
+## SCOPE
+
+- Preserve repository topology. Smallest coherent boundary. No monorepo /
+  workspace theater unless asked or already that shape.
+- Diagnosing → assessment only. Fix only when asked.
+- Never speculate about code you have not opened. Read first.
+- Before non-readonly work: read AGENTS.md and DEBT.md when present.
+- Before "done": cite a tool result from this turn. Unverified → say so.
+- AGENTS.md is map, not a second constitution.
+
+## QUALITY (Native Lean)
+
+- Prefer **NO CODE** when reuse/delete/config solves the ask.
+- Brownfield: smallest complete change; grep callers; private-match siblings.
+- If `.cursor/rules/vernacular.mdc` or `VERNACULAR.md` exists → follow it
+  (Skill `vernacular`). Else mirror neighboring naming/files/visibility.
+- Cohesive functions; names carry intent.
+- **NO prose comments** (no why/JSDoc/TODO/banners/commented-out code).
+  Exceptions only: machine directives required for green build
+  (`@ts-expect-error`, `eslint-disable-next-line`, shebang). Strip prose
+  comments on the touched path.
+- No abstraction before the third real repetition. No features/helpers beyond
+  the task. Lean code → Skill `ponytail` (or `lean-code` alias).
+- Architecture only when asked → `architecture-fitness` (incremental) or
+  `improve-codebase-architecture` (deepening report). Claim/rules hunts →
+  `unconditional-counterexample`.
+- Zero importers: delete. Deferred work → DEBT.md.
+- Validate trust boundaries. Parameterized queries. No swallowed errors.
+- Done = verify with evidence:
+  1) TOOLCHAIN.md if present
+  2) Else in-repo CI/scripts
+  3) Else say "no TOOLCHAIN/CI" and list commands you ran
+- Hooks may deny comment-bearing writes — fix and retry; do not fight hooks.
+
+## FOREIGN REPOS
+
+1. Short diagnose first. 2. Conform outward, excel inward.
+3. Never restructure unless asked. 4. Findings only — no uninvited fixes.
+
+## REPORTING
+
+Lead with the outcome. Then only what changes the next action:
+evidence, risks, DEBT.md entries, findings if foreign. Complete sentences.

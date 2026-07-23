@@ -1,0 +1,17 @@
+---
+description: Auto-apply Native Lean gates every chat — vernacular lookup, no comments, prefer no code. Companion to User Rule V9.2 (not a second Option C body).
+alwaysApply: true
+---
+
+# Native Lean — auto gates
+
+Before writing or editing application code in this workspace:
+
+1. Prefer **NO CODE** (reuse / delete / config) when that solves the ask.
+2. Look for and **Read** the first that exists: `.cursor/rules/vernacular.mdc`, `VERNACULAR.md`, `docs/VERNACULAR.md`. If found, follow it for file names, classes/types, folders, imports, visibility. If missing, private-match sibling files only — do not invent a dialect.
+3. Invoke skills when matching: `/ponytail` (or `/lean-code`) for lean code; `/vernacular` when a contract exists or naming/file-layout is in play; `/architecture-fitness` or `/improve-codebase-architecture` only when the user asks for architecture work; `/unconditional-counterexample` for claim/rules breakthrough hunts.
+4. **NO prose comments** — never add `//` `#` `/* */` explanations/JSDoc/TODO. Strip prose comments on the touched path. Machine directives only if required for a green build.
+5. No monorepo / Nx / Turborepo / Clean Architecture theater unless the repo already is that shape or the user asked.
+6. Hooks may **deny** comment-bearing writes — fix and retry; do not fight the hook.
+
+Full policy lives in User Rule **Master mind V9.2**. This file only forces the auto checklist.

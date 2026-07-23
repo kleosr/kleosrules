@@ -22,7 +22,7 @@ Hashimoto: every repeated mistake → fix the harness, not only the repo.
 3. Propose the **smallest** harness change (one layer). Prefer Skill over
    always-on prose; prefer TOOLCHAIN over soft reminders; prefer hook only
    for hard SAFETY.
-4. If authorized: apply the harness change in `Documentos/rules`, run
+4. If authorized: apply the harness change in `this rules pack`, run
    `scan-and-sync.sh`, verify-sync green.
 5. Optionally note keep-rate: did humans revert similar agent commits recently?
 

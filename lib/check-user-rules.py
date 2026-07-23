@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Best-effort: detect if USER-RULES paste text is present in Cursor local state.
+"""Best-effort: detect if Option C User Rules paste is present in Cursor local state.
 
-Exit 0 if found, 1 if not. Never writes. Cloud-only User Rules may not appear
-here even when active in the UI — treat 1 as a warning, not hard proof.
+Exit 0 if found, 1 if not. Cloud-only User Rules may not appear here.
 """
 from __future__ import annotations
 
@@ -10,15 +9,16 @@ import sqlite3
 import sys
 from pathlib import Path
 
-SSOT = Path("/home/kleosr/Documentos/rules")
-PASTE = SSOT / "USER-RULES.paste.txt"
+SSOT = Path(__file__).resolve().parents[1]
+PASTE = SSOT / "user-rules" / "USER-RULES.paste.txt"
 DB = Path.home() / ".config/Cursor/User/globalStorage/state.vscdb"
 
 MARKERS = (
-    "lazy senior engineer",
-    "Restraint over sophistication",
-    "PRECEDENCE: Team → Project → User",
-    "Documentos/rules/agent.mdc",
+    "Think / Fix / Check",
+    "NATIVE LEAN",
+    "OBEDIENCE STACK",
+    "NO COMMENTS",
+    "RISK CONTRACT",
 )
 
 
@@ -28,8 +28,8 @@ def main() -> int:
         return 1
     text = PASTE.read_text(encoding="utf-8", errors="replace")
     needles = [m for m in MARKERS if m in text]
-    if not needles:
-        needles = ["lazy senior engineer"]
+    if len(needles) < 2:
+        needles = list(MARKERS[:3])
 
     if not DB.is_file():
         print("no state.vscdb", file=sys.stderr)
@@ -54,7 +54,7 @@ def main() -> int:
         hits = sum(1 for n in needles if n in val)
         if hits >= 2:
             return 0
-        if "lazy senior engineer" in val and "Documentos/rules" in val:
+        if "NATIVE LEAN" in val and "V9.2" in val:
             return 0
     return 1
 

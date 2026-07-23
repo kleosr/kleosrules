@@ -2,7 +2,7 @@
 
 ## LAW vs MAP
 
-- **Law:** `.cursor/rules/*.mdc` (synced from Documentos/rules). Do not restate SAFETY/QUALITY here.
+- **Law:** `.cursor/rules/*.mdc` (synced from this rules pack). Do not restate SAFETY/QUALITY here.
 - **This file:** map of *this* repo only. Nested `AGENTS.md` under package boundaries win for that subtree.
 
 Before non-readonly work under a nested tree that has its own `AGENTS.md`, read that file.

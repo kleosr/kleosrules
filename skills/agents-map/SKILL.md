@@ -11,7 +11,7 @@ description: >-
 # Agents map (deep-init, disciplined)
 
 On-demand only. Produces **MAP** artifacts in the repo. Does **not** rewrite
-project law (`.cursor/rules/*.mdc` synced from Documentos/rules).
+project law (`.cursor/rules/*.mdc` synced from this rules pack).
 
 ## Goal
 
@@ -133,7 +133,7 @@ if dir gone or user asked → do not grow nested count without need.
 
 | Layer | Owns |
 |-------|------|
-| Documentos/rules `*.mdc` | Always-on law (synced); topology preservation |
+| this rules pack `*.mdc` | Always-on law (synced); topology preservation |
 | This skill | Warm MAP + TOOLCHAIN bootstrap |
 | workspace-scope | Implementation and verification boundary |
 | domain-architecture | Bounded contexts and domain dependency direction |

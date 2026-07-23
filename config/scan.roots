@@ -1,0 +1,3 @@
+# Directories to scan for project children (one absolute path per line).
+# Example for this machine:
+/home/kleosr/Documents
