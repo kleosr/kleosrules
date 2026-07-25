@@ -15,10 +15,13 @@ DB = Path.home() / ".config/Cursor/User/globalStorage/state.vscdb"
 
 MARKERS = (
     "Think / Fix / Check",
-    "NATIVE LEAN",
-    "OBEDIENCE STACK",
+    "Master Mind V11",
+    "Master Mind V10",
+    "PRIME OBEDIENCE",
+    "MUST-NEVER",
     "NO COMMENTS",
-    "RISK CONTRACT",
+    "VERNACULAR",
+    "MECHANICAL-INCOMPLETENESS",
 )
 
 

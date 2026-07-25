@@ -5,7 +5,7 @@ set -euo pipefail
 SSOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 personal_skills="${HOME}/.cursor/skills"
 RULES_DIR="$SSOT/project-rules"
-SHARED=(agent types testing debugging native-lean-autoload)
+SHARED=(agent types testing debugging native-lean-autoload ponytail lean-code)
 export SSOT
 
 # shellcheck source=../lib/discover-repos.sh

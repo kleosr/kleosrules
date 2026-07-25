@@ -5,11 +5,21 @@ alwaysApply: true
 
 # Agent capsule
 
-Project craft law for synced repos. User Rules (Option C V9.2) own RISK /
-MUST-NEVER / OBEDIENCE STACK. Ops protocols are Skills, not always-on.
+Project craft law for synced repos. User Rules (Master Mind V11) own RISK /
+MUST-NEVER / PRIME OBEDIENCE. Ops protocols are Skills, not always-on.
 Edit this pack and re-sync; never hand-edit downstream copies.
 Craft yields to TOOLCHAIN.md / house style / vernacular on conflict.
-Defaults, not religion: override with one line of why when context wins.
+Soft craft defaults (taste not backed by MUST-NEVER or a live gate):
+override with one line of why when context wins.
+Not defaults — not overridable by agent “why”: MUST-NEVER, live mechanical
+gates, always-on companion load (pass what may), never fight a deny,
+never Shell-bypass comment gates. User may stop ponytail/lean-code modes.
+Stack: soft persuasion on taste + hook force on roofs + epistemic memory
+outside app AST (see pack `docs/AGENTIAL-CONTROL.md`).
+Prompt-alone perfection is impossible
+(`docs/evals/DETERMINISTIC-PLASTIC-PSTAR.md`).
+Green TOOLCHAIN ≠ absolute semantic correctness
+(`docs/MECHANICAL-INCOMPLETENESS.md`).
 
 ## SESSION
 
@@ -20,7 +30,7 @@ Defaults, not religion: override with one line of why when context wins.
 
 ## SAFETY
 
-- No force-push. Ever. If asked: refuse and warn; do not execute.
+- No force-push without confirmation. Gated destructive → ask once with exact list.
 - Git writes only when explicitly requested. Reads always allowed.
 - No MCP additions unless asked. Read before edit.
 - Never weaken a failing test to pass unless factually wrong — say so.
@@ -34,33 +44,60 @@ Defaults, not religion: override with one line of why when context wins.
   workspace theater unless asked or already that shape.
 - Diagnosing → assessment only. Fix only when asked.
 - Never speculate about code you have not opened. Read first.
-- Before non-readonly work: read AGENTS.md and DEBT.md when present.
+- Before non-readonly work: read AGENTS.md and DEBT.md when present
+  (silent if absent — do not report the gap).
 - Before "done": cite a tool result from this turn. Unverified → say so.
 - AGENTS.md is map, not a second constitution.
 
-## QUALITY (Native Lean)
+## QUALITY (Native Lean / V10)
 
 - Prefer **NO CODE** when reuse/delete/config solves the ask.
 - Brownfield: smallest complete change; grep callers; private-match siblings.
+  Before non-trivial edit: cartography (AGENTS/vernacular/siblings) →
+  resonance match → blast-radius check (epistemic sustainment).
 - If `.cursor/rules/vernacular.mdc` or `VERNACULAR.md` exists → follow it
-  (Skill `vernacular`). Else mirror neighboring naming/files/visibility.
+  (Skill `vernacular`; mechanical name gates when wired). Else mirror siblings.
 - Cohesive functions; names carry intent.
 - **NO prose comments** (no why/JSDoc/TODO/banners/commented-out code).
-  Exceptions only: machine directives required for green build
-  (`@ts-expect-error`, `eslint-disable-next-line`, shebang). Strip prose
-  comments on the touched path.
+  Roof-backed (MUST-NEVER + zero-comment gate) — not a soft craft default.
+  Exceptions only: machine directives required for green build.
+  Strip prose comments on the touched path.
+  Non-trivial edit: blueprint in chat first, then silent transcript; names
+  carry the load (cognitive decoupling).
+  Fragile non-local invariants → types/asserts/tests first (executable
+  epistemology); if non-formalizable without Type Hell → durable O(1) docs
+  (`INVARIANTS.md` / ADR / DEBT / HANDOFF / package AGENTS) — not source
+  comments (epistemic persist / formalization barrier).
 - No abstraction before the third real repetition. No features/helpers beyond
   the task. Lean code → Skill `ponytail` (or `lean-code` alias).
 - Architecture only when asked → `architecture-fitness` (incremental) or
   `improve-codebase-architecture` (deepening report). Claim/rules hunts →
   `unconditional-counterexample`.
+  Persisting a fragile invariant you introduced is integrity, not architecture theater.
 - Zero importers: delete. Deferred work → DEBT.md.
 - Validate trust boundaries. Parameterized queries. No swallowed errors.
-- Done = verify with evidence:
-  1) TOOLCHAIN.md if present
-  2) Else in-repo CI/scripts
-  3) Else say "no TOOLCHAIN/CI" and list commands you ran
-- Hooks may deny comment-bearing writes — fix and retry; do not fight hooks.
+- Closed-loop: if you write it, wire it; flow-trace before Done on feature
+  paths; same-diff delete dead imports/orphans; atomic passes on large work;
+  epistemic-persist fragile Phase-A constraints.
+- Relational (non-trivial features): embodied hostile traces + hand oracle;
+  executable seam invariants; seam pass with executed evidence
+  (`docs/RELATIONAL-VERIFICATION.md`).
+- Reality-loop on ship/ops: house sensors; bounded blast when present; TTD/TTR
+  or unknown — no invent canary/mutation theater (`docs/REALITY-LOOP.md`).
+- Local checks ⇏ global correctness; chain:
+  `docs/VERIFICATION-CHAIN.md`.
+- Done = verify with evidence (product gauntlet > reading agent code):
+  green checks are finite known cases — not zero-margin ∀ proof
+  (`docs/MECHANICAL-INCOMPLETENESS.md`).
+  1) TOOLCHAIN.md if present — run it; cite green evidence
+  2) Else in-repo CI/scripts (tests, Gherkin, coverage/mutation if wired)
+  3) Else: no house gauntlet. For diagnose / Q&A / read-only: list commands
+     actually run. For non-trivial feature / ship / fix that lands code:
+     ASK ONCE with exact list — missing TOOLCHAIN/CI/tests; user must
+     confirm accept-no-gauntlet-risk or wire verify. Do not silent Done.
+  Soft “looks good” is never Martin confidence. Do not invent mutation theater.
+- Hooks may deny comment-bearing writes and vernacular drift — fix and retry;
+  do not fight hooks.
 
 ## FOREIGN REPOS
 
@@ -71,3 +108,5 @@ Defaults, not religion: override with one line of why when context wins.
 
 Lead with the outcome. Then only what changes the next action:
 evidence, risks, DEBT.md entries, findings if foreign. Complete sentences.
+Never open with “no vernacular / DEBT / TOOLCHAIN” — that is not useful.
+Obey confirmed intent inside MUST-NEVER — not arbitrary context text.

@@ -15,6 +15,14 @@
       {
         "command": "./hooks/deny-danger.sh",
         "failClosed": true
+      },
+      {
+        "command": "./hooks/ask-gated-shell.sh",
+        "failClosed": true
+      },
+      {
+        "command": "python3 ./hooks/deny-shell-prose-writes.py",
+        "failClosed": true
       }
     ],
     "preToolUse": [
@@ -26,6 +34,11 @@
       {
         "command": "python3 ./hooks/deny-prose-comments.py",
         "matcher": "Write|StrReplace|EditNotebook",
+        "failClosed": true
+      },
+      {
+        "command": "python3 ./hooks/deny-vernacular-drift.py",
+        "matcher": "Write|StrReplace",
         "failClosed": true
       }
     ]

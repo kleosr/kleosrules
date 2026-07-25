@@ -95,4 +95,5 @@ Load only when paths match — do not apply ceremony outside these trees:
 - Touching `**/domains/**` → read and follow [`domains-ddd.md`](domains-ddd.md). That addendum overrides the single-check test rule for domain code.
 - Project has separate `frontend/` and `backend/` and the task touches them → read and follow [`fe-be-layout.md`](fe-be-layout.md).
 
-Off only: "stop ponytail" / "normal mode".
+Off only: "stop ponytail" / "normal mode" (user phrase). Agent “why” cannot
+override companion on/off — not a soft craft default.

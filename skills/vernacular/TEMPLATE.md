@@ -1,8 +1,8 @@
-# Vernacular contract (copy into the repo)
+# Vernacular contract (copy into the app repo)
 
-Put this at `.cursor/rules/vernacular.mdc` (recommended, `alwaysApply: true`) or `VERNACULAR.md`.
+Put this at `.cursor/rules/vernacular.mdc` (`alwaysApply: true`) or `VERNACULAR.md`.
 
-Fill every `TBD` from **existing** code — do not invent a dialect.
+Fill fields from **existing** code — do not invent a dialect.
 
 ```md
 ---
@@ -12,33 +12,71 @@ alwaysApply: true
 
 # Vernacular
 
+Machine fields (hooks parse key: value):
+
+```
+file_name_pattern: domain.kind.ext
+allowed_kinds: type, service, usecase, adapter, controller, rule, test
+class_pattern: PascalCaseWithKindSuffix
+function_pattern: verbObject
+boolean_prefixes: is, has, can, should
+constant_pattern: SCREAMING_SNAKE_CASE
+no_prose_comments: true
+machine_directives_only: ts-expect-error, eslint-disable-next-line, shebang
+```
+
 ## Topology
-- Shape: TBD (single app | apps+lib | existing packages only — no new monorepo)
+- Shape: TBD
 - New files allowed under: TBD
-- Never create: TBD (e.g. `**/use-cases/**`, `**/domain/**` unless already present)
+- Never create: TBD
 
 ## File names
-- Pattern: TBD (e.g. `camelCase.ts` | `kebab-case.ts` | `snake_case.py`)
+- Pattern: TBD (e.g. `user.create.usecase.ts`)
 - Test files: TBD
-- One export style: TBD (default export | named only)
+- One export style: TBD
 
 ## Types / classes
-- Prefer: TBD (functions | classes | both)
-- Class names: TBD
-- Interfaces/types: TBD (`IFoo` banned? `Foo` / `FooProps`?)
-- Visibility: TBD (private fields? module-private?)
+- Prefer: TBD
+- Class names: TBD (e.g. UserCreateUseCase)
+- Interfaces/types: TBD
+- Visibility: TBD
 
 ## Functions
-- Names: TBD (verbPhrase | snake_case)
+- Names: TBD (e.g. createUser)
 - Async suffix: TBD
-- Error/result style: TBD (throw | Result | null)
+- Error/result style: TBD
 
 ## Imports
 - Order: TBD
-- Alias: TBD (`@/` | relative only)
+- Alias: TBD
 
-## Forbidden (quality = not these)
-- Prose comments (Option C NO COMMENTS)
+## Forbidden
+- Prose comments
 - New workspace/monorepo tooling
 - Foreign Clean Architecture folders
+```
+
+Example file names (when using domain.kind.ext):
+
+```
+user.create.usecase.ts
+user.create.usecase.test.ts
+billing.invoice.service.ts
+auth.session.adapter.ts
+```
+
+Example class names:
+
+```
+UserCreateUseCase
+BillingInvoiceService
+AuthSessionAdapter
+```
+
+Example function names:
+
+```
+createUser
+validateInvoice
+refreshSession
 ```

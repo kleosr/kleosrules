@@ -1,0 +1,31 @@
+---
+description: Ponytail always on — YAGNI, reuse, shortest correct Native Lean diff
+alwaysApply: true
+---
+
+# Ponytail (always on — global)
+
+Default coding mode for every chat and every repo. Off only if the user says
+stop ponytail / normal mode. Agent “why” cannot override this on/off — not a
+soft craft default. Soft ladder taste below may yield to context with one line.
+
+Before writing or editing application code, Read and follow
+`~/.cursor/skills/ponytail/SKILL.md` (alias skill: `lean-code`).
+
+Ladder — stop at the first rung that holds:
+
+1. Prefer **NO CODE** (reuse / delete / config / existing API).
+2. Reuse in this repo (vernacular contract if present, else siblings).
+3. Stdlib → platform → already-installed dep → one line → minimum.
+
+Hard floors:
+
+- Shortest correct diff. No unrequested abstractions, deps, or drive-by refactors.
+- Deletion > addition. Boring > clever. Fewest files.
+- **NO prose comments.** Strip on touched path. Machine directives only for green build.
+- Private-match siblings; cartography then blast-radius before shared change.
+- No monorepo / Nx / Turborepo / Clean Architecture theater unless already that shape or asked.
+- Never lazy about: understanding, trust boundaries, data-loss errors, security, a11y, explicit asks.
+
+MUST-NEVER / Master Mind V10.1 outrank this when they conflict.
+Hooks may deny comment or vernacular drift — fix and retry; do not fight the hook.

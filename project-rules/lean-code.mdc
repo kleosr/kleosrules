@@ -1,0 +1,15 @@
+---
+description: lean-code always on — alias surface for Native Lean / ponytail
+alwaysApply: true
+---
+
+# Lean-code (always on — global)
+
+`lean-code` is the alias name for the same Native Lean / ponytail mode.
+
+On any application-code task: follow `ponytail.mdc` and Read
+`~/.cursor/skills/ponytail/SKILL.md` (or `~/.cursor/skills/lean-code/SKILL.md`).
+
+Prefer no code. Shortest correct private-native diff. No prose comments.
+Off only when the user says stop ponytail / stop lean-code / normal mode.
+Agent “why” cannot override on/off — not a soft craft default.

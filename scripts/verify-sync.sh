@@ -5,7 +5,7 @@ set -euo pipefail
 SSOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 personal_skills="${HOME}/.cursor/skills"
 RULES_DIR="$SSOT/project-rules"
-SHARED=(agent types testing debugging native-lean-autoload)
+SHARED=(agent types testing debugging native-lean-autoload ponytail lean-code)
 fail=0
 export SSOT
 
@@ -80,8 +80,15 @@ for req in \
   user-rules/option-c-core.mdc \
   project-rules/agent.mdc \
   project-rules/native-lean-autoload.mdc \
+  project-rules/ponytail.mdc \
+  project-rules/lean-code.mdc \
   hooks/hooks.json \
   hooks/deny-prose-comments.py \
+  hooks/deny-shell-prose-writes.py \
+  hooks/deny-vernacular-drift.py \
+  hooks/scan-edited-file-for-prose.py \
+  hooks/prose_comment_lib.py \
+  hooks/ask-gated-shell.sh \
   config/skills.txt \
   install.sh
 do

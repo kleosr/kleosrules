@@ -1,6 +1,6 @@
 ---
-description: Testing — behavior through the public surface
-globs: ["**/*.test.*","**/*.spec.*","tests/**","__tests__/**","e2e/**"]
+description: Testing — public surface; house gauntlet over vibes
+globs: ["**/*.test.*","**/*.spec.*","tests/**","__tests__/**","e2e/**","**/*.feature"]
 alwaysApply: false
 ---
 
@@ -16,3 +16,10 @@ only. Flaky = broken (fix or declare-and-delete same day).
 Bug fix ships a regression test named or described
 `regression: <symptom>` that fails on old code.
 Coverage is a smoke detector, not a trophy.
+
+House gauntlet (Martin): confidence comes from constraints that already
+exist — TOOLCHAIN, acceptance/Gherkin, unit tests, coverage or mutation
+when the repo runs them — not from the human reading agent code. Do not
+invent a mutation or Clean Architecture theater. Run what is wired;
+fail closed on red; cite evidence before Done. No house gauntlet + land
+code → ASK ONCE (accept-no-gauntlet-risk or wire verify); no silent Done.

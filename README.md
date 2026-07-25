@@ -16,7 +16,7 @@ sync it.
 ├── package.json
 ├── install.sh             # one-shot → ~/.cursor
 ├── user-rules/            # paste into Cursor User Rules
-│   ├── USER-RULES.paste.txt   # Option C V9.2
+│   ├── USER-RULES.paste.txt   # Master Mind V11
 │   └── option-c-core.mdc      # disk mirror (alwaysApply: false)
 ├── project-rules/         # synced into each repo's .cursor/rules
 │   ├── agent.mdc
@@ -58,17 +58,32 @@ Fleet sync (optional):
 bash scripts/scan-and-sync.sh
 ```
 
-## Obedience stack
+## Obedience stack (Master Mind V11 — contract first)
+
+Framing (spec / SFT / gates / evals): [`docs/MODEL-SPEC.md`](docs/MODEL-SPEC.md)
+Martin product gauntlet vs harness: [`docs/AGENTIC-GAUNTLET.md`](docs/AGENTIC-GAUNTLET.md)
+Persuasion + force stack: [`docs/AGENTIAL-CONTROL.md`](docs/AGENTIAL-CONTROL.md)
+Defect compensation (CoT / entropy): [`docs/DEFECT-COMPENSATION.md`](docs/DEFECT-COMPENSATION.md)
+Cognitive collapse (IME CoT): [`docs/COGNITIVE-COLLAPSE.md`](docs/COGNITIVE-COLLAPSE.md)
+Topological U-curve: [`docs/TOPOLOGICAL-PROMPT.md`](docs/TOPOLOGICAL-PROMPT.md)
+Cognitive decoupling: [`docs/COGNITIVE-DECOUPLING.md`](docs/COGNITIVE-DECOUPLING.md)
+Epistemic resonance: [`docs/EPISTEMIC-RESONANCE.md`](docs/EPISTEMIC-RESONANCE.md)
+Closed-loop coupling: [`docs/CLOSED-LOOP-COUPLING.md`](docs/CLOSED-LOOP-COUPLING.md)
+Epistemic persist: [`docs/EPISTEMIC-PERSIST.md`](docs/EPISTEMIC-PERSIST.md)
+Executable epistemology: [`docs/EXECUTABLE-EPISTEMOLOGY.md`](docs/EXECUTABLE-EPISTEMOLOGY.md)
+Verification chain: [`docs/VERIFICATION-CHAIN.md`](docs/VERIFICATION-CHAIN.md)
+Mechanical incompleteness: [`docs/MECHANICAL-INCOMPLETENESS.md`](docs/MECHANICAL-INCOMPLETENESS.md)
+Agential control: [`docs/AGENTIAL-CONTROL.md`](docs/AGENTIAL-CONTROL.md)
 
 | Layer | Path |
 |-------|------|
-| Policy | `user-rules/USER-RULES.paste.txt` |
-| Autoload | `project-rules/native-lean-autoload.mdc` |
+| Mechanical | `hooks/` (comment-token, Shell prose, vernacular drift, secrets, destructive, install-ask) |
 | Vernacular | per-repo `.cursor/rules/vernacular.mdc` |
-| Hooks | `hooks/` |
-| Skills | `skills/ponytail`, `skills/vernacular`, … |
+| Policy | `user-rules/USER-RULES.paste.txt` (V11) |
+| Autoload | `project-rules/native-lean-autoload.mdc` + `ponytail.mdc` + `lean-code.mdc` (alwaysApply, global + every synced repo) |
+| Proof | `hooks/_selftest.py`, `hooks/_proof_evals.py`, `docs/evals/PROOF-EVALS.md`, `docs/evals/MARTIN-GAUNTLET-PSTAR.md`, `docs/evals/PRECEDENCE-PARADOX-PSTAR.md`, `docs/evals/DEFAULTS-RELIGION-PSTAR.md` |
 
-User Rules alone are not enough. Install the whole pack.
+100% = gated contract surfaces. Soft context text is not unconditional authority.
 
 ## Skills
 

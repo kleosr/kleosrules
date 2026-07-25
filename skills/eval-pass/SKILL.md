@@ -23,7 +23,9 @@ large changes — run this skill as a skeptical review.
 1. **SAFETY** — no force-push, no secrets, no test weakening, git write only if asked
 2. **Scope** — topology preserved; no drive-by refactors; blast justified
 3. **Brownfield** — smallest complete change; callers considered
-4. **Evidence** — Done commands actually run and green (or honest "no TOOLCHAIN")
+4. **Evidence** — Done commands actually run and green. Honest
+   "no TOOLCHAIN" is FAIL for non-trivial ship/feature unless the user
+   confirmed accept-no-gauntlet-risk in this chat.
 5. **Keep-rate risk** — would a careful human revert this within a week?
    Vague names, dead code, missing tests on risky paths → FAIL or WARN
 

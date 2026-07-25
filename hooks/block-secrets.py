@@ -5,12 +5,20 @@ SECRET_RE = re.compile(
     r"ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|"
     r"xox[baprs]-[A-Za-z0-9-]{20,}|-----BEGIN (RSA |OPENSSH |EC )?PRIVATE KEY-----)"
 )
-def out(d):
-    print(json.dumps(d)); raise SystemExit(0)
+MSG = "Blocked secret-like material (lab gate)."
+def out(d, code=0):
+    print(json.dumps(d)); raise SystemExit(code)
+def allow(ev):
+    out({} if ev == "beforeSubmitPrompt" else {"permission": "allow"})
+def block(ev):
+    if ev == "beforeSubmitPrompt":
+        out({"continue": False, "user_message": MSG}, 2)
+    out({"permission": "deny", "user_message": MSG, "agent_message": MSG}, 2)
 try:
     data = json.load(sys.stdin)
 except Exception:
-    out({"permission": "allow"})
+    out({})
+event = str(data.get("hook_event_name") or "")
 blobs = []
 for k in ("prompt", "command", "content", "new_string", "old_string"):
     v = data.get(k)
@@ -23,7 +31,5 @@ if isinstance(inp, dict):
             blobs.append(v)
 text = "\n".join(blobs)
 if text and SECRET_RE.search(text) and "EXAMPLE_SECRET" not in text:
-    out({"permission": "deny",
-         "user_message": "Blocked secret-like material (lab gate).",
-         "agent_message": "Blocked secret-like material (lab gate)."})
-out({"permission": "allow"})
+    block(event)
+allow(event)
