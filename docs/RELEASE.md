@@ -1,4 +1,23 @@
-# Release — v11.0.0
+# Release — v11.1.0
+
+## V11.1.0 — green-proof inversion kill
+
+1. P*: `docs/evals/GREEN-PROOF-INVERSION-PSTAR.md` — green selftest while
+   jq/shell gates dead; matcher/payload/MCP/read/Delete holes.
+2. Kill: python3 shell parse (deny if missing); gate-write/read/mcp/delete;
+   opaque shell ask; project hooks sync; session-ledger + stop-verify;
+   `_gauntlet.py` + UNPROBED-MATCHER; User Rules GATE MANIFEST + ASK ROUTING
+   + secret-read roof.
+3. Residual: Rice; stop follow-up ≠ hard block; Delete schema inferred.
+
+## V11.0.1 — ACT-install schism kill
+
+1. P*: `docs/evals/ACT-INSTALL-PSTAR.md` — primacy ACT lockfile install vs
+   recency Install gate + hook ask on `npm ci` (dead claimed ACT path).
+2. Kill: drop ACT lockfile carve-out; ASK ONCE for all package installs
+   (ci included); keep Install gate + ask-gated-shell; proof `npm ci` → ask.
+3. Why not hook carve-out: force cannot know “this task did not change the
+   dependency graph”; sequence rule still gates post-manifest install.
 
 ## V11.0.0 — mechanical incompleteness (Rice ceiling)
 

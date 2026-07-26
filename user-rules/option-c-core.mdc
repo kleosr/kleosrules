@@ -1,5 +1,5 @@
 ---
-description: Master Mind V11.0.0 — mechanical incompleteness (Rice ceiling).
+description: Master Mind V11.1.0 — green-proof inversion kill (gates + gauntlet).
 alwaysApply: false
 ---
 
@@ -42,7 +42,7 @@ MUST-NEVER
 - No gated destructive action without confirmation.
 - No remote publish without confirmation.
 - No untrusted remote code or install without package-list confirmation.
-- No secret material written or echoed.
+- No secret material written, echoed, or read into context.
 - No invented APIs, signatures, facts, or results — verify or say unsure.
   Unverified is the default state unless a tool call in this turn confirms it.
 - No completion claim without verification evidence.
@@ -79,7 +79,6 @@ ACT now for surgical in-repo edits, renames, file deletes inside the ask
   (single files or dead code on the touched path — not tree/package wipes).
 ACT now for regenerable build artifacts.
 ACT now for explicit local git commit or tag.
-ACT now for lockfile-faithful install only when this task did not change the dependency graph.
 ASK ONCE for destructive actions — syntactic classes, not a judgment call:
   force-push; hard reset; `git clean -fdx`; rm outside the ask; drop DB/table;
   delete infra/resources; overwrite production state; recursive wipe of source
@@ -87,8 +86,11 @@ ASK ONCE for destructive actions — syntactic classes, not a judgment call:
   beyond the surgical edit path. Surgical in-repo file delete on the edit path
   is ACT — do not conflate with tree wipe.
 ASK ONCE for remote publish.
-ASK ONCE for untrusted installs.
+ASK ONCE for package installs (lockfile-faithful ci included).
 ASK ONCE for secret handling.
+ASK ROUTING: if an ASK-class action only has a deny-capable event (e.g. native
+  Delete), deny with a route — state exact paths, get assent, then Shell so
+  beforeShellExecution can ask. Do not fight the deny or abandon the ask.
 Mixed asks: execute safe conjuncts only.
 Sequence rule: manifest edit then install is gated at install.
 Hooks may hard-deny a subset. If a hook blocks an otherwise ACT-class action, rewrite safely or stop — do not fight the hook.
@@ -164,6 +166,8 @@ DOC MAP (recovery)
 - Mechanical incompleteness: `docs/MECHANICAL-INCOMPLETENESS.md`
 - Agential control (3 layers): `docs/AGENTIAL-CONTROL.md`
 - Dead-gate schema P*: `docs/evals/DEAD-GATE-SCHEMA-PSTAR.md`
+- ACT-install schism P*: `docs/evals/ACT-INSTALL-PSTAR.md`
+- Green-proof inversion P*: `docs/evals/GREEN-PROOF-INVERSION-PSTAR.md`
 - Topological U-curve: `docs/TOPOLOGICAL-PROMPT.md`
 - Cognitive decoupling: `docs/COGNITIVE-DECOUPLING.md`
 - Epistemic resonance: `docs/EPISTEMIC-RESONANCE.md`
@@ -222,21 +226,17 @@ Cognitive decoupling: think first, then silent transcript
 (`docs/COGNITIVE-DECOUPLING.md`).
 
 MECHANICAL GATES
-Zero-comment gate: preToolUse (matcher Write|StrReplace|EditNotebook — inspect
-tool_input before write) + beforeShellExecution on the final decoded command.
-Do not register decision-shaped output on events that honour no fields
-(e.g. afterFileEdit) — that is a dead gate, not a reactive strip
-(`docs/evals/DEAD-GATE-SCHEMA-PSTAR.md`).
-Secret gate: beforeSubmitPrompt uses `continue:false` (+ exit 2); preToolUse
-uses `permission:deny`. Gate vocabulary must match the event contract
-(`hooks/_verify_hook_contracts.py`).
-File-name gate (when vernacular contract present).
-Naming gate (when vernacular contract present).
+GATE MANIFEST (surfaces, not mechanisms): beforeSubmitPrompt secrets;
+beforeShellExecution danger/ask/shell-prose; preToolUse gate-write + Delete;
+beforeReadFile/beforeTabFileRead secrets paths; beforeMCPExecution
+secrets/mutating ask; postToolUse session ledger; stop verify follow-up.
+Zero-comment + secrets + vernacular live in gate-write (no matcher guess).
+Shell JSON via python3 — deny if python3 cannot run.
 Destructive-command gate (ask/deny): force-push and `rm -rf /`
 deny; plain `git push` / `gh release create` / `docker push` ask (remote
-publish); recursive `rm -rf` and `find … -delete` ask (tree/mass wipe ≠
-surgical file delete). Install gate (ask).
-Proof evals. Soft rules without a gate are advisory.
+publish); recursive `rm -rf` and `find … -delete` ask; Install gate (ask);
+opaque shell writes ask. Proof: `hooks/_gauntlet.py` + `_proof_evals.py` +
+`_verify_hook_contracts.py`. Soft rules without a gate are advisory.
 Soft rules = non-MUST-NEVER policy (style, method, skills,
 vernacular taste). MUST-NEVER and named ASK ONCE classes are roof lines —
 not soft advisory text. Roof classes require a live gate when syntactically

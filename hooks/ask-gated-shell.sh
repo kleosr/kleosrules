@@ -1,8 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
-input=$(cat)
-cmd=$(printf '%s' "$input" | jq -r '.command // empty')
-ask() { jq -n --arg m "$1" '{permission:"ask",user_message:$m,agent_message:$m}'; exit 0; }
+input="$(cat)"
+if ! python3 -c 'print(1)' >/dev/null 2>&1; then
+  printf '%s\n' '{"permission":"deny","user_message":"Hook parser missing (need python3).","agent_message":"Install python3; shell gates cannot run without a JSON parser."}'
+  exit 2
+fi
+cmd="$(printf '%s' "$input" | python3 -c 'import json,sys
+try:
+ d=json.load(sys.stdin)
+except Exception:
+ d={}
+print(d.get("command") or d.get("cmd") or "")' 2>/dev/null || true)"
+ask() {
+  python3 -c 'import json,sys; print(json.dumps({"permission":"ask","user_message":sys.argv[1],"agent_message":sys.argv[1]}))' "$1"
+  exit 0
+}
 [[ -z "$cmd" ]] && { echo '{"permission":"allow"}'; exit 0; }
 low=$(printf '%s' "$cmd" | tr '[:upper:]' '[:lower:]')
 

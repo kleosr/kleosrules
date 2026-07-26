@@ -83,11 +83,15 @@ for req in \
   project-rules/ponytail.mdc \
   project-rules/lean-code.mdc \
   hooks/hooks.json \
+  hooks/hooks.project.json \
   hooks/deny-prose-comments.py \
   hooks/deny-shell-prose-writes.py \
   hooks/deny-vernacular-drift.py \
-  hooks/scan-edited-file-for-prose.py \
-  hooks/prose_comment_lib.py \
+  hooks/gate-write.py \
+  hooks/gate-read.py \
+  hooks/gate-mcp.py \
+  hooks/gate-delete.py \
+  hooks/hookio.py \
   hooks/ask-gated-shell.sh \
   config/skills.txt \
   install.sh

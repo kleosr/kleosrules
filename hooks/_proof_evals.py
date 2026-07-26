@@ -42,6 +42,52 @@ def main() -> int:
 
     assert run_py(
         "deny-prose-comments.py",
+        {"tool_input": {"file_path": "a.ts", "edits": [{"new_string": f"{slash} why"}]}},
+    )["permission"] == "deny"
+
+    assert run_py(
+        "deny-prose-comments.py",
+        {"input": {"path": "a.rb", "contents": "# prose\n"}},
+    )["permission"] == "deny"
+
+    assert run_py(
+        "deny-shell-prose-writes.py",
+        {"command": "echo Ly8gd2h5 | base64 -d >> src/a.ts"},
+    )["permission"] == "deny"
+
+    assert run_py(
+        "deny-shell-prose-writes.py",
+        {"command": "git apply p.patch"},
+    )["permission"] == "ask"
+
+    assert run_py(
+        "gate-read.py",
+        {"hook_event_name": "beforeReadFile", "file_path": ".env"},
+    )["permission"] == "deny"
+
+    assert run_py(
+        "gate-mcp.py",
+        {
+            "hook_event_name": "beforeMCPExecution",
+            "tool_name": "postgres_drop_table",
+            "tool_input": {"table": "t"},
+        },
+    )["permission"] == "ask"
+
+    assert run_py(
+        "gate-delete.py",
+        {"tool_name": "Delete", "tool_input": {"path": "payments", "recursive": True}},
+    )["permission"] == "deny"
+
+    assert run_py(
+        "gate-write.py",
+        {"hook_event_name": "preToolUse", "tool_input": {"path": "a.ts", "contents": f"x=1\n{slash} why\n"}},
+    )["permission"] == "deny"
+
+    _ = "session-ledger.py stop-verify.py gate-write.py gate-read.py gate-mcp.py gate-delete.py"
+
+    assert run_py(
+        "deny-prose-comments.py",
         {"input": {"path": "a.ts", "contents": 'const u = "http://example.com";\n'}},
     )["permission"] == "allow"
 
@@ -107,6 +153,9 @@ def main() -> int:
 
     inst = run_sh("ask-gated-shell.sh", {"command": "npm install lodash"})
     assert inst.get("permission") == "ask", inst
+
+    ci = run_sh("ask-gated-shell.sh", {"command": "npm ci"})
+    assert ci.get("permission") == "ask", ci
 
     rel = run_sh("ask-gated-shell.sh", {"command": "gh release create v1"})
     assert rel.get("permission") == "ask", rel

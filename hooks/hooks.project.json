@@ -3,66 +3,66 @@
   "hooks": {
     "beforeSubmitPrompt": [
       {
-        "command": "python3 ./hooks/block-secrets.py",
+        "command": "python3 .cursor/hooks/block-secrets.py",
         "failClosed": true
       }
     ],
     "beforeShellExecution": [
       {
-        "command": "./hooks/block-dangerous-git.sh",
+        "command": ".cursor/hooks/block-dangerous-git.sh",
         "failClosed": true
       },
       {
-        "command": "./hooks/deny-danger.sh",
+        "command": ".cursor/hooks/deny-danger.sh",
         "failClosed": true
       },
       {
-        "command": "./hooks/ask-gated-shell.sh",
+        "command": ".cursor/hooks/ask-gated-shell.sh",
         "failClosed": true
       },
       {
-        "command": "python3 ./hooks/deny-shell-prose-writes.py",
+        "command": "python3 .cursor/hooks/deny-shell-prose-writes.py",
         "failClosed": true
       }
     ],
     "preToolUse": [
       {
-        "command": "python3 ./hooks/gate-write.py",
+        "command": "python3 .cursor/hooks/gate-write.py",
         "failClosed": true
       },
       {
-        "command": "python3 ./hooks/gate-delete.py",
+        "command": "python3 .cursor/hooks/gate-delete.py",
         "matcher": "Delete",
         "failClosed": true
       }
     ],
     "beforeReadFile": [
       {
-        "command": "python3 ./hooks/gate-read.py",
+        "command": "python3 .cursor/hooks/gate-read.py",
         "failClosed": true
       }
     ],
     "beforeTabFileRead": [
       {
-        "command": "python3 ./hooks/gate-read.py",
+        "command": "python3 .cursor/hooks/gate-read.py",
         "failClosed": true
       }
     ],
     "beforeMCPExecution": [
       {
-        "command": "python3 ./hooks/gate-mcp.py",
+        "command": "python3 .cursor/hooks/gate-mcp.py",
         "failClosed": true
       }
     ],
     "postToolUse": [
       {
-        "command": "python3 ./hooks/session-ledger.py",
+        "command": "python3 .cursor/hooks/session-ledger.py",
         "failClosed": false
       }
     ],
     "stop": [
       {
-        "command": "python3 ./hooks/stop-verify.py",
+        "command": "python3 .cursor/hooks/stop-verify.py",
         "loop_limit": 1,
         "failClosed": false
       }

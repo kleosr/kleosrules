@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -27,9 +28,11 @@ OUTPUT_FIELDS = {
     "beforeShellExecution": {"permission", "user_message", "agent_message", "continue"},
     "beforeMCPExecution": {"permission", "user_message", "agent_message", "continue"},
     "beforeReadFile": {"permission", "user_message"},
+    "beforeTabFileRead": {"permission"},
+    "postToolUse": {"additional_context", "followup_message"},
+    "stop": {"followup_message"},
     "afterFileEdit": set(),
     "afterTabFileEdit": set(),
-    "beforeTabFileRead": {"permission"},
 }
 
 BLOCK_FIELD = {
@@ -69,6 +72,8 @@ TRIPWIRES = {
          "cwd": "/tmp", "tool_input": {"path": "src/a.ts", "contents": f'k="{KEY}"\n'}},
         {"hook_event_name": "preToolUse", "tool_name": "Write", "tool_use_id": "t3",
          "cwd": str(PACK / "probe"), "tool_input": {"path": "PROBE_PATH", "contents": "export function Bad_Name() {}\n"}},
+        {"hook_event_name": "preToolUse", "tool_name": "Delete", "tool_use_id": "t4",
+         "cwd": "/tmp", "tool_input": {"path": "payments", "recursive": True}},
     ],
     "beforeShellExecution": [
         {"hook_event_name": "beforeShellExecution", "cwd": "/tmp", "sandbox": False,
@@ -79,6 +84,18 @@ TRIPWIRES = {
          "command": INSTALL},
         {"hook_event_name": "beforeShellExecution", "cwd": "/tmp", "sandbox": False,
          "command": PROSE_SH},
+    ],
+    "beforeMCPExecution": [
+        {"hook_event_name": "beforeMCPExecution", "tool_name": "postgres_drop_table",
+         "tool_input": {"table": "users"}},
+        {"hook_event_name": "beforeMCPExecution", "tool_name": "notes_write",
+         "tool_input": {"text": f"token {TRIP}"}},
+    ],
+    "beforeReadFile": [
+        {"hook_event_name": "beforeReadFile", "file_path": ".env", "path": ".env"},
+    ],
+    "beforeTabFileRead": [
+        {"hook_event_name": "beforeTabFileRead", "file_path": "id_rsa", "path": "id_rsa"},
     ],
 }
 
@@ -97,11 +114,22 @@ def run(command: str, payload: dict) -> tuple[int, dict | None, str]:
         return proc.returncode, None, raw
 
 
+def matcher_hit(matcher: str | None, tool_name: str) -> bool:
+    if not matcher:
+        return True
+    return bool(re.search(matcher, tool_name or "", re.I))
+
+
 def main() -> int:
     cfg = json.loads(HOOKS_JSON.read_text(encoding="utf-8"))
     meters = "".join(
         (HERE / n).read_text(encoding="utf-8")
-        for n in ("_selftest.py", "_proof_evals.py", "_verify_hook_contracts.py")
+        for n in (
+            "_selftest.py",
+            "_proof_evals.py",
+            "_verify_hook_contracts.py",
+            "_gauntlet.py",
+        )
         if (HERE / n).is_file()
     )
     fails: list[str] = []
@@ -136,17 +164,30 @@ def main() -> int:
             command = entry["command"]
             name = command.split("/")[-1]
             local = command.replace("./hooks/", str(HERE) + "/")
+            matcher = entry.get("matcher")
 
             if name not in meters:
                 fails.append(f"[UNCOVERED] {event}:{name} asserted by no meter")
 
-            if wires is None or allowed is None:
+            if allowed is None:
+                continue
+            if wires is None:
+                if matcher:
+                    fails.append(f"[UNPROBED-MATCHER] {event}:{name} matcher={matcher!r} has no tripwires")
+                continue
+
+            matched = [w for w in wires if matcher_hit(matcher, str(w.get("tool_name") or ""))]
+            if matcher and not matched:
+                fails.append(
+                    f"[UNPROBED-MATCHER] {event}:{name} matcher={matcher!r} "
+                    f"matched none of {len(wires)} tripwire(s)"
+                )
                 continue
 
             field = BLOCK_FIELD.get(event)
             blocked_any = False
 
-            for wire in wires:
+            for wire in matched:
                 code, obj, raw = run(local, fill(wire))
                 if obj is None and raw:
                     fails.append(f"[NON-JSON] {event}:{name} emitted non-JSON on stdout")
@@ -170,21 +211,16 @@ def main() -> int:
                     )
 
                 if field is None:
-                    if obj:
-                        fails.append(
-                            f"[NO-OP-DECISION] {event}:{name} returns a decision but "
-                            f"{event} honours no output field"
-                        )
                     continue
 
                 hit = (obj.get("continue") is False) if field == "continue" \
                     else (perm in {"deny", "ask"})
                 blocked_any = blocked_any or hit or code == 2
 
-            if field is not None and not blocked_any:
+            if field is not None and matched and not blocked_any:
                 fails.append(
                     f"[DEAD-GATE] {event}:{name} blocked none of "
-                    f"{len(wires)} tripwire(s) via `{field}` or exit 2"
+                    f"{len(matched)} tripwire(s) via `{field}` or exit 2"
                 )
 
     if fails:

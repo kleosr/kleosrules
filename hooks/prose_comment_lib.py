@@ -1,23 +1,21 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import base64
 import io
 import re
 import tokenize
 from typing import List
 
-CODE_EXT = (
-    ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs",
-    ".vue", ".svelte",
-    ".py", ".go", ".rs", ".java", ".kt", ".swift",
-    ".rb", ".php", ".cs", ".cpp", ".cc", ".c", ".h", ".hpp",
-    ".sql",
+NON_CODE_EXT = (
+    ".md", ".mdc", ".txt", ".json", ".yml", ".yaml", ".toml", ".lock",
+    ".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico",
+    ".html", ".htm", ".css", ".scss", ".sass", ".less",
+    ".csv", ".tsv", ".xml", ".pdf", ".zip", ".gz", ".tgz", ".xz",
+    ".woff", ".woff2", ".ttf", ".eot",
+    ".map", ".min.js", ".min.css",
 )
-SKIP_EXT = (
-    ".sh", ".bash", ".zsh", ".fish", ".ps1",
-    ".md", ".mdc", ".txt", ".json", ".yml", ".yaml", ".toml",
-    ".lock", ".svg", ".html", ".css", ".scss",
-)
+SHELL_EXT = (".sh", ".bash", ".zsh", ".fish", ".ps1")
 
 JS_DIR_OK = re.compile(
     r"^\s*(?:"
@@ -31,13 +29,12 @@ JS_DIR_OK = re.compile(
     re.I,
 )
 PY_DIR_OK = re.compile(
-    r"^\s*(?:type:\s*ignore|noqa|pragma:|pylint:|mypy:|fmt:|ruff:)",
+    r"^\s*(?:type:\s*ignore|noqa|pragma:|pylint:|mypy:|fmt:|ruff:|"
+    r"tfsec:ignore|rubocop:disable|rubocop:todo)\b",
     re.I,
 )
-BLOCK_DIR_OK = re.compile(
-    r"^\s*(?:eslint|prettier|istanbul|biome|ts-|@ts-)",
-    re.I,
-)
+HASH_DIR_OK = PY_DIR_OK
+DASH_DIR_OK = re.compile(r"^\s*(?:noqa|type:\s*ignore|tfsec:ignore)\b", re.I)
 
 DENY_USER = "Blocked prose comment in code write (Native Lean NO COMMENTS)."
 DENY_AGENT = (
@@ -52,34 +49,62 @@ SHELL_JS_PROSE = re.compile(
     r"(?<!:)" + re.escape(_SL) + r"(?!\s*(?:@ts-|eslint|prettier|istanbul|biome|v8)\b)"
 )
 SHELL_PY_PROSE = re.compile(
-    r"#" + r"(?!\s*(?:type:\s*ignore|noqa|pragma:|pylint:|mypy:|fmt:|ruff:|!|/))"
+    r"#" + r"(?!\s*(?:type:\s*ignore|noqa|pragma:|pylint:|mypy:|fmt:|ruff:|!|/|tfsec:ignore|rubocop:))"
 )
 SHELL_BLOCK = re.compile(re.escape(_BL))
 
-_EXT_GROUP = "|".join(re.escape(e) for e in CODE_EXT)
+CODEISH = re.compile(
+    r"\.(?:ts|tsx|js|jsx|mjs|cjs|mts|cts|vue|svelte|py|go|rs|java|kt|swift|"
+    r"rb|php|cs|cpp|cc|c|h|hpp|sql|dart|scala|sol|astro|lua|zig|tf|ex|exs|"
+    r"r|jl|pl|clj|cljs|erl|hs|ml|mli|nim|cr|v|sv|vhd)\b",
+    re.I,
+)
 REDIR_TO_CODE = re.compile(
-    rf"(?:>>?|tee(?:\s+-a)?)\s*[\"']?[^\s\"';]+(?:{_EXT_GROUP})\b",
+    rf"(?:>>?|tee(?:\s+-a)?)\s*[\"']?[^\s\"';]+{CODEISH.pattern}",
     re.I,
 )
 HEREDOC_TO_CODE = re.compile(
-    rf"cat\s*>+\s*[\"']?[^\s\"';]+(?:{_EXT_GROUP})",
+    rf"cat\s*>+\s*[\"']?[^\s\"';]+{CODEISH.pattern}",
     re.I,
 )
 EVAL_WRITE = re.compile(
     rf"(?:python3?|node|deno)\s+-c\b.*(?:"
     rf"open\s*\(|write_text\s*\(|write_bytes\s*\(|Path\s*\([^)]*\)\s*\.\s*write_text|\.write\s*\()"
-    rf".*(?:{_EXT_GROUP})",
+    rf".*{CODEISH.pattern}",
     re.I | re.S,
 )
+OPAQUE_WRITE = re.compile(
+    r"(?:"
+    r"\bsed\s+-i\b|"
+    r"\bsed\s+[^\n]*?\s+-i\b|"
+    r"\bgit\s+apply\b|"
+    r"\bpatch\b|"
+    r"\bapplypatch\b|"
+    r"(?:python3?|node|deno|ruby|perl)\s+[^\n|>]+\s*>\s*[^\s]+|"
+    r"base64\s+[^\n]*\b-d\b[^\n]*>>?\s*[^\s]+|"
+    r"openssl\s+[^\n]+>>?\s*[^\s]+"
+    r")",
+    re.I,
+)
+BASE64_PIPE = re.compile(
+    r"(?:echo|printf)\s+[^\n|]*\|\s*base64\s+[^\n]*-d[^\n]*(>>?)\s*([^\s]+)",
+    re.I,
+)
+B64_TOKEN = re.compile(r"(?:echo|printf)\s+['\"]?([A-Za-z0-9+/=]{8,})['\"]?")
 
 
 def path_is_code(path: str) -> bool:
-    p = (path or "").split("?")[0].lower()
+    p = (path or "").split("?")[0].lower().rstrip("/")
     if not p:
+        return True
+    base = p.rsplit("/", 1)[-1]
+    if "." not in base or base.startswith("."):
         return False
-    if any(p.endswith(ext) for ext in SKIP_EXT):
+    if any(p.endswith(ext) for ext in NON_CODE_EXT):
         return False
-    return any(p.endswith(ext) for ext in CODE_EXT)
+    if any(p.endswith(ext) for ext in SHELL_EXT):
+        return False
+    return True
 
 
 def _py_comment_nodes(text: str) -> List[str]:
@@ -112,6 +137,15 @@ def _py_comment_nodes(text: str) -> List[str]:
             if inner.strip():
                 out.append(s)
     return out
+
+
+def _looks_like_regex(text: str, i: int) -> bool:
+    j = i - 1
+    while j >= 0 and text[j] in " \t":
+        j -= 1
+    if j < 0:
+        return True
+    return text[j] in "=(:,[!&|?+-{;\n"
 
 
 def _js_comment_nodes(text: str) -> List[str]:
@@ -148,29 +182,6 @@ def _js_comment_nodes(text: str) -> List[str]:
                     i += 2
                     depth = 1
                     while i < n and depth:
-                        if text[i] in "\"'":
-                            q = text[i]
-                            i += 1
-                            while i < n:
-                                if text[i] == "\\":
-                                    i += 2
-                                    continue
-                                if text[i] == q:
-                                    i += 1
-                                    break
-                                i += 1
-                            continue
-                        if text[i] == "`":
-                            i += 1
-                            while i < n:
-                                if text[i] == "\\":
-                                    i += 2
-                                    continue
-                                if text[i] == "`":
-                                    i += 1
-                                    break
-                                i += 1
-                            continue
                         if text[i] == "{":
                             depth += 1
                         elif text[i] == "}":
@@ -217,38 +228,82 @@ def _js_comment_nodes(text: str) -> List[str]:
     return nodes
 
 
-def _looks_like_regex(text: str, i: int) -> bool:
-    j = i - 1
-    while j >= 0 and text[j] in " \t":
-        j -= 1
-    if j < 0:
-        return True
-    prev = text[j]
-    if prev in "=(!&|:?,;{[>~+-*%^":
-        return True
-    if text[max(0, j - 5) : j + 1].endswith("return"):
-        return True
+def _js_prose_from_nodes(nodes: List[str]) -> bool:
+    for node in nodes:
+        if node.startswith(_BL):
+            inner = node[2:]
+            if inner.endswith("*/"):
+                inner = inner[:-2]
+            if BLOCK_DIR_OK_MATCH(inner):
+                continue
+            if inner.strip():
+                return True
+            continue
+        if node.startswith(_SL):
+            inner = node[2:]
+            if JS_DIR_OK.match(inner):
+                continue
+            if inner.strip():
+                return True
     return False
 
 
-def _js_prose_from_nodes(nodes: List[str]) -> bool:
-    for node in nodes:
-        if node.startswith(_SL):
-            inner = node[2:]
-            if not inner.strip():
+def BLOCK_DIR_OK_MATCH(inner: str) -> bool:
+    return bool(re.match(r"^\s*(?:eslint|prettier|istanbul|biome|ts-|@ts-)", inner, re.I))
+
+
+def _line_family_prose(text: str, marker: str, dir_ok: re.Pattern[str]) -> bool:
+    in_s = in_d = in_t = False
+    esc = False
+    i = 0
+    n = len(text)
+    while i < n:
+        c = text[i]
+        if in_s or in_d or in_t:
+            if esc:
+                esc = False
+                i += 1
                 continue
-            if JS_DIR_OK.match(inner):
+            if c == "\\":
+                esc = True
+                i += 1
                 continue
-            return True
-        if node.startswith(_BL):
-            body = node[2:]
-            if body.endswith("*" + "/"):
-                body = body[:-2]
-            if not body.strip():
+            if in_s and c == "'":
+                in_s = False
+            elif in_d and c == '"':
+                in_d = False
+            elif in_t and c == "`":
+                in_t = False
+            i += 1
+            continue
+        if c == "'":
+            in_s = True
+            i += 1
+            continue
+        if c == '"':
+            in_d = True
+            i += 1
+            continue
+        if c == "`":
+            in_t = True
+            i += 1
+            continue
+        if text.startswith(marker, i):
+            if marker == "#" and i + 1 < n and text[i + 1] == "{":
+                i += 1
                 continue
-            if BLOCK_DIR_OK.match(body):
+            if marker == "-" and not text.startswith("--", i):
+                i += 1
                 continue
-            return True
+            rest = text[i + len(marker) :].splitlines()[0]
+            if dir_ok.match(rest):
+                i += len(marker) + len(rest)
+                continue
+            if rest.strip():
+                return True
+            i += len(marker) + len(rest)
+            continue
+        i += 1
     return False
 
 
@@ -263,9 +318,26 @@ def has_prose_js(text: str) -> bool:
 def text_has_prose(text: str, path: str = "") -> bool:
     if not text:
         return False
-    if path.lower().endswith(".py"):
+    pl = path.lower()
+    if pl.endswith(".py"):
         return has_prose_py(text)
-    if path.lower().endswith(".sql"):
+    if pl.endswith((".rb", ".ex", ".exs", ".r", ".jl", ".pl", ".tf", ".yaml", ".yml")):
+        if _line_family_prose(text, "#", HASH_DIR_OK):
+            return True
+        return has_prose_js(text)
+    if pl.endswith((".lua", ".sql", ".hs")):
+        if _line_family_prose(text, "--", DASH_DIR_OK):
+            return True
+        return has_prose_js(text)
+    if pl.endswith((".clj", ".cljs", ".edn")):
+        if _line_family_prose(text, ";", re.compile(r"^\s*$")):
+            return True
+        return has_prose_js(text)
+    if pl.endswith((".erl", ".hrl")):
+        if _line_family_prose(text, "%", re.compile(r"^\s*$")):
+            return True
+        return has_prose_js(text)
+    if pl.endswith(".sql"):
         if re.search(r"(?m)^\s*--\s+\S", text):
             return True
         return has_prose_js(text)
@@ -289,6 +361,7 @@ def shell_targets_code(cmd: str) -> bool:
         REDIR_TO_CODE.search(cmd)
         or HEREDOC_TO_CODE.search(cmd)
         or EVAL_WRITE.search(cmd)
+        or CODEISH.search(cmd)
     )
 
 
@@ -304,8 +377,51 @@ def shell_has_prose_payload(cmd: str) -> bool:
     return False
 
 
+def _b64_decoded_prose(cmd: str) -> bool:
+    m = BASE64_PIPE.search(cmd)
+    if not m:
+        return False
+    target = m.group(2)
+    if not CODEISH.search(target):
+        return False
+    tok = B64_TOKEN.search(cmd)
+    if not tok:
+        return False
+    try:
+        raw = base64.b64decode(tok.group(1) + "===")
+        text = raw.decode("utf-8", "replace")
+    except Exception:
+        return False
+    return text_has_prose(text, target)
+
+
+def shell_write_class(cmd: str) -> str:
+    if not cmd:
+        return "allow"
+    if _b64_decoded_prose(cmd):
+        return "prose"
+    if OPAQUE_WRITE.search(cmd):
+        if re.search(r"\bsed\s+-n\b", cmd, re.I):
+            return "allow"
+        if re.search(r"prettier\s+[^\n]*--write", cmd, re.I):
+            return "allow"
+        if re.search(r"base64\s+[^\n]*-d[^\n]+\.(?:pem|crt|cer|der)\b", cmd, re.I):
+            return "allow"
+        if re.search(r"\bsed\s+[^\n]*\s-i\b[^\n]*\bs/", cmd, re.I):
+            return "allow"
+        if re.search(r"\b(?:git\s+apply|patch|applypatch)\b", cmd, re.I):
+            return "opaque"
+        if re.search(r"\bsed\s+[^\n]*\s-i\b", cmd, re.I):
+            return "opaque"
+        if CODEISH.search(cmd):
+            return "opaque"
+    if shell_targets_code(cmd) and shell_has_prose_payload(cmd):
+        return "prose"
+    return "allow"
+
+
 def shell_prose_write(cmd: str) -> bool:
-    return shell_targets_code(cmd) and shell_has_prose_payload(cmd)
+    return shell_write_class(cmd) == "prose"
 
 
 def deny_payload() -> dict:
@@ -314,3 +430,11 @@ def deny_payload() -> dict:
         "user_message": DENY_USER,
         "agent_message": DENY_AGENT,
     }
+
+
+def ask_opaque_payload() -> dict:
+    msg = (
+        "Opaque shell write to code (patch/sed -i/interpreter redirect/base64). "
+        "Confirm exact command; gate cannot inspect payload."
+    )
+    return {"permission": "ask", "user_message": msg, "agent_message": msg}

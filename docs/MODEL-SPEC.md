@@ -150,6 +150,8 @@ When drift appears:
 - Martin P*: `docs/evals/MARTIN-GAUNTLET-PSTAR.md`
 - Precedence P*: `docs/evals/PRECEDENCE-PARADOX-PSTAR.md`
 - Defaults/religion P*: `docs/evals/DEFAULTS-RELIGION-PSTAR.md`
+- ACT-install schism P*: `docs/evals/ACT-INSTALL-PSTAR.md`
+- Green-proof inversion P*: `docs/evals/GREEN-PROOF-INVERSION-PSTAR.md`
 - Mechanical incompleteness: `docs/MECHANICAL-INCOMPLETENESS.md`
 - Agential control: `docs/AGENTIAL-CONTROL.md`
 - Defect compensation: `docs/DEFECT-COMPENSATION.md`

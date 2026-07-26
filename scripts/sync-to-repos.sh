@@ -97,4 +97,6 @@ for repo_path in "${REPOS[@]+"${REPOS[@]}"}"; do
   sync_into "$repo_path/.cursor/rules" "$(basename "$repo_path")"
 done
 
+bash "$SSOT/scripts/sync-hooks-to-repos.sh"
+
 echo "Sync complete. Verify: bash $SSOT/scripts/verify-sync.sh"

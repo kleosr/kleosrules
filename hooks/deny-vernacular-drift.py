@@ -124,7 +124,7 @@ def fail_deny():
     })
 
 
-try:
+def main() -> None:
     try:
         data = json.load(sys.stdin)
     except Exception:
@@ -158,14 +158,17 @@ try:
             ),
         })
 
-    chunks = []
-    for k in ("contents", "new_string", "content", "cell_content", "new_source"):
-        v = inp.get(k)
-        if isinstance(v, str):
-            chunks.append(v)
-        v2 = data.get(k)
-        if isinstance(v2, str):
-            chunks.append(v2)
+    try:
+        from hookio import walk_strings
+        chunks = walk_strings(inp) + walk_strings(
+            {k: data[k] for k in data if k not in ("tool_input", "input")}
+        )
+    except Exception:
+        chunks = []
+        for k in ("contents", "new_string", "content", "cell_content", "new_source"):
+            v = inp.get(k)
+            if isinstance(v, str):
+                chunks.append(v)
     text = "\n".join(chunks)
     if text:
         ok, reason = naming_ok(text, fields)
@@ -179,5 +182,12 @@ try:
             })
 
     out({"permission": "allow"})
-except Exception:
-    fail_deny()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except SystemExit:
+        raise
+    except Exception:
+        fail_deny()

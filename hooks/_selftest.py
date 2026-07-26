@@ -28,6 +28,7 @@ def main() -> int:
     directive_ok = "/" + "/ @ts-expect-error intentional\nx=1\n"
 
     assert run("deny-prose-comments.py", {"input": {"path": "a.ts", "contents": slash_bad}})["permission"] == "deny"
+    assert run("deny-prose-comments.py", {"tool_input": {"file_path": "a.ts", "edits": [{"new_string": "/" + "/ bad"}]}})["permission"] == "deny"
     assert run("deny-prose-comments.py", {"input": {"path": "", "contents": slash_bad}})["permission"] == "deny"
     assert run("deny-prose-comments.py", {"input": {"path": "a.vue", "contents": slash_bad}})["permission"] == "deny"
     assert run("deny-prose-comments.py", {"input": {"path": "a.ts", "contents": "x=1\n"}})["permission"] == "allow"
