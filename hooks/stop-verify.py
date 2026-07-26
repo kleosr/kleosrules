@@ -5,13 +5,16 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from hookio import emit, load_stdin, read_ledger  # noqa: E402
+from hookio import emit, freshness, load_stdin  # noqa: E402
 
 FOLLOW = (
-    "Session edited application code without a verify-class command. "
-    "Run the house gauntlet (TOOLCHAIN / tests) and cite evidence, "
-    "or name residual risk and ask accept-no-gauntlet-risk. "
+    "Session has unverified edits. Run the house gauntlet (TOOLCHAIN / tests) "
+    "and cite evidence, or name residual risk and ask accept-no-gauntlet-risk. "
     "Do not claim Done without verification evidence."
+)
+LOOP_MSG = (
+    "Freeze loop detected (repeat deny fingerprints). Stop retrying the same blocked "
+    "write; rewrite to an allowed surface or ask the user."
 )
 
 
@@ -21,11 +24,19 @@ def main() -> None:
     if status and status != "completed":
         emit({})
     cid = str(data.get("conversation_id") or data.get("session_id") or "unknown")
-    led = read_ledger(cid)
-    edits = int(led.get("edits") or 0)
-    verifies = int(led.get("verifies") or 0)
-    if edits > 0 and verifies == 0:
-        emit({"followup_message": FOLLOW})
+    fresh = freshness(cid)
+    unverified = fresh.get("unverified") or []
+    loops = int(fresh.get("loops") or 0)
+    if loops >= 2:
+        emit({"followup_message": LOOP_MSG + " Unverified: " + ", ".join(unverified)})
+    if unverified:
+        emit(
+            {
+                "followup_message": FOLLOW
+                + " Unverified paths: "
+                + ", ".join(unverified)
+            }
+        )
     emit({})
 
 

@@ -11,6 +11,7 @@ FILES=(
   ask-gated-shell.sh
   hookio.py
   prose_comment_lib.py
+  injection_lib.py
   deny-prose-comments.py
   deny-shell-prose-writes.py
   deny-vernacular-drift.py
@@ -20,6 +21,10 @@ FILES=(
   gate-read.py
   gate-mcp.py
   gate-delete.py
+  gate-shell.py
+  gate-subagent.py
+  gate-fail.py
+  session-boundary.py
   session-ledger.py
   stop-verify.py
 )

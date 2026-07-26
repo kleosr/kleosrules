@@ -5,7 +5,7 @@ import base64
 import io
 import re
 import tokenize
-from typing import List
+from typing import List, Tuple
 
 NON_CODE_EXT = (
     ".md", ".mdc", ".txt", ".json", ".yml", ".yaml", ".toml", ".lock",
@@ -148,8 +148,8 @@ def _looks_like_regex(text: str, i: int) -> bool:
     return text[j] in "=(:,[!&|?+-{;\n"
 
 
-def _js_comment_nodes(text: str) -> List[str]:
-    nodes: List[str] = []
+def _js_comment_spans(text: str) -> List[Tuple[int, int, str]]:
+    spans: List[Tuple[int, int, str]] = []
     i = 0
     n = len(text)
     while i < n:
@@ -196,7 +196,7 @@ def _js_comment_nodes(text: str) -> List[str]:
             i += 2
             while i < n and text[i] not in "\r\n":
                 i += 1
-            nodes.append(text[start:i])
+            spans.append((start, i, text[start:i]))
             continue
 
         if c == "/" and nxt == "*":
@@ -205,7 +205,7 @@ def _js_comment_nodes(text: str) -> List[str]:
             while i + 1 < n and not (text[i] == "*" and text[i + 1] == "/"):
                 i += 1
             i = min(i + 2, n)
-            nodes.append(text[start:i])
+            spans.append((start, i, text[start:i]))
             continue
 
         if c == "/" and _looks_like_regex(text, i):
@@ -225,7 +225,11 @@ def _js_comment_nodes(text: str) -> List[str]:
             continue
 
         i += 1
-    return nodes
+    return spans
+
+
+def _js_comment_nodes(text: str) -> List[str]:
+    return [node for _, _, node in _js_comment_spans(text)]
 
 
 def _js_prose_from_nodes(nodes: List[str]) -> bool:
@@ -422,6 +426,97 @@ def shell_write_class(cmd: str) -> str:
 
 def shell_prose_write(cmd: str) -> bool:
     return shell_write_class(cmd) == "prose"
+
+
+def _py_comment_keep(body: str, line_no: int) -> bool:
+    if body.startswith("#!") and line_no == 1:
+        return True
+    inner = body[1:].lstrip()
+    if re.match(r"coding[:=]", inner, re.I):
+        return True
+    if PY_DIR_OK.match(inner):
+        return True
+    return not inner.strip()
+
+
+def _js_comment_keep(node: str) -> bool:
+    if node.startswith(_BL):
+        inner = node[2:]
+        if inner.endswith("*/"):
+            inner = inner[:-2]
+        return BLOCK_DIR_OK_MATCH(inner) or not inner.strip()
+    if node.startswith(_SL):
+        inner = node[2:]
+        return JS_DIR_OK.match(inner) or not inner.strip()
+    return True
+
+
+def _strip_py(text: str) -> str | None:
+    lines = text.splitlines(keepends=True)
+    try:
+        tokens = list(tokenize.generate_tokens(io.StringIO(text).readline))
+    except tokenize.TokenError:
+        return None
+    for tok in tokens:
+        if tok.type != tokenize.COMMENT:
+            continue
+        body = tok.string
+        if _py_comment_keep(body, tok.start[0]):
+            continue
+        line_idx = tok.start[0] - 1
+        if line_idx < 0 or line_idx >= len(lines):
+            return None
+        line = lines[line_idx]
+        col = tok.start[1]
+        prefix = line[:col]
+        suffix = line[col + len(body):]
+        if prefix.strip():
+            return None
+        lines[line_idx] = prefix + suffix
+    out = "".join(lines)
+    if text.endswith("\n"):
+        return out if out.endswith("\n") else out + "\n"
+    return out.rstrip("\n")
+
+
+def _strip_js(text: str) -> str | None:
+    spans = _js_comment_spans(text)
+    for start, end, node in spans:
+        if _js_comment_keep(node):
+            continue
+        if node.startswith(_BL):
+            line_start = text.rfind("\n", 0, start) + 1
+            prefix = text[line_start:start]
+            if prefix.strip():
+                return None
+    remove: List[Tuple[int, int]] = []
+    for start, end, node in spans:
+        if not _js_comment_keep(node):
+            remove.append((start, end))
+    if not remove:
+        return text
+    chunks: List[str] = []
+    pos = 0
+    for start, end in sorted(remove):
+        chunks.append(text[pos:start])
+        pos = end
+    chunks.append(text[pos:])
+    return "".join(chunks)
+
+
+def strip_prose(path: str, text: str) -> str | None:
+    if not text:
+        return text
+    if not violates(path, text):
+        return text
+    stripped = _strip_js(text)
+    if path.lower().endswith(".py"):
+        stripped = _strip_py(text)
+    if stripped is None:
+        return None
+    if violates(path, stripped):
+        return None
+    return stripped
 
 
 def deny_payload() -> dict:

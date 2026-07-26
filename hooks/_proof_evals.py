@@ -11,12 +11,18 @@ HERE = Path(__file__).resolve().parent
 PACK = HERE.parent
 
 
-def run_py(script: str, payload: dict) -> dict:
+def run_py(script: str, payload: dict, env: dict | None = None) -> dict:
+    import os
+
+    e = os.environ.copy()
+    if env:
+        e.update(env)
     p = subprocess.run(
         [sys.executable, str(HERE / script)],
         input=json.dumps(payload).encode(),
         capture_output=True,
         cwd=str(PACK),
+        env=e,
     )
     out = p.stdout.decode().strip()
     return json.loads(out) if out else {}
@@ -61,6 +67,22 @@ def main() -> int:
     )["permission"] == "ask"
 
     assert run_py(
+        "gate-shell.py",
+        {"command": "git push origin main --force"},
+    )["permission"] == "deny"
+
+    assert run_py(
+        "gate-shell.py",
+        {"command": "git push origin main"},
+    )["permission"] == "ask"
+
+    norm = run_py(
+        "gate-write.py",
+        {"hook_event_name": "preToolUse", "tool_input": {"path": "a.ts", "contents": f"x=1\n{slash} why\n"}},
+    )
+    assert norm.get("permission") == "allow" and norm.get("updated_input"), norm
+
+    assert run_py(
         "gate-read.py",
         {"hook_event_name": "beforeReadFile", "file_path": ".env"},
     )["permission"] == "deny"
@@ -79,12 +101,22 @@ def main() -> int:
         {"tool_name": "Delete", "tool_input": {"path": "payments", "recursive": True}},
     )["permission"] == "deny"
 
+    gw = run_py(
+        "gate-write.py",
+        {"hook_event_name": "preToolUse", "tool_input": {"path": "a.ts", "contents": f"x=1\n{slash} why\n"}},
+    )
+    assert gw.get("permission") == "allow" and gw.get("updated_input")
+    assert slash + " why" not in (gw["updated_input"].get("contents") or "")
     assert run_py(
         "gate-write.py",
         {"hook_event_name": "preToolUse", "tool_input": {"path": "a.ts", "contents": f"x=1\n{slash} why\n"}},
+        env={"KLEOS_NORMALIZE": "0"},
     )["permission"] == "deny"
 
-    _ = "session-ledger.py stop-verify.py gate-write.py gate-read.py gate-mcp.py gate-delete.py"
+    _ = (
+        "session-ledger.py stop-verify.py gate-write.py gate-read.py gate-mcp.py "
+        "gate-delete.py gate-fail.py session-boundary.py gate-shell.py gate-subagent.py"
+    )
 
     assert run_py(
         "deny-prose-comments.py",
@@ -133,34 +165,34 @@ def main() -> int:
         )
         assert r3["permission"] == "deny", r3
 
-    force = run_sh(
-        "block-dangerous-git.sh",
+    force = run_py(
+        "gate-shell.py",
         {"command": "git push origin main --force"},
     )
     assert force.get("permission") == "deny", force
 
-    push = run_sh("ask-gated-shell.sh", {"command": "git push origin main"})
+    push = run_py("gate-shell.py", {"command": "git push origin main"})
     assert push.get("permission") == "ask", push
 
-    tree_rm = run_sh("ask-gated-shell.sh", {"command": "rm -rf payments"})
+    tree_rm = run_py("gate-shell.py", {"command": "rm -rf payments"})
     assert tree_rm.get("permission") == "ask", tree_rm
 
-    root_rm = run_sh("deny-danger.sh", {"command": "rm -rf /"})
+    root_rm = run_py("gate-shell.py", {"command": "rm -rf /"})
     assert root_rm.get("permission") == "deny", root_rm
 
-    npx = run_sh("ask-gated-shell.sh", {"command": "npx cowsay hi"})
+    npx = run_py("gate-shell.py", {"command": "npx cowsay hi"})
     assert npx.get("permission") == "ask", npx
 
-    inst = run_sh("ask-gated-shell.sh", {"command": "npm install lodash"})
+    inst = run_py("gate-shell.py", {"command": "npm install lodash"})
     assert inst.get("permission") == "ask", inst
 
-    ci = run_sh("ask-gated-shell.sh", {"command": "npm ci"})
+    ci = run_py("gate-shell.py", {"command": "npm ci"})
     assert ci.get("permission") == "ask", ci
 
-    rel = run_sh("ask-gated-shell.sh", {"command": "gh release create v1"})
+    rel = run_py("gate-shell.py", {"command": "gh release create v1"})
     assert rel.get("permission") == "ask", rel
 
-    find_del = run_sh("ask-gated-shell.sh", {"command": "find . -delete"})
+    find_del = run_py("gate-shell.py", {"command": "find . -delete"})
     assert find_del.get("permission") == "ask", find_del
 
     prompt_secret = run_py(

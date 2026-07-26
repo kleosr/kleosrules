@@ -29,7 +29,12 @@ OUTPUT_FIELDS = {
     "beforeMCPExecution": {"permission", "user_message", "agent_message", "continue"},
     "beforeReadFile": {"permission", "user_message"},
     "beforeTabFileRead": {"permission"},
-    "postToolUse": {"additional_context", "followup_message"},
+    "postToolUse": {"additional_context", "followup_message", "updated_mcp_tool_output"},
+    "postToolUseFailure": set(),
+    "sessionStart": {"additional_context"},
+    "preCompact": {"user_message"},
+    "subagentStart": {"permission", "user_message", "agent_message"},
+    "subagentStop": set(),
     "stop": {"followup_message"},
     "afterFileEdit": set(),
     "afterTabFileEdit": set(),
@@ -42,6 +47,7 @@ BLOCK_FIELD = {
     "beforeMCPExecution": "permission",
     "beforeReadFile": "permission",
     "beforeTabFileRead": "permission",
+    "subagentStart": "permission",
 }
 
 ENFORCED_PERMISSIONS = {
@@ -97,6 +103,10 @@ TRIPWIRES = {
     "beforeTabFileRead": [
         {"hook_event_name": "beforeTabFileRead", "file_path": "id_rsa", "path": "id_rsa"},
     ],
+    "subagentStart": [
+        {"hook_event_name": "subagentStart", "task": "git push origin main --force"},
+        {"hook_event_name": "subagentStart", "task": "summarize README"},
+    ],
 }
 
 
@@ -112,6 +122,40 @@ def run(command: str, payload: dict) -> tuple[int, dict | None, str]:
         return proc.returncode, json.loads(raw), raw
     except json.JSONDecodeError:
         return proc.returncode, None, raw
+
+
+def transformed_clean(obj: dict | None, wire: dict) -> bool:
+    if not obj:
+        return False
+    updated = obj.get("updated_input")
+    if not isinstance(updated, dict):
+        return False
+    sys.path.insert(0, str(HERE))
+    from prose_comment_lib import violates  # noqa: E402
+
+    ti = wire.get("tool_input") or {}
+    path = str(ti.get("path") or "a.ts")
+    for key in ("contents", "content", "new_string"):
+        val = updated.get(key)
+        if isinstance(val, str) and not violates(path, val):
+            return True
+    return False
+
+
+def blocked_response(event: str, obj: dict | None, code: int, wire: dict) -> bool:
+    if obj is None:
+        return code == 2
+    field = BLOCK_FIELD.get(event)
+    if field is None:
+        return False
+    perm = obj.get("permission")
+    if field == "continue":
+        return obj.get("continue") is False
+    if perm in {"deny", "ask"} or code == 2:
+        return True
+    if event == "preToolUse" and transformed_clean(obj, wire):
+        return True
+    return False
 
 
 def matcher_hit(matcher: str | None, tool_name: str) -> bool:
@@ -186,6 +230,7 @@ def main() -> int:
 
             field = BLOCK_FIELD.get(event)
             blocked_any = False
+            allow_wires_ok = True
 
             for wire in matched:
                 code, obj, raw = run(local, fill(wire))
@@ -213,14 +258,25 @@ def main() -> int:
                 if field is None:
                     continue
 
-                hit = (obj.get("continue") is False) if field == "continue" \
-                    else (perm in {"deny", "ask"})
-                blocked_any = blocked_any or hit or code == 2
+                hit = blocked_response(event, obj, code, wire)
+                if event == "subagentStart" and wire.get("task") == "summarize README":
+                    if perm != "allow":
+                        allow_wires_ok = False
+                else:
+                    blocked_any = blocked_any or hit
 
-            if field is not None and matched and not blocked_any:
+            if event == "subagentStart" and matched and not allow_wires_ok:
+                fails.append(f"[DEAD-GATE] {event}:{name} denied benign subagent brief")
+
+            if field is not None and matched and event != "subagentStart" and not blocked_any:
                 fails.append(
                     f"[DEAD-GATE] {event}:{name} blocked none of "
                     f"{len(matched)} tripwire(s) via `{field}` or exit 2"
+                )
+
+            if event == "subagentStart" and matched and not blocked_any:
+                fails.append(
+                    f"[DEAD-GATE] {event}:{name} did not deny force-push subagent brief"
                 )
 
     if fails:

@@ -9,19 +9,7 @@
     ],
     "beforeShellExecution": [
       {
-        "command": "./hooks/block-dangerous-git.sh",
-        "failClosed": true
-      },
-      {
-        "command": "./hooks/deny-danger.sh",
-        "failClosed": true
-      },
-      {
-        "command": "./hooks/ask-gated-shell.sh",
-        "failClosed": true
-      },
-      {
-        "command": "python3 ./hooks/deny-shell-prose-writes.py",
+        "command": "python3 ./hooks/gate-shell.py",
         "failClosed": true
       }
     ],
@@ -34,6 +22,18 @@
         "command": "python3 ./hooks/gate-delete.py",
         "matcher": "Delete",
         "failClosed": true
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "python3 ./hooks/session-ledger.py",
+        "failClosed": false
+      }
+    ],
+    "postToolUseFailure": [
+      {
+        "command": "python3 ./hooks/gate-fail.py",
+        "failClosed": false
       }
     ],
     "beforeReadFile": [
@@ -54,9 +54,27 @@
         "failClosed": true
       }
     ],
-    "postToolUse": [
+    "subagentStart": [
       {
-        "command": "python3 ./hooks/session-ledger.py",
+        "command": "python3 ./hooks/gate-subagent.py",
+        "failClosed": true
+      }
+    ],
+    "subagentStop": [
+      {
+        "command": "python3 ./hooks/gate-subagent.py",
+        "failClosed": false
+      }
+    ],
+    "sessionStart": [
+      {
+        "command": "python3 ./hooks/session-boundary.py",
+        "failClosed": false
+      }
+    ],
+    "preCompact": [
+      {
+        "command": "python3 ./hooks/session-boundary.py",
         "failClosed": false
       }
     ],

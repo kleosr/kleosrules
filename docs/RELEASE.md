@@ -1,4 +1,14 @@
-# Release — v11.1.0
+# Release — v11.2.0
+
+## V11.2.0 — agentic continuity
+
+1. P*: `docs/evals/AGENTIC-CONTINUITY-PSTAR.md` — session ledger counters vs
+   verify ordering; no normalize transform; injection in MCP/subagent; split shell.
+2. Kill: append-only event log + `freshness()`; `gate-write` normalize +
+   repeat-deny escalation; `injection_lib`; `gate-shell` merge; subagent/session
+   boundaries; `gate-fail`; CI `gate-diff.py` + GitHub `gates.yml`.
+3. Residual: injection regex limits; normalize unsafe inline blocks → deny;
+   Rice semantic Done.
 
 ## V11.1.0 — green-proof inversion kill
 

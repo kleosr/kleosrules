@@ -11,7 +11,7 @@ FIELD_RE = re.compile(
     r"boolean_prefixes|constant_pattern|no_prose_comments|machine_directives_only)\s*:\s*(.+)$",
     re.M | re.I,
 )
-CLASS_RE = re.compile(r"\bclass\s+([A-Za-z_][A-Za-z0-9_]*)")
+CLASS_RE = re.compile(r"(?:^|[^A-Za-z0-9_-])class\s+([A-Z][A-Za-z0-9_]*)")
 FUNC_RE = re.compile(
     r"(?:^|\n)\s*(?:export\s+)?(?:async\s+)?function\s+([A-Za-z_][A-Za-z0-9_]*)"
     r"|(?:^|\n)\s*def\s+([A-Za-z_][A-Za-z0-9_]*)"
@@ -22,7 +22,7 @@ CONST_RE = re.compile(
 )
 
 PASCAL = re.compile(r"^[A-Z][A-Za-z0-9]*$")
-SNAKE = re.compile(r"^[a-z][a-z0-9_]*$")
+SNAKE = re.compile(r"^_?[a-z][a-z0-9_]*$")
 CAMEL = re.compile(r"^[a-z][A-Za-z0-9]*$")
 SCREAM = re.compile(r"^[A-Z][A-Z0-9_]*$")
 DOMAIN_KIND_EXT = re.compile(
