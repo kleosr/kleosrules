@@ -63,17 +63,16 @@ pub fn find_contract(start: &Path) -> Option<PathBuf> {
         abs.parent()?.to_path_buf()
     };
     for _round in 0..32 {
-        let a = cur.join(".cursor/rules/vernacular.mdc");
-        let b = cur.join("VERNACULAR.md");
-        let c = cur.join("docs/VERNACULAR.md");
-        if a.is_file() {
-            return Some(a);
-        }
-        if b.is_file() {
-            return Some(b);
-        }
-        if c.is_file() {
-            return Some(c);
+        let candidates = [
+            cur.join(".cursor/rules/vernacular.mdc"),
+            cur.join("VERNACULAR.md"),
+            cur.join("docs/VERNACULAR.md"),
+            cur.join("project-rules/vernacular.mdc"),
+        ];
+        for c in candidates {
+            if c.is_file() {
+                return Some(c);
+            }
         }
         if !cur.pop() {
             break;
@@ -172,11 +171,20 @@ pub fn file_name_ok(name: &str, fields: &VernFields) -> bool {
 
 fn contract_root(contract: &Path) -> PathBuf {
     if contract.file_name().and_then(|s| s.to_str()) == Some("vernacular.mdc") {
-        if let Some(rules) = contract.parent() {
-            if rules.file_name().and_then(|s| s.to_str()) == Some("rules") {
-                if let Some(cursor) = rules.parent() {
-                    if let Some(root) = cursor.parent() {
-                        return root.to_path_buf();
+        if let Some(parent) = contract.parent() {
+            let pname = parent.file_name().and_then(|s| s.to_str());
+            if pname == Some("project-rules") {
+                return parent
+                    .parent()
+                    .map(|p| p.to_path_buf())
+                    .unwrap_or_else(|| parent.to_path_buf());
+            }
+            if pname == Some("rules") {
+                if let Some(cursor) = parent.parent() {
+                    if cursor.file_name().and_then(|s| s.to_str()) == Some(".cursor") {
+                        if let Some(root) = cursor.parent() {
+                            return root.to_path_buf();
+                        }
                     }
                 }
             }
@@ -252,4 +260,38 @@ pub fn check_body_and_path(path: &str, body: &str) -> Result<(), String> {
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+
+    #[test]
+    fn finds_project_rules_vernacular() {
+        let root = std::env::temp_dir().join(format!(
+            "kleos_vern_{}",
+            std::process::id()
+        ));
+        let ignored = fs::remove_dir_all(&root);
+        drop(ignored);
+        fs::create_dir_all(root.join("project-rules")).unwrap();
+        fs::create_dir_all(root.join("hooks/kleos-gate/src")).unwrap();
+        fs::write(
+            root.join("project-rules/vernacular.mdc"),
+            "file_name_pattern: pack_native\nallowed_path_prefixes: hooks/\n",
+        )
+        .unwrap();
+        let start = root.join("hooks/kleos-gate/src");
+        let found = find_contract(&start).expect("contract");
+        assert!(
+            found.ends_with("project-rules/vernacular.mdc"),
+            "{found:?}"
+        );
+        let bad = root.join("src/FooUseCase.rs");
+        let err = check_body_and_path(bad.to_str().unwrap(), "pub struct X {}\n");
+        assert!(err.is_err(), "{err:?}");
+        let ignored2 = fs::remove_dir_all(&root);
+        drop(ignored2);
+    }
 }

@@ -715,12 +715,38 @@ fn check_content_clean_allows() {
 
 #[test]
 fn check_content_path_vernacular_denies() {
-    let (code, err) = run_check_content(
-        "pub struct X {}\n",
-        Some("src/FooUseCase.rs"),
-    );
+    let root = tempfile_dir();
+    std::fs::create_dir_all(root.join("project-rules")).unwrap();
+    std::fs::create_dir_all(root.join("hooks/kleos-gate")).unwrap();
+    std::fs::write(
+        root.join("project-rules/vernacular.mdc"),
+        "file_name_pattern: pack_native\nallowed_path_prefixes: hooks/\n",
+    )
+    .unwrap();
+    let mut cmd = Command::new(bin_path());
+    cmd.arg("--check-content")
+        .arg("--path")
+        .arg("src/FooUseCase.rs")
+        .current_dir(root.join("hooks/kleos-gate"))
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .env("KLEOS_HOOKS_DIR", hooks_root())
+        .env("KLEOS_POLICY_DIR", policy_dir())
+        .env("KLEOS_STATE_DIR", tempfile_dir());
+    let mut child = cmd.spawn().expect("spawn check-content");
+    {
+        let mut stdin = child.stdin.take().expect("stdin");
+        stdin.write_all(b"pub struct X {}\n").expect("write");
+    }
+    let out = child.wait_with_output().expect("wait");
+    let code = out.status.code().unwrap_or(1);
+    let err = String::from_utf8_lossy(&out.stderr).to_string();
     assert_eq!(code, 2, "{err}");
-    assert!(err.contains("vernacular") || err.contains("file-name") || err.contains("path"), "{err}");
+    assert!(
+        err.contains("vernacular") || err.contains("file-name") || err.contains("path"),
+        "{err}"
+    );
 }
 
 fn run_cli(args: &[&str]) -> (i32, String, String) {
