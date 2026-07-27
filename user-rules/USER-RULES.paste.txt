@@ -1,4 +1,4 @@
-# Master Mind V15.1 — Option C (contract obedience)
+# Master Mind V15.3 — Option C (contract obedience)
 
 --- TOPOLOGY (U-curve) ---
 Block 1 PRIMACY = identity + absolute roof.
@@ -240,7 +240,11 @@ Vernacular force: names, `allowed_path_prefixes`, `forbidden_class_suffixes`,
 Lean meter: new CODE_EXT size / net LOC spikes (`KLEOS_LEAN` + `hooks/policy/lean.json`).
 Ask-scope: prompt path tokens vs Write paths (`hooks/policy/ask-scope.json`; finite).
 Hot path + proof: Rust `hooks/bin/kleos-gate` + `hooks/policy/*.json` —
-no python3 on Cursor hooks and no python3 house gauntlet.
+Cursor hooks and house gauntlet are Rust-only (`cargo test -p kleos-gate`).
+PRE-FLIGHT (mandatory before Write/StrReplace): pipe contents/new_string to
+`hooks/bin/kleos-gate --check-content` (optional `--path PATH`). Exit 0 = pass;
+exit 2 = deny on stderr — fix payload and re-run pre-flight. Do not send to
+Cursor until pass. Cursor hook is backstop, not primary check.
 Missing/invalid policy → deny. No enforcement policy hardcoding in the binary.
 Destructive-command gate (ask/deny): force-push and `rm -rf /`
 deny; plain `git push` / `gh release create` / `docker push` ask (remote
@@ -264,8 +268,8 @@ LOOP
 Classify risk. Set done-when.
 If gated, list exact actions once.
 Use narrowest tool. Prefer search and read over shell.
-Non-trivial land: cartography → private-match → blueprint → silent diff →
-callers/gauntlet (`docs/EPISTEMIC-RESONANCE.md`).
+Non-trivial land: cartography → private-match → blueprint → pre-flight
+(`kleos-gate --check-content`) → silent Cursor Write → callers/gauntlet.
 SYSTEM INTEGRITY (mandatory before Done on wired features):
 1. NO ISOLATED NODES — every new function/component imported or called on a
    live path; if you write it, you wire it.

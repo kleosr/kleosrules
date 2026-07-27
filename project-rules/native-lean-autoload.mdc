@@ -18,10 +18,10 @@ Before writing or editing application code:
 3. Always apply ponytail / lean-code mode (see `ponytail.mdc`). Read the ponytail skill for the full ladder. Invoke `/vernacular` when a contract exists or naming/layout is in play. Other skills on demand when the user asks.
 4. **NO prose comments** — strip on touched path. Machine directives only for green build.
 5. No monorepo / Nx / Turborepo / Clean Architecture theater unless already that shape or asked.
-6. Zero-comment + secrets + vernacular: `gate-write.py` on preToolUse (no
-   matcher guess). Shell prose/opaque via beforeShellExecution. Read/MCP/Delete
-   gates live. Never fight a deny. Never use Shell to write app code with comments.
+6. Zero-comment + secrets + vernacular + lean: `kleos-gate` on preToolUse /
+   beforeShellExecution / read / MCP / Delete. PRE-FLIGHT `--check-content`
+   before Write. Never fight a deny. Never use Shell to write app code with comments.
 
 **Do not announce** missing vernacular / DEBT.md / TOOLCHAIN.md / AGENTS.md at chat open.
 
-Full policy: User Rule **Master Mind V10.1**.
+Full policy: User Rule **Master Mind V15.2+**.

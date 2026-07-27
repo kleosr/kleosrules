@@ -9,7 +9,7 @@ Before non-readonly work under a nested tree that has its own `AGENTS.md`, read 
 
 ## Overview
 
-kleosrules — Cursor harness pack (Master Mind **V15.1**): User Rules paste, always-on companions, Rust `kleos-gate` + policy JSON (comments / secrets / vernacular / lean / ask-scope), personal skills, fleet sync. Single pack topology — not an app monorepo.
+kleosrules — Cursor harness pack (Master Mind **V15.3**): User Rules paste, always-on companions, Rust `kleos-gate` + policy JSON (comments / secrets / vernacular / lean / ask-scope / pre-flight / gate-diff), personal skills, fleet sync. Single pack topology — not an app monorepo. **No Python in this pack.**
 
 ## Boundaries
 
@@ -18,30 +18,31 @@ kleosrules — Cursor harness pack (Master Mind **V15.1**): User Rules paste, al
 | `hooks/` | [hooks/AGENTS.md](hooks/AGENTS.md) | kleos-gate + policy |
 | `skills/` | [skills/AGENTS.md](skills/AGENTS.md) | On-demand Cursor skills |
 | `docs/` | [docs/AGENTS.md](docs/AGENTS.md) | Doctrine + P* evals + TOOLCHAIN |
-| `scripts/` | [scripts/AGENTS.md](scripts/AGENTS.md) | Install / scan / sync / verify |
+| `scripts/` | [scripts/AGENTS.md](scripts/AGENTS.md) | Install / scan / sync / verify / bench |
 | `project-rules/` | [project-rules/AGENTS.md](project-rules/AGENTS.md) | Synced `.cursor/rules` sources |
 | `user-rules/` | [user-rules/AGENTS.md](user-rules/AGENTS.md) | Paste + Option C mirror |
 | `config/` | [config/AGENTS.md](config/AGENTS.md) | Skills list + scan roots |
-| `lib/` | [lib/AGENTS.md](lib/AGENTS.md) | Discovery / paste check helpers |
+| `lib/` | [lib/AGENTS.md](lib/AGENTS.md) | Discovery helpers (shell) |
 
 ## Where to look
 
 | Need | Path | Notes |
 |------|------|-------|
-| Paste User Rules | `user-rules/USER-RULES.paste.txt` | V15.1 Option C |
-| Option C disk mirror | `user-rules/option-c-core.mdc` | `alwaysApply: false` |
+| Paste User Rules | `user-rules/USER-RULES.paste.txt` | V15.3 Option C |
+| Option C disk mirror | `user-rules/option-c-core.mdc` | often `alwaysApply: true` |
 | Always-on companions | `project-rules/{native-lean-autoload,ponytail,lean-code,agent}.mdc` | Synced |
 | Vernacular contract | `.cursor/rules/vernacular.mdc` | Machine fields |
 | Hot path binary | `hooks/bin/kleos-gate` | From `hooks/kleos-gate/` |
 | Policy | `hooks/policy/*.json` | No hardcode in `.rs` |
-| Hook registry | `hooks/hooks.json`, `hooks/hooks.project.json` | No python3 |
-| House verify | `cargo test -p kleos-gate` | `tests/integration.rs` |
+| Hook registry | `hooks/hooks.json`, `hooks/hooks.project.json` | kleos-gate only |
+| House verify | `cargo test -p kleos-gate` | + `benchmark-hooks.sh` |
+| CLI tools | `kleos-gate gate-diff` / `obedience-report` / `check-user-rules` / `--check-content` | |
 | Install to `~/.cursor` | `install.sh` / `hooks/install-user-hooks.sh` | |
 | Fleet scan/sync | `scripts/scan-and-sync.sh` | |
 | Sync verify | `scripts/verify-sync.sh` | |
 | Release | `docs/RELEASE.md` | |
 | TOOLCHAIN | `docs/TOOLCHAIN.md` | Done recipe |
-| Pack version | `package.json` | `15.1.0` |
+| Pack version | `package.json` | `15.3.0` |
 
 ## Tree (depth 2)
 
@@ -69,12 +70,14 @@ kleosrules — Cursor harness pack (Master Mind **V15.1**): User Rules paste, al
 ```bash
 cd hooks/kleos-gate && cargo test && cargo build --release
 bash scripts/verify-sync.sh
+bash scripts/benchmark-hooks.sh
+hooks/bin/kleos-gate gate-diff
 ```
 
 ## Hard stops (Never)
 
 - Never hand-edit downstream synced copies — edit this pack and re-sync.
-- Never reintroduce `python3` on Cursor hook hot path or house proof.
+- Never reintroduce Python into this pack (hooks, scripts, lib, proof).
 - Never put secrets in paste rules, hooks JSON, scan roots, or chat dumps.
 - Never treat green TOOLCHAIN as ∀ semantic quality (Rice).
 - Never fight a live deny.
@@ -90,7 +93,6 @@ bash scripts/verify-sync.sh
 - [docs/TOOLCHAIN.md](docs/TOOLCHAIN.md)
 - [docs/RELEASE.md](docs/RELEASE.md)
 - [docs/evals/HARDCODED-EXECUTION-SCHISM-PSTAR.md](docs/evals/HARDCODED-EXECUTION-SCHISM-PSTAR.md)
-- [docs/evals/ANTI-DRIFT-DRIVE-BY-PSTAR.md](docs/evals/ANTI-DRIFT-DRIVE-BY-PSTAR.md)
 - [README.md](README.md)
 
 ## Manual notes

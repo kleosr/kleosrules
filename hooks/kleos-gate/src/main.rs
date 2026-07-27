@@ -105,9 +105,92 @@ fn main() {
     }
 }
 
+fn check_fail(msg: &str) -> ! {
+    let ignored = writeln!(io::stderr(), "{msg}");
+    drop(ignored);
+    let ignored2 = io::stderr().flush();
+    drop(ignored2);
+    process::exit(2);
+}
+
+fn check_content(args: &[String]) {
+    let mut path = String::new();
+    let mut i = 0;
+    while i < args.len() {
+        if (args[i] == "--path" || args[i] == "-p") && i + 1 < args.len() {
+            path = args[i + 1].clone();
+            i += 2;
+            continue;
+        }
+        i += 1;
+    }
+    let mut body = String::new();
+    if io::stdin().read_to_string(&mut body).is_err() {
+        check_fail("kleos-gate --check-content: stdin read failed");
+    }
+    let hooks = hooks_dir();
+    let pdir = policy_dir(&hooks);
+    let policy = match Policy::load(&pdir) {
+        Ok(p) => p,
+        Err(e) => check_fail(&format!("kleos-gate policy missing/invalid: {e}")),
+    };
+    if engine::prose::has_prose(&body) {
+        check_fail("Blocked prose comment in code write (Native Lean NO COMMENTS).");
+    }
+    if path.is_empty() {
+        if engine::lean::enabled(&policy.lean) {
+            let n = body.matches('\n').count()
+                + usize::from(!body.is_empty() && !body.ends_with('\n'));
+            let lim = env::var(&policy.lean.new_file_loc_env)
+                .ok()
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(policy.lean.new_file_loc);
+            if n > lim {
+                check_fail(&format!(
+                    "Lean meter: content {n} LOC > {lim} (reuse/split or KLEOS_LEAN=0 / KLEOS_LEAN_NEW_FILE_LOC)"
+                ));
+            }
+        }
+        process::exit(0);
+    }
+    if engine::lean::is_code_path(&path, &policy.lean) {
+        if let Err(reason) = engine::vernacular::check_body_and_path(&path, &body) {
+            check_fail(&reason);
+        }
+        if let Some(reason) =
+            engine::lean::check(&path, Some(&body), None, None, &policy.lean)
+        {
+            check_fail(&reason);
+        }
+    }
+    process::exit(0);
+}
+
 fn run() {
     let args: Vec<String> = env::args().skip(1).collect();
+    if args.iter().any(|a| a == "--check-content" || a == "check-content") {
+        check_content(&args);
+        return;
+    }
     let event_arg = args.first().map(|s| s.as_str()).unwrap_or("auto");
+    if matches!(
+        event_arg,
+        "gate-diff" | "obedience-report" | "check-user-rules"
+    ) {
+        let hooks = hooks_dir();
+        let pdir = policy_dir(&hooks);
+        let policy = match Policy::load(&pdir) {
+            Ok(p) => p,
+            Err(e) => deny(&format!("kleos-gate policy missing/invalid: {e}")),
+        };
+        let st = state_dir();
+        match event_arg {
+            "gate-diff" => engine::tools::gate_diff(&hooks, &policy),
+            "obedience-report" => engine::tools::obedience_report(&st),
+            "check-user-rules" => engine::tools::check_user_rules(&hooks),
+            _ => unreachable!(),
+        }
+    }
     let data = read_stdin();
     if data.get("_parse_error").and_then(|v| v.as_bool()) == Some(true) {
         deny("kleos-gate JSON parse error");

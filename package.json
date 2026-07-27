@@ -1,13 +1,15 @@
 {
   "name": "kleosrules",
-  "version": "15.1.0",
+  "version": "15.3.0",
   "private": true,
-  "description": "kleosrules — Cursor pack Master Mind V15.1: Rust kleos-gate only (no python proof substrate).",
+  "description": "kleosrules — Cursor pack Master Mind V15.3: Rust-only (no Python in pack).",
   "license": "MIT",
   "scripts": {
     "install": "bash install.sh",
     "hooks": "bash hooks/install-user-hooks.sh",
     "sync": "bash scripts/scan-and-sync.sh",
-    "verify": "bash scripts/verify-sync.sh"
+    "verify": "bash scripts/verify-sync.sh",
+    "bench": "bash scripts/benchmark-hooks.sh",
+    "gate-diff": "hooks/bin/kleos-gate gate-diff"
   }
 }

@@ -9,5 +9,6 @@ pub mod read;
 pub mod session;
 pub mod shell;
 pub mod subagent;
+pub mod tools;
 pub mod vernacular;
 pub mod write;

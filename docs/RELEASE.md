@@ -1,4 +1,19 @@
-# Release — v15.1.0
+# Release — v15.3.0
+
+## V15.3.0 — Python zero in pack
+
+1. Delete remaining pack Python: `scripts/gate-diff.py`, `scripts/obedience-report.py`,
+   `lib/check-user-rules.py`.
+2. Rust CLI on `kleos-gate`: `gate-diff`, `obedience-report`, `check-user-rules`.
+3. Pre-commit installer → `kleos-gate gate-diff`. Scrub live docs/AGENTS of python3 recipes.
+4. Residual: `.py` remains only as CODE_EXT in `lean.json` (gate foreign app code); historical P* prose may mention past Python kills.
+
+## V15.2.0 — pre-flight --check-content
+
+1. `kleos-gate --check-content` (+ optional `--path`): agent self-check before Write.
+2. Contract PRE-FLIGHT: Cursor hook is backstop; fix until pre-flight exit 0.
+3. `scripts/benchmark-hooks.sh` replaces `benchmark-hooks.py` (jq + time).
+4. Residual: pre-flight is agent discipline; Cursor wire-up still required as roof.
 
 ## V15.1.0 — retire Python proof substrate
 

@@ -350,3 +350,81 @@ fn write_repeat_deny_escalates() {
         "expected repeat deny message, got {o2}"
     );
 }
+
+fn run_check_content(body: &str, path: Option<&str>) -> (i32, String) {
+    let mut cmd = Command::new(bin_path());
+    cmd.arg("--check-content")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .env("KLEOS_HOOKS_DIR", hooks_root())
+        .env("KLEOS_POLICY_DIR", policy_dir())
+        .env("KLEOS_STATE_DIR", tempfile_dir());
+    if let Some(p) = path {
+        cmd.arg("--path").arg(p);
+    }
+    let mut child = cmd.spawn().expect("spawn check-content");
+    {
+        let mut stdin = child.stdin.take().expect("stdin");
+        stdin.write_all(body.as_bytes()).expect("write");
+    }
+    let out = child.wait_with_output().expect("wait");
+    let err = String::from_utf8_lossy(&out.stderr).to_string();
+    (out.status.code().unwrap_or(1), err)
+}
+
+#[test]
+fn check_content_prose_denies() {
+    let (code, err) = run_check_content("const x = 1;\n// why\n", None);
+    assert_eq!(code, 2, "{err}");
+    assert!(err.contains("prose") || err.contains("NO COMMENTS"), "{err}");
+}
+
+#[test]
+fn check_content_clean_allows() {
+    let (code, err) = run_check_content("export const n = 1;\n", None);
+    assert_eq!(code, 0, "{err}");
+}
+
+#[test]
+fn check_content_path_vernacular_denies() {
+    let (code, err) = run_check_content(
+        "pub struct X {}\n",
+        Some("src/FooUseCase.rs"),
+    );
+    assert_eq!(code, 2, "{err}");
+    assert!(err.contains("vernacular") || err.contains("file-name") || err.contains("path"), "{err}");
+}
+
+fn run_cli(args: &[&str]) -> (i32, String, String) {
+    let mut cmd = Command::new(bin_path());
+    cmd.args(args)
+        .stdin(Stdio::null())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .env("KLEOS_HOOKS_DIR", hooks_root())
+        .env("KLEOS_POLICY_DIR", policy_dir())
+        .env("KLEOS_STATE_DIR", tempfile_dir());
+    let out = cmd.output().expect("cli");
+    (
+        out.status.code().unwrap_or(1),
+        String::from_utf8_lossy(&out.stdout).to_string(),
+        String::from_utf8_lossy(&out.stderr).to_string(),
+    )
+}
+
+#[test]
+fn cli_gate_diff_passes() {
+    let (code, stdout, stderr) = run_cli(&["gate-diff"]);
+    assert_eq!(code, 0, "stdout={stdout} stderr={stderr}");
+    assert!(stdout.contains("GATE_DIFF_PASS"), "{stdout}");
+}
+
+#[test]
+fn cli_check_user_rules_runs() {
+    let (code, _stdout, stderr) = run_cli(&["check-user-rules"]);
+    assert!(
+        code == 0 || code == 1,
+        "unexpected code={code} stderr={stderr}"
+    );
+}

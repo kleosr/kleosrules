@@ -104,6 +104,11 @@ pub fn has_prose(text: &str) -> bool {
             return true;
         }
         if c == b'#' && line_start {
+            if i + 1 < bytes.len() && bytes[i + 1] == b'[' {
+                line_start = false;
+                i += 1;
+                continue;
+            }
             let rest = &scrubbed[i + 1..];
             let end = rest.find(['\n', '\r']).unwrap_or(rest.len());
             let body = rest[..end].trim();

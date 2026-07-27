@@ -44,12 +44,20 @@ fn looks_like_prose_shell_write(cmd: &str) -> bool {
     {
         return false;
     }
-    if cmd.contains("//") || cmd.contains("/*") {
-        if cmd.contains(">>") || cmd.contains(">") || cmd.contains("tee ") {
-            return true;
-        }
+    let has_line = cmd.contains("//");
+    let has_block = cmd.contains("/*");
+    if !has_line && !has_block {
+        return false;
     }
-    false
+    if lower.contains("tee ") || cmd.contains(">>") {
+        return true;
+    }
+    let scrubbed = cmd
+        .replace("2>&1", " ")
+        .replace(">&1", " ")
+        .replace(">&2", " ")
+        .replace("&>", " ");
+    scrubbed.contains('>')
 }
 
 fn looks_opaque_write(cmd: &str) -> bool {

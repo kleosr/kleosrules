@@ -21,3 +21,7 @@ jobs:
           chmod +x hooks/bin/kleos-gate
       - name: Verify sync
         run: bash scripts/verify-sync.sh
+      - name: Gate diff (prose scan)
+        run: hooks/bin/kleos-gate gate-diff
+      - name: Hook bench
+        run: bash scripts/benchmark-hooks.sh

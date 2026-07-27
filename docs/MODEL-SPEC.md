@@ -29,7 +29,7 @@ never waives MUST-NEVER.
 | SFT (“film of great play”) | Skills under `skills/` (ponytail, vernacular, …) + vernacular contract |
 | RL coach (reward / nudge) | Hooks: `preToolUse` deny before write; `beforeShellExecution` deny/ask on shell |
 | Reactive film review | Do not register decision JSON on events with no output fields — dead gate (`evals/DEAD-GATE-SCHEMA-PSTAR.md`) |
-| Answer-key practice | `hooks/_selftest.py`, `hooks/_proof_evals.py` |
+| Answer-key practice | `cargo test -p kleos-gate` + `scripts/benchmark-hooks.sh` |
 | Soft rubric spot-check | Soft rows in `docs/evals/PROOF-EVALS.md` (human / chat) |
 
 Advisory context (User Rules prose, skills when Read) shapes intent.
@@ -118,9 +118,8 @@ memorizing one fixture.
 Runner:
 
 ```bash
-# see docs/TOOLCHAIN.md
-python3 hooks/_selftest.py
-python3 hooks/_proof_evals.py
+bash docs/../scripts/benchmark-hooks.sh
+(cd hooks/kleos-gate && cargo test)
 ```
 
 ## Martin / agentic discipline (product gauntlet)

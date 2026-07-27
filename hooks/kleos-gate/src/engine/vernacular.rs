@@ -52,10 +52,15 @@ pub fn parse_fields(text: &str) -> VernFields {
 }
 
 pub fn find_contract(start: &Path) -> Option<PathBuf> {
-    let mut cur = if start.is_dir() {
+    let abs = if start.is_absolute() {
         start.to_path_buf()
     } else {
-        start.parent()?.to_path_buf()
+        std::env::current_dir().ok()?.join(start)
+    };
+    let mut cur = if abs.is_dir() {
+        abs
+    } else {
+        abs.parent()?.to_path_buf()
     };
     for _round in 0..32 {
         let a = cur.join(".cursor/rules/vernacular.mdc");
@@ -75,6 +80,67 @@ pub fn find_contract(start: &Path) -> Option<PathBuf> {
         }
     }
     None
+}
+
+pub fn path_allowed(path: &Path, contract: &Path, fields: &VernFields) -> Result<(), String> {
+    if fields.allowed_path_prefixes.is_empty() {
+        return Ok(());
+    }
+    let root = contract_root(contract);
+    let rel_s = match path_rel_to_root(path, &root) {
+        Some(s) => s,
+        None => {
+            return Err("path outside vernacular contract root".into());
+        }
+    };
+    for pref in &fields.allowed_path_prefixes {
+        let p = pref.replace('\\', "/").trim_start_matches("./").to_string();
+        if p.is_empty() {
+            continue;
+        }
+        if rel_s == p.trim_end_matches('/') {
+            return Ok(());
+        }
+        let prefix = if p.ends_with('/') {
+            p.clone()
+        } else {
+            format!("{p}/")
+        };
+        if rel_s.starts_with(&prefix) {
+            return Ok(());
+        }
+    }
+    Err(format!("path {rel_s} outside allowed_path_prefixes"))
+}
+
+fn path_rel_to_root(path: &Path, root: &Path) -> Option<String> {
+    let root_abs = root.canonicalize().ok()?;
+    let abs = if path.is_absolute() {
+        path.to_path_buf()
+    } else {
+        std::env::current_dir().ok()?.join(path)
+    };
+    if let Ok(c) = abs.canonicalize() {
+        return c
+            .strip_prefix(&root_abs)
+            .ok()
+            .map(|r| r.to_string_lossy().replace('\\', "/"));
+    }
+    let root_s = root_abs.to_string_lossy().replace('\\', "/");
+    let abs_s = abs.to_string_lossy().replace('\\', "/");
+    let abs_s = abs_s.trim_start_matches("./").to_string();
+    if let Some(rest) = abs_s.strip_prefix(&root_s) {
+        return Some(rest.trim_start_matches('/').to_string());
+    }
+    if let Ok(cwd) = std::env::current_dir() {
+        if let Ok(cabs) = cwd.canonicalize() {
+            if let Ok(rel_cwd) = cabs.strip_prefix(&root_abs) {
+                let joined = rel_cwd.join(path);
+                return Some(joined.to_string_lossy().replace('\\', "/"));
+            }
+        }
+    }
+    Some(path.to_string_lossy().replace('\\', "/"))
 }
 
 fn pack_native_ok(name: &str) -> bool {
@@ -102,40 +168,6 @@ pub fn file_name_ok(name: &str, fields: &VernFields) -> bool {
         return pack_native_ok(name);
     }
     true
-}
-
-pub fn path_allowed(path: &Path, contract: &Path, fields: &VernFields) -> Result<(), String> {
-    if fields.allowed_path_prefixes.is_empty() {
-        return Ok(());
-    }
-    let root = contract_root(contract);
-    let rel = match path.canonicalize().ok().and_then(|p| {
-        root.canonicalize()
-            .ok()
-            .and_then(|r| p.strip_prefix(r).ok().map(|x| x.to_path_buf()))
-    }) {
-        Some(r) => r,
-        None => return Ok(()),
-    };
-    let rel_s = rel.to_string_lossy().replace('\\', "/");
-    for pref in &fields.allowed_path_prefixes {
-        let p = pref.replace('\\', "/").trim_start_matches("./").to_string();
-        if p.is_empty() {
-            continue;
-        }
-        if rel_s == p.trim_end_matches('/') {
-            return Ok(());
-        }
-        let prefix = if p.ends_with('/') {
-            p.clone()
-        } else {
-            format!("{p}/")
-        };
-        if rel_s.starts_with(&prefix) {
-            return Ok(());
-        }
-    }
-    Err(format!("path {rel_s} outside allowed_path_prefixes"))
 }
 
 fn contract_root(contract: &Path) -> PathBuf {
