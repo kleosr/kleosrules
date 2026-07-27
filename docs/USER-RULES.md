@@ -1,4 +1,4 @@
-# USER RULES — how to load Master Mind V16.0.10
+# USER RULES — how to load Master Mind V16.0.12
 
 ## Preferred (Settings User Rules)
 
@@ -25,5 +25,8 @@ V15.6: lean meter = size roofs (not ∀ quality); soft skills = J when routed
 
 Layout is topological (U-curve): primacy roof → mid dictionary → recency
 execution gates; hooks re-anchor at write time (`docs/TOPOLOGICAL-PROMPT.md`).
+
+V16.0.12: INTENT restatement + COMPLETE CAPTURE + Session LAYER CHECK named in paste
+(gate + companions already force; paste is recovery SSOT). `docs/CURSOR-CURATOR.md`.
 
 Then: `hooks/bin/kleos-gate install`
