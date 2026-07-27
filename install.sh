@@ -7,6 +7,7 @@ mkdir -p "$DEST/rules" "$DEST/skills" "$DEST/hooks"
 
 echo "==> Hooks"
 bash "$PACK/hooks/install-user-hooks.sh"
+bash "$PACK/scripts/sync-hooks-to-repos.sh"
 
 echo "==> Rules mirror (always-on global companions)"
 cp -f "$PACK/user-rules/option-c-core.mdc" "$DEST/rules/option-c-core.mdc"

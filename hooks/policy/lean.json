@@ -1,0 +1,15 @@
+{
+  "enabled_env": "KLEOS_LEAN",
+  "enabled_default": true,
+  "new_file_loc_env": "KLEOS_LEAN_NEW_FILE_LOC",
+  "new_file_loc": 120,
+  "net_delta_env": "KLEOS_LEAN_NET_DELTA",
+  "net_delta": 200,
+  "code_extensions": [
+    ".py", ".pyi", ".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx", ".mts", ".cts",
+    ".rs", ".go", ".java", ".kt", ".kts", ".swift", ".rb", ".php", ".c", ".cc",
+    ".cpp", ".cxx", ".h", ".hpp", ".cs", ".scala", ".sh", ".bash", ".zsh",
+    ".ps1", ".sql", ".r", ".lua", ".vim", ".el", ".ex", ".exs", ".erl", ".hs",
+    ".ml", ".mli", ".zig", ".nim", ".dart", ".vue", ".svelte"
+  ]
+}

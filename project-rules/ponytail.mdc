@@ -27,5 +27,12 @@ Hard floors:
 - No monorepo / Nx / Turborepo / Clean Architecture theater unless already that shape or asked.
 - Never lazy about: understanding, trust boundaries, data-loss errors, security, a11y, explicit asks.
 
-MUST-NEVER / Master Mind V10.1 outrank this when they conflict.
-Hooks may deny comment or vernacular drift — fix and retry; do not fight the hook.
+Force vs persuasion:
+
+- Roof (hooks): no prose comments; secrets; vernacular machine fields when contract exists;
+  lean meter on CODE_EXT (`KLEOS_LEAN`, new-file / net-LOC caps) — finite, not ∀ quality.
+- Soft (not fully gate-backed): prefer no code, reuse ladder, ≤20-line taste, “organized”
+  beyond topology allow-list. Soft may yield with one line; roofs may not.
+
+MUST-NEVER / Master Mind outrank this when they conflict.
+Hooks may deny comment, vernacular, or lean-meter drift — fix and retry; do not fight the hook.

@@ -1,0 +1,33 @@
+{
+  "deny": [
+    { "pattern": "rm\\s+-[a-z]*rf\\s+/", "message": "Blocked destructive rm (lab gate)" },
+    { "pattern": "rm\\s+-[a-z]*fr\\s+/", "message": "Blocked destructive rm (lab gate)" },
+    { "pattern": "rm\\s+-[a-z]*rf\\s+/\\*", "message": "Blocked destructive rm (lab gate)" },
+    { "pattern": "rm\\s+-[a-z]*fr\\s+/\\*", "message": "Blocked destructive rm (lab gate)" },
+    { "pattern": "rm\\s+-[a-z]*rf\\s+~", "message": "Blocked destructive rm (lab gate)" },
+    { "pattern": "git\\s+push[^;&|]*(?:--force|--force-with-lease|\\s-f(?:\\s|$))", "message": "Blocked force-push (lab gate)" },
+    { "pattern": "git\\s+reset\\s+--hard", "message": "Blocked destructive git reset/clean (lab gate)" },
+    { "pattern": "git\\s+clean\\s+-fdx", "message": "Blocked destructive git reset/clean (lab gate)" },
+    { "pattern": "curl[^\\n]*\\|\\s*(?:sh|bash)", "message": "Blocked pipe-to-interpreter (lab gate)" },
+    { "pattern": "wget[^\\n]*\\|\\s*(?:sh|bash)", "message": "Blocked pipe-to-interpreter (lab gate)" },
+    { "pattern": "mkfs\\.", "message": "Blocked disk-destructive command (lab gate)" },
+    { "pattern": "dd\\s+if=", "message": "Blocked disk-destructive command (lab gate)" },
+    { "pattern": "npm\\s+publish", "message": "Blocked publish/destroy (lab gate)" },
+    { "pattern": "pnpm\\s+publish", "message": "Blocked publish/destroy (lab gate)" },
+    { "pattern": "terraform\\s+destroy", "message": "Blocked publish/destroy (lab gate)" },
+    { "pattern": "git\\s+(?:commit|push|rebase)[^;&|]*(?:--no-verify|--no-gpg-sign)", "message": "Blocked by harness: no --no-verify / --no-gpg-sign unless user explicitly overrides outside hooks." },
+    { "pattern": "git\\s+push[^;&|]*(?:--force| -f\\s|--force-with-lease)", "message": "Blocked by harness: no force-push (agent.mdc SAFETY)." }
+  ],
+  "ask": [
+    { "pattern": "(?:^|[^a-z])(?:npx\\s|npm\\s+exec|pnpm\\s+dlx|yarn\\s+dlx|bunx\\s|uvx\\s|deno\\s+run)", "message": "Untrusted remote runner (npx-class). Confirm package/command list." },
+    { "pattern": "(?:^|[^a-z])(?:npm\\s+i(?:\\s|$)|npm\\s+install|npm\\s+ci|pnpm\\s+install|pnpm\\s+add|yarn\\s+install|yarn\\s+add|bun\\s+install|pip3?\\s+install|cargo\\s+add)", "message": "Package install/ci materializes third-party code. Confirm package/command list." },
+    { "pattern": "git\\s+push(?:\\s|$)", "message": "Remote publish (git push). Confirm remote/ref. MUST-NEVER: no remote publish without confirmation." },
+    { "pattern": "(?:^|[^a-z])(?:gh\\s+release\\s+create|docker\\s+push|podman\\s+push)(?:\\s|$)", "message": "Remote publish (release/image push). Confirm target. MUST-NEVER: no remote publish without confirmation." },
+    { "pattern": "rm\\s+(-[a-zA-Z]*r[a-zA-Z]*f|-[a-zA-Z]*f[a-zA-Z]*r|-[rf]{2})(?:\\s|$)", "message": "Recursive rm is destructive (tree wipe class). Confirm exact path list. Surgical single-file delete is ACT; this is not." },
+    { "pattern": "find\\s+.*-delete(?:\\s|$)|rsync\\s+.*--delete", "message": "Mass delete / sync-delete is destructive. Confirm exact path list." },
+    { "pattern": "git\\s+reset\\s+--hard", "message": "git reset --hard is destructive. Confirm before continuing." },
+    { "pattern": "git\\s+clean\\s+-[a-zA-Z]*f", "message": "git clean -f is destructive. Confirm before continuing." }
+  ],
+  "opaque_write_ask_message": "Opaque shell write to code path. Confirm exact command.",
+  "prose_shell_deny_message": "Blocked prose comment in code write (Native Lean NO COMMENTS)."
+}

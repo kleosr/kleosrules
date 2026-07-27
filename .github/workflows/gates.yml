@@ -10,16 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Gauntlet
-        run: KLEOS_STATE_DIR=$(mktemp -d) python3 hooks/_gauntlet.py
-      - name: Hook contracts
-        run: python3 hooks/_verify_hook_contracts.py
-      - name: Proof evals
-        run: python3 hooks/_proof_evals.py
-      - name: Selftest
-        run: python3 hooks/_selftest.py
-      - name: Gate diff
-        run: python3 scripts/gate-diff.py
+      - uses: dtolnay/rust-toolchain@stable
+      - name: kleos-gate tests
+        run: cargo test --manifest-path hooks/kleos-gate/Cargo.toml
+      - name: Release binary
+        run: |
+          cargo build --release --manifest-path hooks/kleos-gate/Cargo.toml
+          mkdir -p hooks/bin
+          cp -f hooks/kleos-gate/target/release/kleos-gate hooks/bin/kleos-gate
+          chmod +x hooks/bin/kleos-gate
+      - name: Verify sync
+        run: bash scripts/verify-sync.sh

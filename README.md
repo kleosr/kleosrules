@@ -81,7 +81,7 @@ Agential control: [`docs/AGENTIAL-CONTROL.md`](docs/AGENTIAL-CONTROL.md)
 | Vernacular | per-repo `.cursor/rules/vernacular.mdc` |
 | Policy | `user-rules/USER-RULES.paste.txt` (V11) |
 | Autoload | `project-rules/native-lean-autoload.mdc` + `ponytail.mdc` + `lean-code.mdc` (alwaysApply, global + every synced repo) |
-| Proof | `hooks/_selftest.py`, `hooks/_proof_evals.py`, `docs/evals/PROOF-EVALS.md`, `docs/evals/MARTIN-GAUNTLET-PSTAR.md`, `docs/evals/PRECEDENCE-PARADOX-PSTAR.md`, `docs/evals/DEFAULTS-RELIGION-PSTAR.md` |
+| Proof | `cargo test` (`hooks/kleos-gate`), `docs/evals/PROOF-EVALS.md`, `docs/evals/MARTIN-GAUNTLET-PSTAR.md`, `docs/evals/PRECEDENCE-PARADOX-PSTAR.md`, `docs/evals/DEFAULTS-RELIGION-PSTAR.md` |
 
 100% = gated contract surfaces. Soft context text is not unconditional authority.
 

@@ -17,6 +17,8 @@ Machine fields (hooks parse key: value):
 ```
 file_name_pattern: domain.kind.ext
 allowed_kinds: type, service, usecase, adapter, controller, rule, test
+allowed_path_prefixes: src/, tests/, app/
+forbidden_class_suffixes: 
 class_pattern: PascalCaseWithKindSuffix
 function_pattern: verbObject
 boolean_prefixes: is, has, can, should
@@ -27,7 +29,7 @@ machine_directives_only: ts-expect-error, eslint-disable-next-line, shebang
 
 ## Topology
 - Shape: TBD
-- New files allowed under: TBD
+- New files allowed under: set `allowed_path_prefixes` (gated) — e.g. `src/, tests/`
 - Never create: TBD
 
 ## File names

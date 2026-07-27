@@ -5,41 +5,24 @@ export SSOT
 # shellcheck source=../lib/discover-repos.sh
 source "$SSOT/lib/discover-repos.sh"
 
-HOOK_FILES=(
-  block-dangerous-git.sh
-  deny-danger.sh
-  ask-gated-shell.sh
-  hookio.py
-  prose_comment_lib.py
-  injection_lib.py
-  deny-prose-comments.py
-  deny-shell-prose-writes.py
-  deny-vernacular-drift.py
-  scan-edited-file-for-prose.py
-  block-secrets.py
-  gate-write.py
-  gate-read.py
-  gate-mcp.py
-  gate-delete.py
-  gate-shell.py
-  gate-subagent.py
-  gate-fail.py
-  session-boundary.py
-  session-ledger.py
-  stop-verify.py
-)
+if [[ ! -x "$SSOT/hooks/bin/kleos-gate" ]]; then
+  (cd "$SSOT/hooks/kleos-gate" && cargo build --release)
+  mkdir -p "$SSOT/hooks/bin"
+  cp -f "$SSOT/hooks/kleos-gate/target/release/kleos-gate" "$SSOT/hooks/bin/kleos-gate"
+  chmod +x "$SSOT/hooks/bin/kleos-gate"
+fi
 
 sync_hooks_into() {
   local root="$1" label="$2"
   local dest="$root/.cursor/hooks"
-  mkdir -p "$dest"
-  local f
-  for f in "${HOOK_FILES[@]}"; do
-    cp -f "$SSOT/hooks/$f" "$dest/$f"
-    chmod +x "$dest/$f"
-  done
+  mkdir -p "$dest/bin" "$dest/policy"
+  cp -f "$SSOT/hooks/bin/kleos-gate" "$dest/bin/kleos-gate"
+  chmod +x "$dest/bin/kleos-gate"
+  cp -f "$SSOT/hooks/policy/shell.json" "$SSOT/hooks/policy/lean.json" \
+    "$SSOT/hooks/policy/ask-scope.json" "$SSOT/hooks/policy/secrets.json" \
+    "$dest/policy/"
   cp -f "$SSOT/hooks/hooks.project.json" "$root/.cursor/hooks.json"
-  echo "[ok]  hooks → $label"
+  echo "[ok]  hooks → $label (kleos-gate)"
 }
 
 sync_hooks_into "$SSOT" "pack"

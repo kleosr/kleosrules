@@ -3,37 +3,16 @@ set -euo pipefail
 PACK="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$PACK/hooks"
 DEST="${HOME}/.cursor"
-mkdir -p "$DEST/hooks"
+mkdir -p "$DEST/hooks/bin" "$DEST/hooks/policy"
 
-FILES=(
-  block-dangerous-git.sh
-  deny-danger.sh
-  ask-gated-shell.sh
-  hookio.py
-  prose_comment_lib.py
-  injection_lib.py
-  deny-prose-comments.py
-  deny-shell-prose-writes.py
-  deny-vernacular-drift.py
-  scan-edited-file-for-prose.py
-  block-secrets.py
-  gate-write.py
-  gate-read.py
-  gate-mcp.py
-  gate-delete.py
-  gate-shell.py
-  gate-subagent.py
-  gate-fail.py
-  session-boundary.py
-  session-ledger.py
-  stop-verify.py
-)
+if [[ ! -x "$SRC/bin/kleos-gate" ]]; then
+  (cd "$SRC/kleos-gate" && cargo build --release)
+  cp -f "$SRC/kleos-gate/target/release/kleos-gate" "$SRC/bin/kleos-gate"
+  chmod +x "$SRC/bin/kleos-gate"
+fi
 
-for f in "${FILES[@]}"; do
-  [[ -f "$SRC/$f" ]] || { echo "[fail] missing $SRC/$f"; exit 1; }
-  cp -f "$SRC/$f" "$DEST/hooks/$f"
-  chmod +x "$DEST/hooks/$f"
-done
-
+cp -f "$SRC/bin/kleos-gate" "$DEST/hooks/bin/kleos-gate"
+chmod +x "$DEST/hooks/bin/kleos-gate"
+cp -f "$SRC/policy/shell.json" "$SRC/policy/lean.json" "$SRC/policy/ask-scope.json" "$SRC/policy/secrets.json" "$DEST/hooks/policy/"
 cp -f "$SRC/hooks.json" "$DEST/hooks.json"
-echo "[ok] hooks → $DEST/hooks.json"
+echo "[ok] hooks → $DEST/hooks.json (kleos-gate)"

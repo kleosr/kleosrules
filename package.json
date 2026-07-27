@@ -1,8 +1,8 @@
 {
   "name": "kleosrules",
-  "version": "11.2.0",
+  "version": "15.1.0",
   "private": true,
-  "description": "kleosrules — Cursor pack Master Mind V11.2: agentic continuity, normalize gates, injection scan.",
+  "description": "kleosrules — Cursor pack Master Mind V15.1: Rust kleos-gate only (no python proof substrate).",
   "license": "MIT",
   "scripts": {
     "install": "bash install.sh",

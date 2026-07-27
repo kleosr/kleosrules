@@ -1,9 +1,8 @@
 ---
-description: Master Mind V11.1.0 — green-proof inversion kill (gates + gauntlet).
-alwaysApply: false
+description: Master Mind V15.1.0 — Rust kleos-gate only; cargo test is house proof.
+alwaysApply: true
 ---
-
-# Master Mind V11 — Option C (contract obedience)
+# Master Mind V15.1 — Option C (contract obedience)
 
 --- TOPOLOGY (U-curve) ---
 Block 1 PRIMACY = identity + absolute roof.
@@ -168,6 +167,8 @@ DOC MAP (recovery)
 - Dead-gate schema P*: `docs/evals/DEAD-GATE-SCHEMA-PSTAR.md`
 - ACT-install schism P*: `docs/evals/ACT-INSTALL-PSTAR.md`
 - Green-proof inversion P*: `docs/evals/GREEN-PROOF-INVERSION-PSTAR.md`
+- Agentic continuity P*: `docs/evals/AGENTIC-CONTINUITY-PSTAR.md`
+- Verify-surface P*: `docs/evals/VERIFY-SURFACE-PSTAR.md`
 - Topological U-curve: `docs/TOPOLOGICAL-PROMPT.md`
 - Cognitive decoupling: `docs/COGNITIVE-DECOUPLING.md`
 - Epistemic resonance: `docs/EPISTEMIC-RESONANCE.md`
@@ -227,16 +228,28 @@ Cognitive decoupling: think first, then silent transcript
 
 MECHANICAL GATES
 GATE MANIFEST (surfaces, not mechanisms): beforeSubmitPrompt secrets;
-beforeShellExecution danger/ask/shell-prose; preToolUse gate-write + Delete;
+beforeShellExecution gate-shell (merged); preToolUse gate-write
+(matcher Write|StrReplace|EditNotebook|EditFile|ApplyPatch) + Delete;
 beforeReadFile/beforeTabFileRead secrets paths; beforeMCPExecution
-secrets/mutating ask; postToolUse session ledger; stop verify follow-up.
-Zero-comment + secrets + vernacular live in gate-write (no matcher guess).
-Shell JSON via python3 — deny if python3 cannot run.
+secrets/mutating ask; postToolUse session ledger; postToolUseFailure;
+subagentStart/Stop; sessionStart/preCompact; stop verify follow-up.
+Instrument = evidence: VERIFY must match natural argv
+(`cargo test -p kleos-gate` / `cargo build --release` kleos-gate),
+not only command-head bare tokens.
+Force scarcity: identical stop followups dedupe; false stop trains ignore.
+Project hooks fingerprint in verify-sync (single sync plane).
+Zero-comment + secrets + vernacular machine fields + lean meter live in kleos-gate.
+Vernacular force: names, `allowed_path_prefixes`, `forbidden_class_suffixes`,
+`boolean_prefixes`, real `pack_native` — not ungated prose essays.
+Lean meter: new CODE_EXT size / net LOC spikes (`KLEOS_LEAN` + `hooks/policy/lean.json`).
+Ask-scope: prompt path tokens vs Write paths (`hooks/policy/ask-scope.json`; finite).
+Hot path + proof: Rust `hooks/bin/kleos-gate` + `hooks/policy/*.json` —
+no python3 on Cursor hooks and no python3 house gauntlet.
+Missing/invalid policy → deny. No enforcement policy hardcoding in the binary.
 Destructive-command gate (ask/deny): force-push and `rm -rf /`
 deny; plain `git push` / `gh release create` / `docker push` ask (remote
 publish); recursive `rm -rf` and `find … -delete` ask; Install gate (ask);
-opaque shell writes ask. Proof: `hooks/_gauntlet.py` + `_proof_evals.py` +
-`_verify_hook_contracts.py`. Soft rules without a gate are advisory.
+opaque shell writes ask. Proof: `cargo test -p kleos-gate`. Soft rules without a gate are advisory.
 Soft rules = non-MUST-NEVER policy (style, method, skills,
 vernacular taste). MUST-NEVER and named ASK ONCE classes are roof lines —
 not soft advisory text. Roof classes require a live gate when syntactically

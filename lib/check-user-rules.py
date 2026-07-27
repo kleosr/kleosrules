@@ -15,6 +15,8 @@ DB = Path.home() / ".config/Cursor/User/globalStorage/state.vscdb"
 
 MARKERS = (
     "Think / Fix / Check",
+    "Master Mind V15",
+    "Master Mind V14",
     "Master Mind V11",
     "Master Mind V10",
     "PRIME OBEDIENCE",
@@ -24,6 +26,7 @@ MARKERS = (
     "MECHANICAL-INCOMPLETENESS",
     "GREEN-PROOF-INVERSION",
     "ASK ROUTING",
+    "kleos-gate",
 )
 
 

@@ -1,4 +1,41 @@
-# Release — v11.2.0
+# Release — v15.1.0
+
+## V15.1.0 — retire Python proof substrate
+
+1. Port house meters to `hooks/kleos-gate/tests/integration.rs` (`cargo test`).
+2. Delete legacy `hooks/*.py` gates/meters and python3 shell wrappers.
+3. TOOLCHAIN / CI / USER-RULES Proof line = `cargo test -p kleos-gate` only.
+4. Residual: `lib/check-user-rules.py` optional sqlite probe (not enforcement).
+
+## V15.0.0 — Rust kleos-gate + ask-scope
+
+1. P*: `docs/evals/HARDCODED-EXECUTION-SCHISM-PSTAR.md` (P*-11),
+   `docs/evals/ANTI-DRIFT-DRIVE-BY-PSTAR.md` (P*-12).
+2. Kill: Rust `hooks/bin/kleos-gate` hot path; `hooks/policy/*.json`; no
+   python3 in `hooks.json`; fail-closed missing policy; ask-scope ledger.
+3. Residual: cargo/binary substrate; ask↔diff heuristic; Rice Done.
+   Interim Python proof closed in V15.1.0.
+
+## V14.0.0 — lean meter + vernacular force
+
+1. P*: `docs/evals/LEAN-VERNACULAR-FORCE-PSTAR.md` — ponytail ladder forceless;
+   vernacular machine fields / topology dead vs gate.
+2. Kill: `lean_meter.py` (new-file / net-LOC caps, `KLEOS_LEAN`); vernacular
+   `pack_native`, `boolean_prefixes`, `allowed_path_prefixes`,
+   `forbidden_class_suffixes`; companion/skill soft-vs-roof wording; gauntlet
+   P16/P17.
+3. Residual: Rice Done; taste of “organized”; import/visibility soft; meters
+   gameable / finite.
+
+## V13.0.0 — instrument surface + force credibility
+
+1. P*: `docs/evals/VERIFY-SURFACE-PSTAR.md` — VERIFY regex missed
+   `python3 hooks/_gauntlet.py`; sticky stop; universal gate-write freeze;
+   project hooks outside verify-sync.
+2. Kill: argv-aware `is_verify_command`; stop followup dedupe; gate-write
+   matcher Write|StrReplace|EditNotebook; verify-sync hook fingerprint;
+   scan/install run `sync-hooks-to-repos.sh`.
+3. Residual: Rice Done; novel Shell phrasings; platform payload schemas.
 
 ## V11.2.0 — agentic continuity
 

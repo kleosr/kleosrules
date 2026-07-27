@@ -56,12 +56,66 @@ check_shared_dest() {
 
 check_shared_dest "$SSOT/.cursor/rules" "pack" "symlink"
 
+HOOK_NEED=(
+  bin/kleos-gate
+  policy/shell.json
+  policy/lean.json
+  policy/secrets.json
+  policy/ask-scope.json
+)
+
+check_project_hooks() {
+  local root="$1" label="$2"
+  local hj="$root/.cursor/hooks.json"
+  local hd="$root/.cursor/hooks"
+  local f
+  if [[ ! -f "$hj" ]]; then
+    echo "[MISSING] $label/.cursor/hooks.json"
+    fail=1
+    return
+  fi
+  if ! grep -q 'kleos-gate' "$hj"; then
+    echo "[DRIFT] $label hooks.json missing kleos-gate"
+    fail=1
+  fi
+  if ! grep -q 'Write|StrReplace|EditNotebook' "$hj"; then
+    echo "[DRIFT] $label hooks.json write matcher"
+    fail=1
+  fi
+  if grep -q 'python3' "$hj"; then
+    echo "[DRIFT] $label hooks.json still references python3"
+    fail=1
+  fi
+  if [[ ! -d "$hd" ]]; then
+    echo "[MISSING] $label/.cursor/hooks"
+    fail=1
+    return
+  fi
+  for f in "${HOOK_NEED[@]}"; do
+    if [[ ! -e "$hd/$f" ]]; then
+      echo "[MISSING] $label/.cursor/hooks/$f"
+      fail=1
+    fi
+  done
+  if [[ -f "$hd/bin/kleos-gate" && ! -x "$hd/bin/kleos-gate" ]]; then
+    echo "[DRIFT] $label kleos-gate not executable"
+    fail=1
+  fi
+  if ! cmp -s "$SSOT/hooks/hooks.project.json" "$hj"; then
+    echo "[DRIFT] $label/.cursor/hooks.json"
+    fail=1
+  fi
+}
+
 echo "[scan] verifying ${#REPOS[@]} project(s)"
 for repo_path in "${REPOS[@]+"${REPOS[@]}"}"; do
   [[ -z "${repo_path:-}" ]] && continue
   [[ "$(realpath "$repo_path")" == "$(realpath "$SSOT")" ]] && continue
   check_shared_dest "$repo_path/.cursor/rules" "$(basename "$repo_path")" "copy"
+  check_project_hooks "$repo_path" "$(basename "$repo_path")"
 done
+
+check_project_hooks "$SSOT" "pack"
 
 for skill in "${SKILLS[@]}"; do
   src="$SSOT/skills/$skill"
@@ -84,15 +138,13 @@ for req in \
   project-rules/lean-code.mdc \
   hooks/hooks.json \
   hooks/hooks.project.json \
-  hooks/deny-prose-comments.py \
-  hooks/deny-shell-prose-writes.py \
-  hooks/deny-vernacular-drift.py \
-  hooks/gate-write.py \
-  hooks/gate-read.py \
-  hooks/gate-mcp.py \
-  hooks/gate-delete.py \
-  hooks/hookio.py \
-  hooks/ask-gated-shell.sh \
+  hooks/bin/kleos-gate \
+  hooks/policy/shell.json \
+  hooks/policy/lean.json \
+  hooks/policy/secrets.json \
+  hooks/policy/ask-scope.json \
+  hooks/kleos-gate/Cargo.toml \
+  hooks/kleos-gate/tests/integration.rs \
   config/skills.txt \
   install.sh
 do

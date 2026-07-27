@@ -3,84 +3,85 @@
   "hooks": {
     "beforeSubmitPrompt": [
       {
-        "command": "python3 ./hooks/block-secrets.py",
+        "command": "./hooks/bin/kleos-gate beforeSubmitPrompt",
         "failClosed": true
       }
     ],
     "beforeShellExecution": [
       {
-        "command": "python3 ./hooks/gate-shell.py",
+        "command": "./hooks/bin/kleos-gate beforeShellExecution",
         "failClosed": true
       }
     ],
     "preToolUse": [
       {
-        "command": "python3 ./hooks/gate-write.py",
+        "command": "./hooks/bin/kleos-gate preToolUse",
+        "matcher": "Write|StrReplace|EditNotebook|EditFile|ApplyPatch",
         "failClosed": true
       },
       {
-        "command": "python3 ./hooks/gate-delete.py",
+        "command": "./hooks/bin/kleos-gate delete",
         "matcher": "Delete",
         "failClosed": true
       }
     ],
     "postToolUse": [
       {
-        "command": "python3 ./hooks/session-ledger.py",
+        "command": "./hooks/bin/kleos-gate postToolUse",
         "failClosed": false
       }
     ],
     "postToolUseFailure": [
       {
-        "command": "python3 ./hooks/gate-fail.py",
+        "command": "./hooks/bin/kleos-gate postToolUseFailure",
         "failClosed": false
       }
     ],
     "beforeReadFile": [
       {
-        "command": "python3 ./hooks/gate-read.py",
+        "command": "./hooks/bin/kleos-gate beforeReadFile",
         "failClosed": true
       }
     ],
     "beforeTabFileRead": [
       {
-        "command": "python3 ./hooks/gate-read.py",
+        "command": "./hooks/bin/kleos-gate beforeTabFileRead",
         "failClosed": true
       }
     ],
     "beforeMCPExecution": [
       {
-        "command": "python3 ./hooks/gate-mcp.py",
+        "command": "./hooks/bin/kleos-gate beforeMCPExecution",
         "failClosed": true
       }
     ],
     "subagentStart": [
       {
-        "command": "python3 ./hooks/gate-subagent.py",
+        "command": "./hooks/bin/kleos-gate subagentStart",
         "failClosed": true
       }
     ],
     "subagentStop": [
       {
-        "command": "python3 ./hooks/gate-subagent.py",
+        "command": "./hooks/bin/kleos-gate subagentStop",
         "failClosed": false
       }
     ],
     "sessionStart": [
       {
-        "command": "python3 ./hooks/session-boundary.py",
+        "command": "./hooks/bin/kleos-gate sessionStart",
         "failClosed": false
       }
     ],
     "preCompact": [
       {
-        "command": "python3 ./hooks/session-boundary.py",
+        "command": "./hooks/bin/kleos-gate preCompact",
         "failClosed": false
       }
     ],
     "stop": [
       {
-        "command": "python3 ./hooks/stop-verify.py",
+        "command": "./hooks/bin/kleos-gate stop",
         "loop_limit": 1,
         "failClosed": false
       }

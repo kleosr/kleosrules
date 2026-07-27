@@ -25,19 +25,35 @@ Native Lean quality = **this repo’s private dialect**, not a global Clean Code
    `~/.cursor/skills/vernacular/TEMPLATE.md` if the user wants a contract.
 4. Still obey Option C: prefer no code, no prose comments, no monorepo theater.
 
+## Force vs persuasion
+
+Hooks enforce **machine fields** only (when a contract exists), via
+`deny-vernacular-drift` / `gate-write`:
+
+- `file_name_pattern` (incl. real `pack_native` kebab/snake files)
+- `allowed_kinds` (with `domain.kind.ext`)
+- `allowed_path_prefixes` (topology allow-list)
+- `forbidden_class_suffixes` (theater class endings)
+- `class_pattern` / `function_pattern` / `constant_pattern`
+- `boolean_prefixes` (glued-prefix + boolean-shaped bare names)
+
+Prose sections (import order, visibility defaults, “prefer functions” essays)
+are **soft** unless expressed as machine fields. Do not claim the gate enforces
+ungated prose.
+
 ## What vernacular controls
 
-- File and folder names (e.g. `foo_bar.ts` vs `FooBar.ts` vs `foo-bar.ts`)
-- Class / type / interface / enum naming and when each is allowed
-- Function / method naming; getters; factory patterns the repo already uses
-- Visibility: `private` / `internal` / module-private defaults
-- Import order and path style (`@/`, relative, package name)
-- Where new files may be created (and where they must not)
+- File and folder names (gated when fields set)
+- Class / type naming; forbidden theater suffixes when listed
+- Function naming; boolean prefixes when listed
+- Where new files may be created (`allowed_path_prefixes`)
+- Soft: import order, visibility, cohesion — private-match siblings
 
 ## Anti-patterns
 
 - Applying another repo’s vernacular here
-- Introducing PascalCase services / UseCase folders when the repo is flat functions
+- Introducing PascalCase services / UseCase folders when the repo forbids them
 - “Improving” names into a foreign style on a surgical fix
+- Claiming always-on companions alone force dialect depth
 
 Off only: user says stop vernacular / ignore vernacular for this task.

@@ -23,6 +23,22 @@ never waives MUST-NEVER; agent refuses / fixes harness / asks.
 Non-formalizable trade-offs land on the epistemic layer — not as app-source
 prose comments ([`EPISTEMIC-PERSIST.md`](EPISTEMIC-PERSIST.md)).
 
+## Instrument surface (V13)
+
+Force only stays credible when the meter matches the argv the agent actually
+runs. Chat-cited green is not a ledger verify. Sticky false stop followups
+train the model to ignore harness messages — **force scarcity** (false stop
+hurts more than a miss). User and project hook planes must fingerprint the
+same law ([`evals/VERIFY-SURFACE-PSTAR.md`](evals/VERIFY-SURFACE-PSTAR.md)).
+
+## Quality instruments (V14)
+
+Persuasion companions (ponytail / vernacular essays) are not lean force.
+Finite meters close known seams: vernacular machine fields (paths, suffixes,
+boolean prefixes, real `pack_native`) and lean new-file / net-LOC caps
+([`evals/LEAN-VERNACULAR-FORCE-PSTAR.md`](evals/LEAN-VERNACULAR-FORCE-PSTAR.md)).
+Green meters ≠ absolute “perfect / extremely organized” code (Rice residual).
+
 ## Why all three
 
 1. Hooks only → model still drifts; gates thrash; no shared intent.
@@ -56,3 +72,4 @@ stack is the product — not an accidental bug.
 - Legal kill of unqualified Defaults: [`evals/DEFAULTS-RELIGION-PSTAR.md`](evals/DEFAULTS-RELIGION-PSTAR.md)
 - Deterministic–plastic P*: [`evals/DETERMINISTIC-PLASTIC-PSTAR.md`](evals/DETERMINISTIC-PLASTIC-PSTAR.md)
 - Formalization barrier: [`evals/FORMALIZATION-BARRIER-PSTAR.md`](evals/FORMALIZATION-BARRIER-PSTAR.md)
+- Verify surface P*: [`evals/VERIFY-SURFACE-PSTAR.md`](evals/VERIFY-SURFACE-PSTAR.md)

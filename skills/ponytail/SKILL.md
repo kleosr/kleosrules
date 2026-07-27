@@ -71,10 +71,22 @@ Soft — greenfield / new symbols, or user asked refactor/cleanup:
 - Few params; no boolean behavior forks.
 - Split files by responsibility only when the repo already splits that way (~500 soft / ~700 hard). No cross-domain `utils` dumps. No new package boundaries for “architecture.”
 
+Force (hooks, when wired — finite meters, not ∀ quality):
+- No prose comments (always).
+- Vernacular machine fields when a contract exists (names, paths, forbidden class suffixes, boolean prefixes).
+- Lean meter: oversized **new** CODE_EXT files / large net LOC spikes (`KLEOS_LEAN=1` default; override via env).
+
 Conflict with Rules (shortest correct diff / fewest files / private match / no theater / no comments):
 **native surgical / shortest correct diff wins**, and **no comments always wins**
 over “leave a note in the file.” Do not Extract Method solely to meet ≤20 on a
 surgical legacy fix. Do not merge the 2nd duplicate until ~3 or asked.
+Lean meter still applies to new-file / net-delta caps unless `KLEOS_LEAN=0`.
+
+## Force vs persuasion
+
+Always-on companions **load** this skill — they do not alone deny bloat.
+Chase the ladder; expect gates only where roofs/meters exist. Do not claim
+ponytail guarantees extreme quality for all files.
 
 ## Errors & tests
 
