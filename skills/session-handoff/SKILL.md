@@ -39,8 +39,13 @@ Rewrite the handoff with:
 - Next (single concrete action)
 - Model note (optional: which model owned this thread)
 
+When MCP `user-obsidian` is ready: **also** write/append a Session note under
+`wiki/projects/<slug>/Sessions/` with `[[wikilinks]]` to Index/Decisions/Learnings
+and refresh `wiki/hot.md` (Skill `obsidian-memory`). Repo handoff + vault — both.
+
 ## Rules
 
 - Assessment-only until the user asked for changes (per agent.mdc).
 - Never invent residual features; append open items to this handoff.
 - Pair with `ship-loop` for feature execution; `grill-me` if Open is ambiguous.
+- Pair with `obsidian-memory` so chat death does not erase the graph.

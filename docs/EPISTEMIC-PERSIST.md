@@ -21,6 +21,9 @@ in the ephemeral session.
 | Types / required params / asserts | Prefer — machine-checked O(1) |
 | Tests named as invariants | Prefer — executable O(1) |
 | `INVARIANTS.md` (module), ADR/`docs/`, `DEBT.md`, `HANDOFF.md`, package AGENTS note | Non-formalizable or Type-Hell-expensive intent |
+| Obsidian vault (`user-obsidian` / skill `obsidian-memory`) | Karpathy LLM Wiki: `raw/`→`wiki/` compile; query `wiki/hot`+`index`; decisions/sessions (`[[wikilinks]]`) |
+
+Code/AST structure graph stays on skill `codebase-memory` — do not conflate.
 
 ## Executable first
 

@@ -30,7 +30,7 @@ Hard floors:
 Force vs persuasion:
 
 - Roof (hooks): no prose comments; secrets; vernacular machine fields when contract exists;
-  lean meter on CODE_EXT (`KLEOS_LEAN`, new-file / net-LOC caps) — finite **size** roofs,
+  lean meter on CODE_EXT (`KLEOS_LEAN`, new-file / net-LOC / absolute file caps) — finite **size** roofs,
   not semantic quality / clean / YAGNI (`docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`).
 - Soft (not fully gate-backed): prefer no code, reuse ladder, ≤20-line taste, “organized”
   beyond topology allow-list. Soft may yield with one line; roofs may not.

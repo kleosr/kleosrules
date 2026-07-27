@@ -1,4 +1,6 @@
 pub mod ask_scope;
+pub mod capture;
+pub mod context;
 pub mod delete;
 pub mod injection;
 pub mod lean;

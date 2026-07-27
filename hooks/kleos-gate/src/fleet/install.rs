@@ -16,7 +16,13 @@ pub fn install_user_hooks(pack: &Path) -> Result<(), String> {
     let bin_dst = dest.join("hooks/bin/kleos-gate");
     fs::copy(pack.join("hooks/bin/kleos-gate"), &bin_dst).map_err(|e| e.to_string())?;
     chmod_x(&bin_dst);
-    for name in ["shell.json", "lean.json", "ask-scope.json", "secrets.json"] {
+    for name in [
+        "shell.json",
+        "lean.json",
+        "ask-scope.json",
+        "secrets.json",
+        "context.json",
+    ] {
         fs::copy(
             pack.join("hooks/policy").join(name),
             dest.join("hooks/policy").join(name),
@@ -36,7 +42,14 @@ fn install_global_rules(pack: &Path) -> Result<(), String> {
         dest.join("option-c-core.mdc"),
     )
     .map_err(|e| e.to_string())?;
-    for f in ["native-lean-autoload", "ponytail", "lean-code", "agent"] {
+    for f in [
+        "native-lean-autoload",
+        "ponytail",
+        "lean-code",
+        "agent",
+        "obsidian-memory",
+        "context-curator",
+    ] {
         fs::copy(
             pack.join("project-rules").join(format!("{f}.mdc")),
             dest.join(format!("{f}.mdc")),

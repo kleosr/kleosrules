@@ -26,6 +26,7 @@ Unless the user says `solo plan`, `grill only`, or `assessment only`:
    a residual epic.
 6. When open = 0 and verify green → Skill `eval-pass`. FAIL → fix list and
    re-enter loop until PASS (or hard blocker).
+   **Model stop ≠ Done** — judge = green TOOLCHAIN (or in-repo CI) + eval-pass.
 7. Set handoff Status: **done**. Report outcome + evidence. Stop.
 
 ## Hard stops only (pause and tell the user)

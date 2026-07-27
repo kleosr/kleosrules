@@ -1,5 +1,16 @@
 # Release — v16.0.0
 
+## V16.0.13 — P*-16 Staircase Composition kill
+
+1. P*: `docs/evals/STAIRCASE-COMPOSITION-PSTAR.md`.
+2. Kill: absolute post-state `file_loc_max: 700` (+ `KLEOS_LEAN_FILE_LOC_MAX`)
+   on Write and projected StrReplace; honesty table split increment vs absolute;
+   doctrine: per-event bounds do not compose to state bounds.
+3. Meters: 5 unit tests in `engine/lean.rs` (was 0), incl. staircase regression.
+4. Measured: `sup(file LOC | all events green)` ∞ → 700.
+5. Residual: delete.rs sequential-singles sibling (same quantifier class);
+   extension allowlist; vernacular non-hermetic test.
+
 ## V16.0.12 — P*-17 Dual-Write Lean + ask-scope re-enable
 
 1. P*: `docs/evals/DUAL-WRITE-LEAN-PSTAR.md`.

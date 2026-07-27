@@ -39,6 +39,7 @@ Doctrine, verification chain, release notes, house TOOLCHAIN recipe, and P* eval
 | Proof eval index | `evals/PROOF-EVALS.md` |
 | Lean + vernacular force (V14) | `evals/LEAN-VERNACULAR-FORCE-PSTAR.md` |
 | Lean size ≠ quality (V15.6 / P*-15) | `evals/LEAN-SIZE-QUALITY-PSTAR.md` |
+| Staircase composition (V16.0.13 / P*-16) | `evals/STAIRCASE-COMPOSITION-PSTAR.md` |
 | Dual-write lean bypass (V16.0.12 / P*-17) | `evals/DUAL-WRITE-LEAN-PSTAR.md` |
 | Soft-force schism (V15.5 / P*-14) | `evals/SOFT-FORCE-SCHISM-PSTAR.md` |
 | Dead gate schema | `evals/DEAD-GATE-SCHEMA-PSTAR.md` |

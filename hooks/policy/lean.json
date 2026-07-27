@@ -5,6 +5,8 @@
   "new_file_loc": 120,
   "net_delta_env": "KLEOS_LEAN_NET_DELTA",
   "net_delta": 200,
+  "file_loc_max_env": "KLEOS_LEAN_FILE_LOC_MAX",
+  "file_loc_max": 700,
   "code_extensions": [
     ".py", ".pyi", ".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx", ".mts", ".cts",
     ".rs", ".go", ".java", ".kt", ".kts", ".swift", ".rb", ".php", ".c", ".cc",

@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Agent capsule
 
-Project craft law for synced repos. User Rules (Master Mind V15.6) own RISK /
+Project craft law for synced repos. User Rules (Master Mind V16.0.11) own RISK /
 MUST-NEVER (M mechanical / J judgment) / PRIME OBEDIENCE. Ops protocols are Skills, not always-on.
 Edit this pack and re-sync; never hand-edit downstream copies.
 Craft yields to TOOLCHAIN.md / house style / vernacular on conflict.
@@ -18,6 +18,8 @@ routed or user-invoked (ungated chat/hunt) but never waive M. MUST-NEVER/J:
 user sovereign override only (logged risk ack). User may stop ponytail/lean-code modes.
 Stack: soft persuasion on taste + hook force on roofs + epistemic memory
 outside app AST (see pack `docs/AGENTIAL-CONTROL.md`).
+Units of work: prompt→context→harness→loop→graph (`docs/LAYER-STACK.md`) —
+debug the layer whose unit broke.
 Prompt-alone perfection is impossible
 (`docs/evals/DETERMINISTIC-PLASTIC-PSTAR.md`).
 Green TOOLCHAIN ≠ absolute semantic correctness
@@ -33,7 +35,14 @@ P*-15 lean size≠quality: `docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`.
 - Prefer **one model for the whole conversation**. Mid-chat model switches
   burn cache. To change models: new chat or a subagent with a written handoff.
 - Multi-session work: Read `HANDOFF.md` if present. Non-trivial features →
-  Skill `ship-loop`. Continuity → `session-handoff`.
+  Skill `ship-loop`. Continuity → `session-handoff` **and** Obsidian Session
+  note (Skill `obsidian-memory` / companion `obsidian-memory.mdc`) when MCP
+  `user-obsidian` is ready.
+- **Every session start:** `wiki/hot.md` → `wiki/index.md` →
+  `wiki/projects/<slug>/Index` (+ latest Sessions) — kleos-gate injects this.
+  Query wiki only; never edit `raw/` (Karpathy LLM Wiki).
+- **Every session stop with tool work:** flush vault Session/Decisions +
+  refresh `wiki/hot.md` if needed — kleos-gate followup enforces.
 
 ## SAFETY
 
@@ -96,13 +105,16 @@ P*-15 lean size≠quality: `docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`.
 - Done = verify with evidence (product gauntlet > reading agent code):
   green checks are finite known cases — not zero-margin ∀ proof
   (`docs/MECHANICAL-INCOMPLETENESS.md`).
-  1) TOOLCHAIN.md if present — run it; cite green evidence
-  2) Else in-repo CI/scripts (tests, Gherkin, coverage/mutation if wired)
-  3) Else: no house gauntlet. For diagnose / Q&A / read-only: list commands
-     actually run. For non-trivial feature / ship / fix that lands code:
-     ASK ONCE with exact list — missing TOOLCHAIN/CI/tests; user must
-     confirm accept-no-gauntlet-risk or wire verify. Do not silent Done.
-  Soft “looks good” is never Martin confidence. Do not invent mutation theater.
+  1) TOOLCHAIN.md if present — run it yourself; cite green evidence
+  2) Else in-repo CI/scripts (tests, Gherkin, coverage/mutation if wired) —
+     run them yourself
+  3) Else on a **scanned fleet root** (`config/scan.roots`): if TOOLCHAIN.md
+     is missing and real verify commands exist (package scripts / CI /
+     Makefile), **create evidence-only TOOLCHAIN.md same changeset**, then
+     run it. Still no invented tests / mutation theater.
+  4) Else: discover and run closest real verify; cite what ran; name residual.
+     Never ask accept-no-gauntlet-risk.
+     Soft “looks good” is never Martin confidence. Do not invent mutation theater.
 - Hooks may deny comment-bearing writes and vernacular drift — fix and retry;
   do not fight hooks.
 

@@ -13,6 +13,8 @@ pub const SHARED: &[&str] = &[
     "native-lean-autoload",
     "ponytail",
     "lean-code",
+    "obsidian-memory",
+    "context-curator",
 ];
 
 pub const HOOK_NEED: &[&str] = &[
@@ -21,6 +23,7 @@ pub const HOOK_NEED: &[&str] = &[
     "policy/lean.json",
     "policy/secrets.json",
     "policy/ask-scope.json",
+    "policy/context.json",
 ];
 
 pub fn pack_root(hooks: &Path) -> PathBuf {

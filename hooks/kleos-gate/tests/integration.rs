@@ -19,10 +19,34 @@ fn copy_policy_dir() -> PathBuf {
     let dest = tempfile_dir().join("policy");
     let ignored = std::fs::create_dir_all(&dest);
     drop(ignored);
-    for name in ["shell.json", "lean.json", "ask-scope.json", "secrets.json"] {
+    for name in [
+        "shell.json",
+        "lean.json",
+        "ask-scope.json",
+        "secrets.json",
+        "context.json",
+    ] {
         std::fs::copy(policy_dir().join(name), dest.join(name)).expect(name);
     }
     dest
+}
+
+fn seed_recall(policy: &Path, state: &Path, cid: &str) {
+    let ignored = run_gate_env(
+        "postToolUse",
+        json!({
+            "conversation_id": cid,
+            "tool_name": "CallMcpTool",
+            "tool_input": {
+                "server": "user-obsidian",
+                "toolName": "vault_read",
+                "arguments": {"path": "wiki/hot.md"}
+            }
+        }),
+        policy,
+        Some(state),
+    );
+    drop(ignored);
 }
 
 fn bin_path() -> PathBuf {
@@ -151,9 +175,31 @@ fn write_prose_denies() {
 
 #[test]
 fn write_clean_allows() {
+    let state = tempfile_dir();
+    seed_recall(&policy_dir(), &state, "wc1");
+    let (code, obj) = run_gate_env(
+        "write",
+        json!({
+            "conversation_id": "wc1",
+            "tool_name": "Write",
+            "tool_input": {
+                "path": "src/a.ts",
+                "contents": "const x = 1;\n"
+            }
+        }),
+        &policy_dir(),
+        Some(&state),
+    );
+    assert_eq!(code, 0, "{obj}");
+    assert_eq!(perm(&obj), "allow");
+}
+
+#[test]
+fn write_without_recall_denies() {
     let (code, obj) = run_gate(
         "write",
         json!({
+            "conversation_id": "nr1",
             "tool_name": "Write",
             "tool_input": {
                 "path": "src/a.ts",
@@ -161,8 +207,13 @@ fn write_clean_allows() {
             }
         }),
     );
-    assert_eq!(code, 0, "{obj}");
-    assert_eq!(perm(&obj), "allow");
+    assert_eq!(code, 2, "{obj}");
+    assert_eq!(perm(&obj), "deny");
+    let msg = obj.get("agent_message").and_then(|v| v.as_str()).unwrap_or("");
+    assert!(
+        msg.contains("Obsidian recall") || msg.contains("vault_read"),
+        "expected recall deny, got {obj}"
+    );
 }
 
 #[test]
@@ -250,9 +301,11 @@ fn ask_scope_disabled_allows_drive_by() {
     v["enabled"] = json!(false);
     std::fs::write(pol.join("ask-scope.json"), v.to_string()).unwrap();
     let state = tempfile_dir();
+    seed_recall(&pol, &state, "as1");
     let ignored = run_gate_env(
         "beforeSubmitPrompt",
         json!({
+            "conversation_id": "as1",
             "hook_event_name": "beforeSubmitPrompt",
             "prompt": "rename foo in auth.ts please",
             "attachments": []
@@ -264,6 +317,7 @@ fn ask_scope_disabled_allows_drive_by() {
     let (code, obj) = run_gate_env(
         "write",
         json!({
+            "conversation_id": "as1",
             "tool_name": "Write",
             "tool_input": {
                 "path": "utils.ts",
@@ -280,9 +334,11 @@ fn ask_scope_disabled_allows_drive_by() {
 #[test]
 fn ask_scope_enabled_asks_drive_by() {
     let state = tempfile_dir();
+    seed_recall(&policy_dir(), &state, "as2");
     let ignored = run_gate_env(
         "beforeSubmitPrompt",
         json!({
+            "conversation_id": "as2",
             "hook_event_name": "beforeSubmitPrompt",
             "prompt": "rename foo in auth.ts please",
             "attachments": []
@@ -294,6 +350,7 @@ fn ask_scope_enabled_asks_drive_by() {
     let (code, obj) = run_gate_env(
         "write",
         json!({
+            "conversation_id": "as2",
             "tool_name": "Write",
             "tool_input": {
                 "path": "utils.ts",
@@ -449,6 +506,126 @@ fn session_start_injects_obsidian_recall() {
 }
 
 #[test]
+fn session_start_injects_hot_body() {
+    let vault = tempfile_dir();
+    let wiki = vault.join("wiki");
+    std::fs::create_dir_all(&wiki).unwrap();
+    std::fs::write(wiki.join("hot.md"), "# HOT\nkleosr curator fixture marker\n").unwrap();
+    std::fs::write(wiki.join("index.md"), "- wiki/projects/kleosr/Index.md\n").unwrap();
+    let mut cmd = Command::new(bin_path());
+    cmd.arg("sessionStart")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .env("KLEOS_HOOKS_DIR", hooks_root())
+        .env("KLEOS_POLICY_DIR", policy_dir())
+        .env("KLEOS_STATE_DIR", tempfile_dir())
+        .env("KLEOS_VAULT", &vault);
+    let mut child = cmd.spawn().expect("spawn");
+    {
+        let mut stdin = child.stdin.take().expect("stdin");
+        stdin
+            .write_all(
+                json!({
+                    "conversation_id": "hot1",
+                    "hook_event_name": "sessionStart"
+                })
+                .to_string()
+                .as_bytes(),
+            )
+            .expect("write");
+    }
+    let out = child.wait_with_output().expect("wait");
+    let code = out.status.code().unwrap_or(1);
+    let obj: Value = serde_json::from_str(String::from_utf8_lossy(&out.stdout).trim())
+        .unwrap_or(json!({}));
+    assert_eq!(code, 0, "{obj}");
+    let ctx = obj
+        .get("additional_context")
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    assert!(
+        ctx.contains("wiki/hot.md (capped)") && ctx.contains("curator fixture marker"),
+        "expected hot body inject, got {obj}"
+    );
+    assert!(
+        ctx.contains("CURATOR") || ctx.contains("context-meter"),
+        "expected playbook or meter, got {obj}"
+    );
+}
+
+#[test]
+fn before_prompt_emits_context_pointers() {
+    let vault = tempfile_dir();
+    let wiki = vault.join("wiki");
+    std::fs::create_dir_all(&wiki).unwrap();
+    std::fs::write(wiki.join("hot.md"), "# HOT\nkleosr harness pack memory\n").unwrap();
+    std::fs::write(
+        wiki.join("index.md"),
+        "- [[wiki/projects/kleosr/Index]] kleosr harness pack\n- wiki/concepts/memory.md\n",
+    )
+    .unwrap();
+    let mut cmd = Command::new(bin_path());
+    cmd.arg("beforeSubmitPrompt")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .env("KLEOS_HOOKS_DIR", hooks_root())
+        .env("KLEOS_POLICY_DIR", policy_dir())
+        .env("KLEOS_STATE_DIR", tempfile_dir())
+        .env("KLEOS_VAULT", &vault);
+    let mut child = cmd.spawn().expect("spawn");
+    {
+        let mut stdin = child.stdin.take().expect("stdin");
+        stdin
+            .write_all(
+                json!({
+                    "hook_event_name": "beforeSubmitPrompt",
+                    "prompt": "update the kleosr harness pack memory notes",
+                    "attachments": []
+                })
+                .to_string()
+                .as_bytes(),
+            )
+            .expect("write");
+    }
+    let out = child.wait_with_output().expect("wait");
+    let code = out.status.code().unwrap_or(1);
+    let obj: Value = serde_json::from_str(String::from_utf8_lossy(&out.stdout).trim())
+        .unwrap_or(json!({}));
+    assert_eq!(code, 0, "{obj}");
+    let ctx = obj
+        .get("additional_context")
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    assert!(
+        ctx.contains("Obsidian context pointers") || ctx.contains("classify["),
+        "expected pointers or classify, got {obj}"
+    );
+}
+
+#[test]
+fn before_prompt_emits_classify_hint() {
+    let (code, obj) = run_gate(
+        "beforeSubmitPrompt",
+        json!({
+            "hook_event_name": "beforeSubmitPrompt",
+            "prompt": "please fix the rust compile error in the gate",
+            "attachments": []
+        }),
+    );
+    assert_eq!(code, 0, "{obj}");
+    let ctx = obj
+        .get("additional_context")
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    assert!(
+        ctx.contains("classify[code]"),
+        "expected code classify, got {obj}"
+    );
+}
+
+#[test]
 fn session_stop_obsidian_flush_without_vault_write() {
     let state = tempfile_dir();
     let ignored = run_gate_env(
@@ -578,3 +755,193 @@ fn cli_check_user_rules_runs() {
         "unexpected code={code} stderr={stderr}"
     );
 }
+
+#[test]
+fn session_stop_stub_capture_followup() {
+    let state = tempfile_dir();
+    let ignored = run_gate_env(
+        "postToolUse",
+        json!({
+            "conversation_id": "stub1",
+            "tool_name": "CallMcpTool",
+            "tool_input": {
+                "server": "user-obsidian",
+                "toolName": "vault_append",
+                "arguments": {
+                    "path": "wiki/projects/kleosr/Sessions/2026-07-27-thin.md",
+                    "content": "## Goal\nshort\n"
+                }
+            }
+        }),
+        &policy_dir(),
+        Some(&state),
+    );
+    drop(ignored);
+    let (code, obj) = run_gate_env(
+        "stop",
+        json!({
+            "conversation_id": "stub1",
+            "status": "completed"
+        }),
+        &policy_dir(),
+        Some(&state),
+    );
+    assert_eq!(code, 0, "{obj}");
+    let follow = obj.get("followup_message").and_then(|v| v.as_str()).unwrap_or("");
+    assert!(
+        follow.contains("COMPLETE CAPTURE") || follow.contains("thin/stub"),
+        "expected stub COMPLETE followup, got {obj}"
+    );
+    assert!(
+        follow.contains("INTENT required") || follow.contains("done-when"),
+        "expected INTENT followup with stub session, got {obj}"
+    );
+}
+
+#[test]
+fn session_stop_complete_session_clears_intent_layer() {
+    let state = tempfile_dir();
+    let body = r#"## Goal
+Ship five-layer E2E loop for COMPLETE CAPTURE.
+
+## Done-when
+cargo test green and stop followups wired for intent and layer check.
+
+## What ran
+Edited session.rs ledger.rs capture.rs and context.json policy.
+
+## Evidence
+cargo test -p kleos-gate
+
+## Outcomes
+Ledger flags obsidian_complete intent_stated layer_check; stop followups.
+
+## Open
+None for this chunk.
+
+## Residual
+Stub meter is syntactic only — not semantic completeness.
+
+## Layer check
+| Layer | Evidence |
+|-------|----------|
+| Prompt | Intent + done-when restated |
+| Context | vault persist complete |
+| Harness | cargo test |
+| Loop | This Session |
+| Graph | Decisions wikilink planned |
+"#;
+    let ignored = run_gate_env(
+        "postToolUse",
+        json!({
+            "conversation_id": "ok1",
+            "tool_name": "CallMcpTool",
+            "tool_input": {
+                "server": "user-obsidian",
+                "toolName": "vault_write",
+                "arguments": {
+                    "path": "wiki/projects/kleosr/Sessions/2026-07-27-ok.md",
+                    "content": body
+                }
+            }
+        }),
+        &policy_dir(),
+        Some(&state),
+    );
+    drop(ignored);
+    let (code, obj) = run_gate_env(
+        "stop",
+        json!({
+            "conversation_id": "ok1",
+            "status": "completed"
+        }),
+        &policy_dir(),
+        Some(&state),
+    );
+    assert_eq!(code, 0, "{obj}");
+    let follow = obj.get("followup_message").and_then(|v| v.as_str()).unwrap_or("");
+    assert!(
+        !follow.contains("INTENT required"),
+        "complete Session should clear INTENT, got {obj}"
+    );
+    assert!(
+        !follow.contains("LAYER CHECK required"),
+        "complete Session with layer table should clear LAYER, got {obj}"
+    );
+    assert!(
+        !follow.contains("COMPLETE CAPTURE"),
+        "complete Session should not stub-followup, got {obj}"
+    );
+}
+
+#[test]
+fn before_prompt_does_not_rewrite_user_prompt_field() {
+    let (code, obj) = run_gate(
+        "beforeSubmitPrompt",
+        json!({
+            "hook_event_name": "beforeSubmitPrompt",
+            "prompt": "UNIQUE_USER_PROMPT_TOKEN_xyz implement the gate",
+            "attachments": []
+        }),
+    );
+    assert_eq!(code, 0, "{obj}");
+    assert!(
+        obj.get("prompt").is_none() && obj.get("updated_prompt").is_none(),
+        "must not rewrite user prompt fields, got {obj}"
+    );
+    let ctx = obj
+        .get("additional_context")
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    assert!(
+        ctx.contains("classify[") || ctx.contains("INTENT") || ctx.contains("Ask→"),
+        "expected classify/intent inject, got {obj}"
+    );
+}
+
+#[test]
+fn session_stop_layer_check_after_edit() {
+    let state = tempfile_dir();
+    seed_recall(&policy_dir(), &state, "ly1");
+    let ignored = run_gate_env(
+        "postToolUse",
+        json!({
+            "conversation_id": "ly1",
+            "tool_name": "Write",
+            "tool_input": {
+                "path": "hooks/kleos-gate/src/engine/capture.rs",
+                "contents": "fn x() {}\n"
+            }
+        }),
+        &policy_dir(),
+        Some(&state),
+    );
+    drop(ignored);
+    let ignored2 = run_gate_env(
+        "postToolUse",
+        json!({
+            "conversation_id": "ly1",
+            "tool_name": "Shell",
+            "tool_input": {"command": "cargo test -p kleos-gate"}
+        }),
+        &policy_dir(),
+        Some(&state),
+    );
+    drop(ignored2);
+    let (code, obj) = run_gate_env(
+        "stop",
+        json!({
+            "conversation_id": "ly1",
+            "status": "completed"
+        }),
+        &policy_dir(),
+        Some(&state),
+    );
+    assert_eq!(code, 0, "{obj}");
+    let follow = obj.get("followup_message").and_then(|v| v.as_str()).unwrap_or("");
+    assert!(
+        follow.contains("LAYER CHECK"),
+        "edit session without layer_check should followup, got {obj}"
+    );
+}
+

@@ -1,0 +1,30 @@
+---
+description: Context curator — ask-aware inject + agent drill-down (always on)
+alwaysApply: true
+---
+
+# Context curator (always on)
+
+Chat dies. Seed ≠ memory. kleos-gate injects playbook + capped `wiki/hot.md` +
+ask classify/pointers. Agent curates depth via MCP `user-obsidian`.
+
+## Must
+
+1. Obey injected classify + pointers — drill only pages that change next action.
+2. **INTENT:** restate verified ask + done-when in chat before CODE — never rewrite
+   the user prompt.
+3. Before CODE write: `vault_read` `wiki/hot.md` then `wiki/index.md` (recall roof).
+4. Durable fact same-turn → COMPLETE `vault_append` + refresh hot; never edit `raw/`.
+5. Before Done: Session **LAYER CHECK** (prompt|context|harness|loop|graph) with evidence.
+6. Debug by layer unit: prompt | context | harness | loop | graph
+   (`docs/LAYER-STACK.md`).
+7. Multi-agent: 0xJeyx six steps — shared disk state; `eval-pass` + TOOLCHAIN;
+   no Neo4j/CrewAI theater.
+8. Full playbook: `docs/CURSOR-CURATOR.md` + skill `obsidian-memory`.
+
+## Must never
+
+- Dump the vault into the window.
+- Treat green recall as perfect curation.
+- Clone foreign vault templates into this pack.
+- Auto-rewrite the user's prompt text.

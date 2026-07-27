@@ -70,6 +70,7 @@ list apps/packages/crates/services and their roles in a short table first.
 |--------|--------|
 | TOOLCHAIN.md present | Point Done at it; do not invent parallel command lists |
 | No TOOLCHAIN; has scripts/CI | **Create** TOOLCHAIN.md from real commands only |
+| No TOOLCHAIN; fleet fill / non-trivial ship on scan.roots | Same — create evidence-only TOOLCHAIN same changeset, then run |
 | No verify path | Done section states gap; agent must list commands actually run |
 | High blast present | **Hard stops** + **Ask first** required at root (and nested owner) |
 | DEBT.md present | Link under Deep links |
@@ -100,6 +101,8 @@ Manual notes — do not invent them.
 
 `references/template-toolchain.md`. Copy-paste real scripts/CI only.
 Existing TOOLCHAIN → do not overwrite; report drift if scripts diverged.
+**Fleet fill:** when mapping or shipping on a `config/scan.roots` child and
+TOOLCHAIN is absent, create it before Done — evidence-only, then run it.
 
 ### 6. Nested maps
 

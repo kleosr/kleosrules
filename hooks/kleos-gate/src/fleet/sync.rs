@@ -16,7 +16,13 @@ fn sync_hooks_into(pack: &Path, root: &Path, label: &str) -> Result<(), String> 
     let bin_dst = dest.join("bin/kleos-gate");
     fs::copy(&bin_src, &bin_dst).map_err(|e| e.to_string())?;
     chmod_x(&bin_dst);
-    for name in ["shell.json", "lean.json", "ask-scope.json", "secrets.json"] {
+    for name in [
+        "shell.json",
+        "lean.json",
+        "ask-scope.json",
+        "secrets.json",
+        "context.json",
+    ] {
         fs::copy(
             pack.join("hooks/policy").join(name),
             dest.join("policy").join(name),

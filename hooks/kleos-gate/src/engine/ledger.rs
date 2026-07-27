@@ -87,6 +87,13 @@ pub struct Freshness {
     pub tools: usize,
     pub loops: usize,
     pub unverified: Vec<String>,
+    pub obsidian: bool,
+    pub recall: bool,
+    pub obsidian_complete: bool,
+    pub obsidian_stub: bool,
+    pub intent_stated: bool,
+    pub layer_check: bool,
+    pub had_edits: bool,
 }
 
 pub fn freshness(state: &Path, cid: &str) -> Freshness {
@@ -94,11 +101,19 @@ pub fn freshness(state: &Path, cid: &str) -> Freshness {
     let mut dirty: Vec<(String, String)> = Vec::new();
     let mut tools = 0usize;
     let mut loops = 0usize;
+    let mut obsidian = false;
+    let mut recall = false;
+    let mut obsidian_complete = false;
+    let mut obsidian_stub = false;
+    let mut intent_stated = false;
+    let mut layer_check = false;
+    let mut had_edits = false;
     for ev in events {
         let kind = ev.get("kind").and_then(|v| v.as_str()).unwrap_or("");
         match kind {
             "tool" => tools += 1,
             "edit" => {
+                had_edits = true;
                 if let Some(path) = ev.get("path").and_then(|v| v.as_str()) {
                     if !path.is_empty() {
                         let ts = ev
@@ -113,6 +128,18 @@ pub fn freshness(state: &Path, cid: &str) -> Freshness {
             }
             "verify" => dirty.clear(),
             "deny_repeat" => loops += 1,
+            "obsidian" => obsidian = true,
+            "obsidian_recall" => recall = true,
+            "obsidian_complete" => {
+                obsidian = true;
+                obsidian_complete = true;
+            }
+            "obsidian_stub" => {
+                obsidian = true;
+                obsidian_stub = true;
+            }
+            "intent_stated" => intent_stated = true,
+            "layer_check" => layer_check = true,
             _ => {}
         }
     }
@@ -122,6 +149,13 @@ pub fn freshness(state: &Path, cid: &str) -> Freshness {
         tools,
         loops,
         unverified,
+        obsidian,
+        recall,
+        obsidian_complete,
+        obsidian_stub,
+        intent_stated,
+        layer_check,
+        had_edits,
     }
 }
 

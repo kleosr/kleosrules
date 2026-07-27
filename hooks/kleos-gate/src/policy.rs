@@ -24,6 +24,8 @@ pub struct LeanPolicy {
     pub new_file_loc: usize,
     pub net_delta_env: String,
     pub net_delta: usize,
+    pub file_loc_max_env: String,
+    pub file_loc_max: usize,
     pub code_extensions: Vec<String>,
 }
 
@@ -50,12 +52,40 @@ pub struct AskScopePolicy {
     pub min_tokens: usize,
 }
 
+#[derive(Debug, Deserialize)]
+pub struct ClassifyRule {
+    pub id: String,
+    pub pattern: String,
+    pub hint: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct ContextPolicy {
+    pub vault_root_env: String,
+    pub vault_root: String,
+    pub hot_path: String,
+    pub index_path: String,
+    pub hot_chars_max: usize,
+    pub pointer_max: usize,
+    pub pointer_min_hits: usize,
+    pub pointer_token_min_len: usize,
+    pub pointer_stopwords: Vec<String>,
+    pub recall_gate_enabled: bool,
+    pub recall_message: String,
+    pub exempt_write_prefixes: Vec<String>,
+    pub meter_enabled: bool,
+    pub classify_max: usize,
+    pub classify_rules: Vec<ClassifyRule>,
+    pub playbook: String,
+}
+
 #[derive(Debug)]
 pub struct Policy {
     pub shell: ShellPolicy,
     pub lean: LeanPolicy,
     pub secrets: SecretsPolicy,
     pub ask_scope: AskScopePolicy,
+    pub context: ContextPolicy,
 }
 
 impl Policy {
@@ -64,11 +94,13 @@ impl Policy {
         let lean: LeanPolicy = read_json(&dir.join("lean.json"))?;
         let secrets: SecretsPolicy = read_json(&dir.join("secrets.json"))?;
         let ask_scope: AskScopePolicy = read_json(&dir.join("ask-scope.json"))?;
+        let context: ContextPolicy = read_json(&dir.join("context.json"))?;
         Ok(Self {
             shell,
             lean,
             secrets,
             ask_scope,
+            context,
         })
     }
 }

@@ -20,6 +20,7 @@ Coverage is a smoke detector, not a trophy.
 House gauntlet (Martin): confidence comes from constraints that already
 exist — TOOLCHAIN, acceptance/Gherkin, unit tests, coverage or mutation
 when the repo runs them — not from the human reading agent code. Do not
-invent a mutation or Clean Architecture theater. Run what is wired;
-fail closed on red; cite evidence before Done. No house gauntlet + land
-code → ASK ONCE (accept-no-gauntlet-risk or wire verify); no silent Done.
+invent a mutation or Clean Architecture theater. ACT NOW — run what is
+wired yourself; fail closed on red; cite evidence before Done. No house
+gauntlet + land code → run closest real verify; name residual; never ask
+accept-no-gauntlet-risk; no silent Done.

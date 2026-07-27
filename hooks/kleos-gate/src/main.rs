@@ -8,7 +8,7 @@ mod engine;
 mod fleet;
 mod policy;
 
-use engine::{ask_scope, delete, mcp, read, session, shell, subagent, write};
+use engine::{ask_scope, context, delete, mcp, read, session, shell, subagent, write};
 use policy::Policy;
 
 fn hooks_dir() -> PathBuf {
@@ -269,7 +269,7 @@ fn run() {
         "subagentStart" | "gate-subagent" => subagent::run_start(&data),
         "subagentStop" => subagent::run_stop(&data),
         "sessionStart" | "preCompact" | "session-boundary" => {
-            session::session_boundary(&data, &st, event)
+            session::session_boundary(&data, &st, event, &policy)
         }
         "stop" | "stop-verify" => session::stop_verify(&data, &st),
         other => deny(&format!("kleos-gate unknown event: {other}")),
@@ -294,6 +294,9 @@ fn before_prompt(data: &Value, policy: &Policy, state: &PathBuf) {
         }
     }
     ask_scope::record_prompt(data, policy, state);
+    if let Some(ctx) = context::ask_context(data, &policy.context) {
+        emit(&json!({ "additional_context": ctx }), 0);
+    }
     allow_empty_prompt();
 }
 

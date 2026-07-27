@@ -24,13 +24,19 @@ V15.6 (lean size ≠ quality)
     no new complexity meters (still finite / gameable)
 V16 (kleosr — shell zero / fleet CLI in kleos-gate)
   Pack identity kleosr; tooling Rust-only; vernacular SSOT in project-rules/
+V16.0.12
+  P*-17 KILL: dual-write lean on Shell heredoc + ask-scope re-enable
+V16.0.13
+  P*-16 KILL: absolute `file_loc_max` — per-event lean does not compose to
+    state bound (staircase composition)
 ```
 
 ## Status
 
-P*-13 / P*-14 / P*-15 deepened and resolved. Mechanism A2 residuals remain.
-Implementation: kleosr Master Mind V15.6+ / pack V16 — see `docs/RELEASE.md`,
-`docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`, `user-rules/USER-RULES.paste.txt`.
+P*-13 / P*-14 / P*-15 / P*-16 / P*-17 deepened and resolved. Mechanism A2
+residuals remain (incl. delete.rs sequential-singles sibling of P*-16).
+Implementation: kleosr Master Mind V16.0.13 — see `docs/RELEASE.md`,
+`docs/evals/STAIRCASE-COMPOSITION-PSTAR.md`, `user-rules/USER-RULES.paste.txt`.
 
 Fictional “V14 Rust-Core” paste in older drafts is **superseded** — pack V14
 was Python lean/vernacular; Rust is **V15**. Shell fleet tooling retired in **V16**.

@@ -40,12 +40,14 @@ kleosr — Cursor harness pack (Master Mind **V16**): User Rules paste, always-o
 | Sync verify | `kleos-gate verify` | |
 | Release | `docs/RELEASE.md` | |
 | TOOLCHAIN | `docs/TOOLCHAIN.md` | Done recipe |
-| Pack version | `package.json` | `16.0.12` (kleosr) |
+| Pack version | `package.json` | `16.0.13` (kleosr) |
 | Layer units | `docs/LAYER-STACK.md` | prompt→context→harness→loop→graph |
+| Cursor curator | `docs/CURSOR-CURATOR.md` | ask classify + agent loop + 0xJeyx |
 | Pack vernacular SSOT | `project-rules/vernacular.mdc` | Linked into pack `.cursor/rules` |
 | P*-13 M/J | `docs/evals/PERFORMATIVE-TRILEMMA-PSTAR.md` | Language kill |
 | P*-14 soft-force | `docs/evals/SOFT-FORCE-SCHISM-PSTAR.md` | Skill Self-target |
 | P*-15 lean≠quality | `docs/evals/LEAN-SIZE-QUALITY-PSTAR.md` | Size roofs ≠ YAGNI |
+| P*-16 staircase | `docs/evals/STAIRCASE-COMPOSITION-PSTAR.md` | Absolute file roof |
 
 ## Tree (depth 2)
 

@@ -3,7 +3,7 @@ use serde_json::Value;
 
 use crate::{allow, deny, walk_strings};
 
-const DENY_BRIEF: &str = "Blocked subagent brief with gated ASK-ONCE/MUST-NEVER actions or injection frames. Rewrite brief without force-push/publish/install/destructive commands or override frames.";
+const DENY_BRIEF: &str = "Blocked subagent brief with gated ASK-ONCE/MUST-NEVER actions or injection frames. Rewrite brief without force-push/publish/destructive wipe commands or override frames.";
 
 pub fn run_start(data: &Value) {
     let text = brief_text(data);
@@ -48,7 +48,7 @@ fn brief_denied(text: &str) -> bool {
         return false;
     }
     let re = Regex::new(
-        r"(?i)(?:git\s+push[^;&|]*(?:--force| -f\s|--force-with-lease)|git\s+reset\s+--hard|git\s+clean\s+-[a-z]*f|rm\s+-[a-z]*rf|npm\s+publish|terraform\s+destroy|curl[^\n]*\|\s*(?:sh|bash)|npm\s+install|npm\s+ci|gh\s+release\s+create|docker\s+push|find\s+.*-delete)",
+        r"(?i)(?:git\s+push[^;&|]*(?:--force| -f\s|--force-with-lease)|git\s+reset\s+--hard|git\s+clean\s+-[a-z]*f|rm\s+-[a-z]*rf|npm\s+publish|terraform\s+destroy|curl[^\n]*\|\s*(?:sh|bash)|gh\s+release\s+create|docker\s+push|find\s+.*-delete)",
     )
     .expect("subagent gated re");
     re.is_match(text)

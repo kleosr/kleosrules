@@ -65,8 +65,10 @@ Use this skill when structure or relationships matter.
 - No secrets in Cypher, traces, or chat.
 - Graph hits are leads, not proof of runtime behavior — verify with Read and
   TOOLCHAIN when claiming Done.
-- Institutional conclusions → distill to `AGENTS.md` / skills; do not leave
-  alpha only in the graph session.
+- Institutional conclusions → distill to `AGENTS.md` / skills / Obsidian vault
+  (skill `obsidian-memory`); do not leave alpha only in the graph session.
+- This skill is the **code/AST** graph. Durable intent / decisions / sessions
+  live in Obsidian (`user-obsidian`) — not here.
 
 ## Gotchas
 

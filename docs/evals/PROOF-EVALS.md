@@ -20,6 +20,8 @@ Soft (policy-only) cases are listed for human spot-check.
 | Drive-by path outside ask-scope | ask |
 | Shell heredoc oversize CODE_EXT | deny (lean) |
 | Shell tee/sed CODE_EXT (no embedded body) | ask |
+| Staircase Write (1 then +200 … past 700) | deny at absolute `file_loc_max` |
+| StrReplace projected past `file_loc_max` | deny |
 | `hooks.json` / `hooks.project.json` | no `python3`; `kleos-gate` only |
 
 ## Soft / agent behavior (spot-check in chat)

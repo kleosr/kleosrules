@@ -11,7 +11,7 @@ perfection is impossible
 |-------|------|----------|
 | **Persuasion** (alignment magnets) | Soft Defaults; steer creativity ~most of the time | User Rules, `agent.mdc`, companions, skills |
 | **Force** (mechanical truth) | Block residual violations before land; never fight deny — rewrite or stop | `preToolUse` / `beforeShellExecution` |
-| **Epistemic memory** (durable O(1)) | Knowledge that must not die with chat or AST purity theater | Types, asserts, tests, `DEBT`/`ADR`/`INVARIANTS`/`HANDOFF`/AGENTS |
+| **Epistemic memory** (durable O(1)) | Knowledge that must not die with chat or AST purity theater | Types, asserts, tests, `DEBT`/`ADR`/`INVARIANTS`/`HANDOFF`/AGENTS; **Obsidian vault** (MCP `user-obsidian`, skill `obsidian-memory`) as wikilink knowledge graph |
 
 Soft craft defaults (“one line of why when context wins”) are real agency on
 taste that is **not** roof- or gate-backed. They are not a license to waive
@@ -67,8 +67,19 @@ stack is the product — not an accidental bug.
 - Remove epistemic memory → perfect syntax, lost informal constraints.
 - Keep all three, with roofs explicitly not soft → stack holds.
 
+## Five-layer work stack (orthogonal)
+
+Persuasion / force / epistemic memory is *how control is applied*.
+Prompt → context → harness → loop → graph is *what unit of work* you are
+editing ([`LAYER-STACK.md`](LAYER-STACK.md)). They nest:
+
+prompt + context ∈ harness gather → loop re-runs one pass → graph chooses
+which loops share state (Obsidian KG + AST + work lineage). Debug the layer
+whose unit broke — do not rewrite the prompt for a loop/graph failure.
+
 ## Related
 
+- Layer units: [`LAYER-STACK.md`](LAYER-STACK.md)
 - Spec layers: [`MODEL-SPEC.md`](MODEL-SPEC.md)
 - Defect compensation (CoT / entropy / tools): [`DEFECT-COMPENSATION.md`](DEFECT-COMPENSATION.md)
 - Cognitive collapse (IME CoT): [`COGNITIVE-COLLAPSE.md`](COGNITIVE-COLLAPSE.md)

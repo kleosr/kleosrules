@@ -3,6 +3,8 @@ use std::path::PathBuf;
 
 use crate::policy::Policy;
 use crate::{allow, deny, path_from, tool_input, walk_strings};
+use super::context;
+use super::lean;
 use super::ledger;
 
 const REPEAT_MSG: &str =
@@ -57,14 +59,27 @@ pub fn run(data: &Value, policy: &Policy, state: &PathBuf, _hooks: &PathBuf) {
         deny_with_repeat(data, state, &path, &body, event, "Blocked prose comment in code write (Native Lean NO COMMENTS).");
     }
 
-    if !path.is_empty() && crate::engine::lean::is_code_path(&path, &policy.lean) {
+    if !path.is_empty() && lean::is_code_path(&path, &policy.lean) {
+        if policy.context.recall_gate_enabled
+            && !context::is_write_exempt(&path, &policy.context)
+            && !ledger::freshness(state, &ledger::conversation_id(data)).recall
+        {
+            deny_with_repeat(
+                data,
+                state,
+                &path,
+                &body,
+                event,
+                &policy.context.recall_message,
+            );
+        }
         if let Err(reason) = crate::engine::vernacular::check_body_and_path(&path, &body) {
             deny_with_repeat(data, state, &path, &body, event, &reason);
         }
         let contents = inp.get("contents").and_then(|v| v.as_str());
         let old = inp.get("old_string").and_then(|v| v.as_str());
         let new = inp.get("new_string").and_then(|v| v.as_str());
-        if let Some(reason) = crate::engine::lean::check(&path, contents, old, new, &policy.lean) {
+        if let Some(reason) = lean::check(&path, contents, old, new, &policy.lean) {
             deny_with_repeat(data, state, &path, &body, event, &reason);
         }
     }

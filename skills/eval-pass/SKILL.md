@@ -8,8 +8,9 @@ description: >-
 
 # Eval pass
 
-Generator ≠ evaluator. Do **not** rubber-stamp your own implement turn on
-large changes — run this skill as a skeptical review.
+Generator ≠ evaluator. This skill is the **reviewer node with teeth**
+(0xJeyx step 4 / `docs/LAYER-STACK.md`) — separate from the implementer.
+Do **not** rubber-stamp your own implement turn on large changes.
 
 ## Inputs
 
@@ -23,10 +24,13 @@ large changes — run this skill as a skeptical review.
 1. **SAFETY** — no force-push, no secrets, no test weakening, git write only if asked
 2. **Scope** — topology preserved; no drive-by refactors; blast justified
 3. **Brownfield** — smallest complete change; callers considered
-4. **Evidence** — Done commands actually run and green. Honest
-   "no TOOLCHAIN" is FAIL for non-trivial ship/feature unless the user
-   confirmed accept-no-gauntlet-risk in this chat.
-5. **Keep-rate risk** — would a careful human revert this within a week?
+4. **Evidence** — Done commands actually run and green. For non-trivial
+   ship/feature: agent must run house gauntlet (TOOLCHAIN) — never ask the
+   human to waive verification.
+5. **Capture** — COMPLETE vault write-back (Session Goal/Done-when/Residual +
+   LAYER CHECK when edits ran; Decisions/Learnings not vibe stubs). Thin
+   summary-only = FAIL. Heuristic depth ≠ semantic proof — still grade honesty.
+6. **Keep-rate risk** — would a careful human revert this within a week?
    Vague names, dead code, missing tests on risky paths → FAIL or WARN
 
 ## Output (required shape)
@@ -37,6 +41,7 @@ EVAL
 - Scope:      PASS|FAIL — …
 - Brownfield: PASS|FAIL — …
 - Evidence:   PASS|FAIL — …
+- Capture:    PASS|FAIL — …
 - Keep-rate:  PASS|WARN|FAIL — …
 RESULT: PASS | FAIL
 Next: <!-- merge/done | fix list -->

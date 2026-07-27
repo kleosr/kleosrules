@@ -17,7 +17,8 @@ Source of synced always-on / requestable `.mdc` companions. Edit here; re-sync â
 | `vernacular.mdc` | Pack vernacular SSOT (alwaysApply); linked into pack `.cursor/rules` only |
 | `types.mdc` | Requestable types craft |
 | `testing.mdc` | Requestable testing craft |
-| `debugging.mdc` | Requestable debugging craft |
+| `obsidian-memory.mdc` | Always-on Obsidian vault memory graph (MCP `user-obsidian`) |
+| `context-curator.mdc` | Always-on ask-aware curator loop (playbook + classify) |
 
 ## Done (local)
 

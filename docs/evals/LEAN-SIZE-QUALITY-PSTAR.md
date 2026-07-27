@@ -60,9 +60,14 @@ LOC is a size proxy. Extra meters (cyclomatic, “test required”) remain finit
 and bypassable. Soft ladder may still yield; agent can still emit legal mediocre
 diffs under the size roofs.
 
+P*-15 conceded the size axis as total/proven — that half was broken by
+[`STAIRCASE-COMPOSITION-PSTAR.md`](STAIRCASE-COMPOSITION-PSTAR.md) (P*-16)
+and closed with absolute `file_loc_max`.
+
 ## Related
 
 - [`LEAN-VERNACULAR-FORCE-PSTAR.md`](LEAN-VERNACULAR-FORCE-PSTAR.md) (P*-9/10)
+- [`STAIRCASE-COMPOSITION-PSTAR.md`](STAIRCASE-COMPOSITION-PSTAR.md) (P*-16)
 - [`MECHANICAL-INCOMPLETENESS-PSTAR.md`](MECHANICAL-INCOMPLETENESS-PSTAR.md)
 - [`SOFT-FORCE-SCHISM-PSTAR.md`](SOFT-FORCE-SCHISM-PSTAR.md) (P*-14)
 - [`BREAKTHROUGH-CHAIN.md`](BREAKTHROUGH-CHAIN.md)
