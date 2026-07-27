@@ -17,8 +17,11 @@ Soft craft defaults (“one line of why when context wins”) are real agency on
 taste that is **not** roof- or gate-backed. They are not a license to waive
 MUST-NEVER or fight a deny.
 
-Roof lines and live gates are the non-negotiable force surface. Gate allow
-never waives MUST-NEVER; agent refuses / fixes harness / asks.
+Roof lines and live gates are the non-negotiable force surface (MUST-NEVER/M).
+Gate allow never waives MUST-NEVER/M; agent refuses / fixes harness / asks.
+MUST-NEVER/J lives on the persuasion layer: normative, best-effort (Rice);
+user sovereign override with logged risk ack is the in-session path
+([`evals/PERFORMATIVE-TRILEMMA-PSTAR.md`](evals/PERFORMATIVE-TRILEMMA-PSTAR.md)).
 
 Non-formalizable trade-offs land on the epistemic layer — not as app-source
 prose comments ([`EPISTEMIC-PERSIST.md`](EPISTEMIC-PERSIST.md)).

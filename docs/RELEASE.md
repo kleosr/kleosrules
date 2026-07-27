@@ -1,4 +1,15 @@
-# Release — v15.3.0
+# Release — v15.4.0
+
+## V15.4.0 — P*-13 Performative Trilemma kill (language)
+
+1. P*: `docs/evals/PERFORMATIVE-TRILEMMA-PSTAR.md`.
+2. Kill: MUST-NEVER/M vs MUST-NEVER/J; ENFORCEMENT HONESTY TABLE; scoped
+   distrust; verified intent evaluated against gates (not defined by them);
+   J sovereign override (logged); no agent-initiated weakening.
+3. Touch: `USER-RULES.paste.txt`, `option-c-core.mdc`, `project-rules/agent.mdc`,
+   `docs/AGENTIAL-CONTROL.md`, breakthrough chains, AGENTS/TOOLCHAIN versions.
+4. Zero Rust / policy schema change — language now matches `main.rs` force surface.
+5. Residual: mechanism A2 (template prose FN, shell argv smuggle, lexical ask-scope).
 
 ## V15.3.0 — Python zero in pack
 
@@ -30,6 +41,7 @@
    python3 in `hooks.json`; fail-closed missing policy; ask-scope ledger.
 3. Residual: cargo/binary substrate; ask↔diff heuristic; Rice Done.
    Interim Python proof closed in V15.1.0.
+
 
 ## V14.0.0 — lean meter + vernacular force
 

@@ -1,8 +1,8 @@
 {
   "name": "kleosrules",
-  "version": "15.3.0",
+  "version": "15.4.0",
   "private": true,
-  "description": "kleosrules — Cursor pack Master Mind V15.3: Rust-only (no Python in pack).",
+  "description": "kleosrules — Cursor pack Master Mind V15.4: M/J MUST-NEVER; Rust-only.",
   "license": "MIT",
   "scripts": {
     "install": "bash install.sh",

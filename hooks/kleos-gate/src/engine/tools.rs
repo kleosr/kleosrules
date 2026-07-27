@@ -151,6 +151,9 @@ pub fn check_user_rules(hooks: &Path) -> ! {
         "Master Mind V15",
         "PRIME OBEDIENCE",
         "MUST-NEVER",
+        "MUST-NEVER/M",
+        "MUST-NEVER/J",
+        "ENFORCEMENT HONESTY",
         "NO COMMENTS",
         "VERNACULAR",
         "kleos-gate",
@@ -163,12 +166,12 @@ pub fn check_user_rules(hooks: &Path) -> ! {
             hits += markers.iter().filter(|m| text.contains(*m)).count();
         }
     }
-    if hits >= 6 {
+    if hits >= 10 {
         process::exit(0);
     }
     let ignored = writeln!(
         io::stderr(),
-        "user-rules markers weak (hits={hits}); paste or option-c-core missing V15 signals"
+        "user-rules markers weak (hits={hits}); paste or option-c-core missing V15.4 M/J signals"
     );
     drop(ignored);
     process::exit(1);

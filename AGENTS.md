@@ -9,7 +9,7 @@ Before non-readonly work under a nested tree that has its own `AGENTS.md`, read 
 
 ## Overview
 
-kleosrules — Cursor harness pack (Master Mind **V15.3**): User Rules paste, always-on companions, Rust `kleos-gate` + policy JSON (comments / secrets / vernacular / lean / ask-scope / pre-flight / gate-diff), personal skills, fleet sync. Single pack topology — not an app monorepo. **No Python in this pack.**
+kleosrules — Cursor harness pack (Master Mind **V15.4**): User Rules paste, always-on companions, Rust `kleos-gate` + policy JSON (comments / secrets / vernacular / lean / ask-scope / pre-flight / gate-diff), MUST-NEVER M/J split, personal skills, fleet sync. Single pack topology — not an app monorepo. **No Python in this pack.**
 
 ## Boundaries
 
@@ -28,7 +28,7 @@ kleosrules — Cursor harness pack (Master Mind **V15.3**): User Rules paste, al
 
 | Need | Path | Notes |
 |------|------|-------|
-| Paste User Rules | `user-rules/USER-RULES.paste.txt` | V15.3 Option C |
+| Paste User Rules | `user-rules/USER-RULES.paste.txt` | V15.4 Option C (M/J) |
 | Option C disk mirror | `user-rules/option-c-core.mdc` | often `alwaysApply: true` |
 | Always-on companions | `project-rules/{native-lean-autoload,ponytail,lean-code,agent}.mdc` | Synced |
 | Vernacular contract | `.cursor/rules/vernacular.mdc` | Machine fields |
@@ -42,7 +42,8 @@ kleosrules — Cursor harness pack (Master Mind **V15.3**): User Rules paste, al
 | Sync verify | `scripts/verify-sync.sh` | |
 | Release | `docs/RELEASE.md` | |
 | TOOLCHAIN | `docs/TOOLCHAIN.md` | Done recipe |
-| Pack version | `package.json` | `15.3.0` |
+| Pack version | `package.json` | `15.4.0` |
+| P*-13 M/J | `docs/evals/PERFORMATIVE-TRILEMMA-PSTAR.md` | Language kill |
 
 ## Tree (depth 2)
 
