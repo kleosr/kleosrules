@@ -2,32 +2,51 @@
 name: unconditional-counterexample
 description: >
   Runs a fixed 4-phase hunt that delivers one complete unconditional
-  counterexample without the user re-prompting between phases. Use when the
-  user invokes /unconditional-counterexample, pastes the counterexample
-  mantra, says "fully works", "breakthrough", "partial results", or wants a
-  structured counterexample to a general claim/conjecture/rules/product.
+  counterexample without the user re-prompting between phases. Self-target
+  pause against this pack’s law. Escalate to /breakthrough-deepen after a
+  chain tip exists. Use on /unconditional-counterexample, counterexample
+  mantra, "fully works", "breakthrough", "partial results", or a structured
+  counterexample ask against a claim/conjecture/rules/product.
 ---
 
 # Unconditional Counterexample
 
-## Auto-pipeline (do not make the user re-prompt)
+First-hunt skill. Delivers **one** finished \(P^*\).
 
-On invoke, fill `{problem}` from the user message (claim, conjecture, product, or rules under attack).
+After a chain tip exists, escalate to `/breakthrough-deepen` (do not re-run
+Phases 1→4 as a fake deepen).
 
-### Self-target rule
+## When to run
 
-If `{problem}` targets this pack’s Master Mind / USER-RULES / kleosr /
-always-on companions / `kleos-gate` law (the session’s own loaded constitution):
+- User invokes `/unconditional-counterexample`
+- Pastes a counterexample / breakthrough mantra for a first hunt
+- Says “fully works”, “breakthrough”, “partial results” (first \(P^*\))
+- Wants a structured counterexample to a claim / conjecture / rules / product
+- Cold start: no prior `## Breakthrough chain` / `.cursor/breakthrough-chain.md`
+
+## Self-target rule
+
+If `{problem}` targets this pack’s own law (Master Mind / USER-RULES / kleosr /
+always-on companions / `kleos-gate`):
 
 1. Do **not** auto-advance Phases 1→4.
 2. Emit Phase-1 sketch only (restate \(C\), map structure, candidate seam).
 3. ASK ONCE: confirm hunt against this session’s own loaded law.
 4. On explicit confirm → resume Phases 2→4 in the same turn-loop.
-5. On no confirm → stop. Do not deliver a finished \(P^*\) against self.
+5. On no confirm → stop. Never auto-finish a \(P^*\) against the loaded constitution.
 
-Foreign products/claims: keep the auto-pipeline below unchanged.
+Self-target outranks the auto-pipeline below.
 
-Then run **Phases 1→2→3→4 in order in this same turn-loop**. Do not stop after Phase 1 or 2 to wait for the user to paste the next block. Advance automatically until Phase 4’s done-when is met (or a hard blocker: missing target text / no readable sources).
+Foreign products/claims: keep the auto-pipeline unchanged.
+
+## Auto-pipeline (single reply, no user re-prompt)
+
+On invoke, fill `{problem}` from the user message.
+
+Then run **Phases 1→2→3→4 in order in this same turn-loop** (unless Self-target
+paused). Do not stop after Phase 1 or 2 for the user to paste the next block.
+Advance until Phase 4’s done-when is met (or a hard blocker: missing target
+text / no readable sources).
 
 Track progress mentally:
 
@@ -46,7 +65,7 @@ Construct a counterexample to general ({problem}). You should do a breakthrough 
 
 (Archetype fill from the user’s screenshot pattern: `non-planar case of Dinitz Garg Goemans conjecture` — replace with whatever `{problem}` they named.)
 
-**Agent does:** Restate \(C\). Map structure. Produce a first structured candidate \(P\) (or prove why none yet). Do **not** end the run here.
+**Agent does:** Restate \(C\). Map structure. Produce a first structured candidate \(P\) (or prove why none yet). Do **not** end the run here — **except** Self-target pause (Phase-1 + ASK only).
 
 ---
 
@@ -117,6 +136,12 @@ Sibling gaps only **after** \(P^*\). They do not replace \(P^*\).
 | Gap | Why weaker |
 ```
 
+## Adapter notes (Cursor only)
+
+- If workspace exists → write/update `.cursor/breakthrough-chain.md` with the new tip after Phase 4.
+- Pure chat / no workspace → chain lives only in the reply.
+- To go deeper than this tip → `/breakthrough-deepen` (max 2 upgrades; A2-fail-closed allowed).
+
 ## Anti-patterns
 
 - Stopping after Phase 1–3 for the user to paste the next prompt (except Self-target rule)
@@ -124,6 +149,7 @@ Sibling gaps only **after** \(P^*\). They do not replace \(P^*\).
 - Flaky live-only “might fail”
 - Fixing during the hunt unless asked
 - Auto-finishing a \(P^*\) against this pack’s law without Self-target confirm
+- Re-running Phases 1→4 as a fake deepen when a chain tip already exists (use `/breakthrough-deepen`)
 
 ## After delivery
 

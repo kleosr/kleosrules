@@ -1,4 +1,4 @@
-# TOOLCHAIN — this pack (Master Mind V16)
+# TOOLCHAIN — this pack (Master Mind V16.0.12)
 
 ```bash
 PACK="$(cd "$(dirname "$0")/.." && pwd)"

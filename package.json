@@ -1,8 +1,8 @@
 {
   "name": "kleosr",
-  "version": "16.0.0",
+  "version": "16.0.12",
   "private": true,
-  "description": "kleosr — Cursor harness pack (Master Mind V16). Rust kleos-gate only.",
+  "description": "kleosr — Cursor harness (V16.0.12). Dual-write lean + ask-scope on.",
   "license": "MIT",
   "scripts": {
     "build": "cargo build --release --manifest-path hooks/kleos-gate/Cargo.toml && mkdir -p hooks/bin && cp -f hooks/kleos-gate/target/release/kleos-gate hooks/bin/kleos-gate && chmod +x hooks/bin/kleos-gate",

@@ -158,9 +158,12 @@ pub fn run(hooks: &Path) -> ! {
         ("shell".into(), "{\"command\":\"rm -rf /\"}".into(), "deny".into(), "shell_rm_root".into()),
         ("shell".into(), curl, "deny".into(), "shell_curl_bash".into()),
         ("shell".into(), "{\"command\":\"npm publish\"}".into(), "deny".into(), "shell_npm_publish".into()),
-        ("shell".into(), "{\"command\":\"npm ci\"}".into(), "ask".into(), "shell_npm_ci".into()),
+        ("shell".into(), "{\"command\":\"npm ci\"}".into(), "allow".into(), "shell_npm_ci".into()),
         ("shell".into(), "{\"command\":\"git push origin HEAD\"}".into(), "ask".into(), "shell_git_push".into()),
+        ("shell".into(), "{\"command\":\"rm -rf ./foo\"}".into(), "deny".into(), "shell_rm_rf_path".into()),
         ("shell".into(), "{\"command\":\"echo hi\"}".into(), "allow".into(), "shell_echo".into()),
+        ("shell".into(), "{\"command\":\"printf 'export const n = 1\\n' | tee hooks/tmp_tee.ts\"}".into(), "ask".into(), "shell_tee_opaque".into()),
+        ("shell".into(), "{\"command\":\"git apply foo.patch\"}".into(), "ask".into(), "shell_git_apply_opaque".into()),
         ("write".into(), write_prose, "deny".into(), "write_prose".into()),
         ("write".into(), write_inline, "deny".into(), "write_inline_prose".into()),
         ("write".into(), "{\"tool_name\":\"Write\",\"tool_input\":{\"path\":\"hooks/tmp_c.ts\",\"contents\":\"export const n=1;\\n\"}}".into(), "allow".into(), "write_clean".into()),
@@ -168,7 +171,7 @@ pub fn run(hooks: &Path) -> ! {
         ("beforeReadFile".into(), "{\"hook_event_name\":\"beforeReadFile\",\"path\":\".env\"}".into(), "deny".into(), "read_env".into()),
         ("beforeReadFile".into(), "{\"hook_event_name\":\"beforeReadFile\",\"path\":\".env.example\"}".into(), "allow".into(), "read_env_example".into()),
         ("beforeSubmitPrompt".into(), "{\"hook_event_name\":\"beforeSubmitPrompt\",\"prompt\":\"hello\",\"attachments\":[]}".into(), "empty".into(), "prompt_ok".into()),
-        ("mcp".into(), "{\"tool_name\":\"postgres_drop_table\",\"tool_input\":{\"table\":\"users\"}}".into(), "ask".into(), "mcp_drop".into()),
+        ("mcp".into(), "{\"tool_name\":\"postgres_drop_table\",\"tool_input\":{\"table\":\"users\"}}".into(), "allow".into(), "mcp_drop".into()),
         ("delete".into(), "{\"tool_name\":\"Delete\",\"tool_input\":{\"path\":\"payments\",\"recursive\":true}}".into(), "deny".into(), "delete_tree".into()),
         ("subagentStart".into(), "{\"hook_event_name\":\"subagentStart\",\"task\":\"git push --force origin main\"}".into(), "deny".into(), "subagent_force".into()),
         ("subagentStart".into(), "{\"hook_event_name\":\"subagentStart\",\"task\":\"summarize README\"}".into(), "allow".into(), "subagent_ok".into()),
@@ -191,6 +194,23 @@ pub fn run(hooks: &Path) -> ! {
         &lean_payload,
         "deny",
         "write_lean_newfile",
+        &mut times,
+        &mut pass,
+        &mut fail,
+        &mut cases,
+    );
+    let mut shell_big = String::from("cat > hooks/tmp_shell_big.ts <<'END'\n");
+    for i in 0..130 {
+        shell_big.push_str(&format!("export const x{i} = {i};\n"));
+    }
+    shell_big.push_str("END\n");
+    let shell_lean = serde_json::json!({ "command": shell_big }).to_string();
+    run_json(
+        &bin,
+        "shell",
+        &shell_lean,
+        "deny",
+        "shell_heredoc_lean",
         &mut times,
         &mut pass,
         &mut fail,

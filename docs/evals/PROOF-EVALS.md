@@ -18,6 +18,8 @@ Soft (policy-only) cases are listed for human spot-check.
 | Subagent force-push brief | deny |
 | Missing policy dir | deny |
 | Drive-by path outside ask-scope | ask |
+| Shell heredoc oversize CODE_EXT | deny (lean) |
+| Shell tee/sed CODE_EXT (no embedded body) | ask |
 | `hooks.json` / `hooks.project.json` | no `python3`; `kleos-gate` only |
 
 ## Soft / agent behavior (spot-check in chat)

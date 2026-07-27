@@ -15,6 +15,7 @@ Doctrine, verification chain, release notes, house TOOLCHAIN recipe, and P* eval
 | Hunt timeline | `RULES-HUNT.md` | V13→V16 P* timeline |
 | User Rules guide | `USER-RULES.md` | Paste / Option C |
 | Agential control stack | `AGENTIAL-CONTROL.md` | Soft + force + epistemic |
+| Layer units (prompt→graph) | `LAYER-STACK.md` | Debug by unit of work |
 | Verification chain | `VERIFICATION-CHAIN.md` | Local ⇏ global |
 | Mechanical incompleteness | `MECHANICAL-INCOMPLETENESS.md` | Rice ceiling |
 | Martin gauntlet framing | `AGENTIC-GAUNTLET.md` | Product vs harness |
@@ -38,6 +39,7 @@ Doctrine, verification chain, release notes, house TOOLCHAIN recipe, and P* eval
 | Proof eval index | `evals/PROOF-EVALS.md` |
 | Lean + vernacular force (V14) | `evals/LEAN-VERNACULAR-FORCE-PSTAR.md` |
 | Lean size ≠ quality (V15.6 / P*-15) | `evals/LEAN-SIZE-QUALITY-PSTAR.md` |
+| Dual-write lean bypass (V16.0.12 / P*-17) | `evals/DUAL-WRITE-LEAN-PSTAR.md` |
 | Soft-force schism (V15.5 / P*-14) | `evals/SOFT-FORCE-SCHISM-PSTAR.md` |
 | Dead gate schema | `evals/DEAD-GATE-SCHEMA-PSTAR.md` |
 | Mechanical incompleteness P* | `evals/MECHANICAL-INCOMPLETENESS-PSTAR.md` |

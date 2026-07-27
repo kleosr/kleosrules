@@ -85,13 +85,13 @@ Install links dirs from `config/skills.txt` into `~/.cursor/skills`.
 
 | Group | Skills |
 | --- | --- |
-| Native Lean | `ponytail`, `lean-code`, `vernacular`, `unconditional-counterexample` |
-| Architecture | `architecture-fitness`, `improve-codebase-architecture`, `domain-architecture`, `agents-map`, `workspace-scope`, `system-wiring`, `codebase-memory` |
+| Native Lean | `ponytail`, `lean-code`, `vernacular`, `unconditional-counterexample`, `breakthrough-deepen` |
+| Architecture | `architecture-fitness`, `improve-codebase-architecture`, `domain-architecture`, `agents-map`, `workspace-scope`, `system-wiring`, `codebase-memory`, `obsidian-memory` |
 | Frontend | `design-taste-frontend`, `ui-ux-audit`, `frontend-design`, `design-tokens`, `ui-structure`, `no-hardcode` |
 | Ship | `git-commit`, `create-pr`, `bug-hunt`, `formulary`, `ship-loop`, `session-handoff`, `eval-pass`, `harness-retro`, `grill-me`, `humanizer` |
 | Voice | `cursor-research`, `benln-write` |
 
-Route from User Rules: lean → `/ponytail`; dialect → `/vernacular`; fitness → `/architecture-fitness`; breakthrough → `/unconditional-counterexample`.
+Route from User Rules: lean → `/ponytail`; dialect → `/vernacular`; fitness → `/architecture-fitness`; breakthrough → `/unconditional-counterexample`; vault memory → `/obsidian-memory`; AST graph → `/codebase-memory`.
 
 ## Doctrine (short)
 
@@ -102,5 +102,6 @@ Green TOOLCHAIN ≠ ∀ semantic proof
 ([`docs/MECHANICAL-INCOMPLETENESS.md`](docs/MECHANICAL-INCOMPLETENESS.md)).
 
 Deeper stack: [`docs/AGENTIAL-CONTROL.md`](docs/AGENTIAL-CONTROL.md) ·
+[`docs/LAYER-STACK.md`](docs/LAYER-STACK.md) ·
 [`docs/MODEL-SPEC.md`](docs/MODEL-SPEC.md) ·
 [`docs/AGENTIC-GAUNTLET.md`](docs/AGENTIC-GAUNTLET.md).

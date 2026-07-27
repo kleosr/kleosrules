@@ -6,6 +6,7 @@ ponytail
 lean-code
 vernacular
 unconditional-counterexample
+breakthrough-deepen
 
 # --- Architecture ---
 architecture-fitness
@@ -15,6 +16,7 @@ agents-map
 workspace-scope
 system-wiring
 codebase-memory
+obsidian-memory
 
 # --- Frontend / design ---
 design-taste-frontend

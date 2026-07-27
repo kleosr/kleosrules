@@ -10,8 +10,8 @@ On-demand Cursor skills installed to `~/.cursor/skills`. Catalog = `config/skill
 
 | Group | Skills (dir = `skills/<name>/`) |
 |-------|----------------------------------|
-| Native Lean | `ponytail`, `lean-code` (alias), `vernacular`, `unconditional-counterexample` |
-| Architecture | `architecture-fitness`, `improve-codebase-architecture`, `domain-architecture`, `agents-map`, `workspace-scope`, `system-wiring`, `codebase-memory` |
+| Native Lean | `ponytail`, `lean-code` (alias), `vernacular`, `unconditional-counterexample`, `breakthrough-deepen` |
+| Architecture | `architecture-fitness`, `improve-codebase-architecture`, `domain-architecture`, `agents-map`, `workspace-scope`, `system-wiring`, `codebase-memory`, `obsidian-memory` |
 | Frontend / design | `design-taste-frontend`, `ui-ux-audit`, `frontend-design`, `design-tokens`, `ui-structure`, `no-hardcode` |
 | Ship / harness | `git-commit`, `create-pr`, `bug-hunt`, `formulary`, `ship-loop`, `session-handoff`, `eval-pass`, `harness-retro`, `grill-me`, `humanizer` |
 | Product / voice | `cursor-research`, `benln-write` |

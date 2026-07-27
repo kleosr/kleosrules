@@ -1,5 +1,111 @@
 # Release — v16.0.0
 
+## V16.0.12 — P*-17 Dual-Write Lean + ask-scope re-enable
+
+1. P*: `docs/evals/DUAL-WRITE-LEAN-PSTAR.md`.
+2. Kill: Shell heredoc/redirect embedded CODE_EXT → prose + vernacular + lean
+   (parity with Write); opaque CODE_EXT without embedded body → ask
+   (`opaque_write_ask_message` restored); `ask-scope.json` `enabled: true`.
+3. Meters: `shell_heredoc_oversize_denies_lean`, `shell_tee_code_asks_opaque`,
+   `ask_scope_enabled_asks_drive_by`; bench cases.
+4. Residual: tee/sed without argv body still asks (confirm); template prose FN;
+   lean size ≠ ∀ quality (P*-15).
+
+## V16.0.11 — Fleet TOOLCHAIN fill + create-on-ship
+
+1. Evidence-only `TOOLCHAIN.md` written across Fleet catalog gaps (Victoria,
+   mono_ai-portfolio, mx-live-feeds, Fitness, contrib-fill, CLP, Notes,
+   Research, Skills) + AGENTS Done pointers where needed.
+2. Policy: missing TOOLCHAIN on scanned fleet root + real scripts/CI → create
+   same changeset then run (`agent.mdc`, User Rules paste, `agents-map`).
+3. Existing crm / Terremoto* / mvpMedico / rules TOOLCHAIN drift-checked OK.
+4. Never invent tests; never ask accept-no-gauntlet-risk.
+
+## V16.0.10 — Five-layer residual squeeze (plan execute)
+
+1. `docs/LAYER-STACK.md`: full 6 X sources; 0xJeyx 6-step org graph;
+   when-not-to-graph; fourth complementary graph (org/workflow).
+2. `harness-retro` classifies by five-layer unit; Rust install/verify only.
+3. `ship-loop` / `eval-pass`: model stop ≠ Done; eval-pass = reviewer node.
+4. Vault: 0xJeyx source + catalog; Agential-Control stub; link hygiene.
+5. Evidence: cargo test + kleos-gate verify/install required on land.
+6. Master Mind paste / option-c / agent banners → **V16.0.10** (was V15.7 display lag).
+
+## V16.0.9 — Write-back ≠ wipe (max memory wording)
+
+1. Roof strings: “Obsidian flush” → **write-back / persist INTO vault**.
+2. Compaction message: saves memory before chat dies; does **not** clear vault.
+3. Skill + companion + LAYER-STACK wording aligned. Max memory requires write-back.
+
+## V16.0.8 — Layer stack + Graph Engineering squeeze
+
+1. Doctrine: `docs/LAYER-STACK.md` — prompt→context→harness→loop→graph units;
+   maps onto User Rules / wiki curation / kleos-gate / ship-loop / Obsidian+AST.
+2. AGENTIAL-CONTROL links layer stack (orthogonal to persuasion/force/memory).
+3. Vault: Five-Layer + Graph Eng + Process-Not-Patches concepts; PROCESSING
+   graph-maintenance classes; dual/tri graphs; sources from akshay/Sprytix/undefinedKi.
+4. Skill + companion + agent DOC MAP pointers. No Neo4j/GraphRAG product bolt-on.
+5. Residual: X fetch may fail; paste User Rules if Settings lag; optional ASK
+   for GraphRAG/Neo4j only if product need appears.
+
+## V16.0.7 — Auto house gauntlet (no human accept-risk)
+
+1. Stop followup: ACT NOW run TOOLCHAIN/verify yourself — never ask
+   accept-no-gauntlet-risk.
+2. PRODUCT GAUNTLET + agent.mdc + testing.mdc + option-c/paste aligned.
+3. Broader verify-class regex (`kleos-gate verify|bench|gate-diff`,
+   `npm run lint|check|typecheck|build`, `check:domain`).
+4. Residual: agent must still execute the Shell verify; followup is force nudge.
+
+## V16.0.6 — Unblock installs/MCP; hard-stop true destruction
+
+1. Package install / npx / MCP danger-ask / ask-scope / opaque shell write → allow (ACT).
+2. Recursive `rm -rf`, find-delete, rsync --delete → deny (not ask).
+3. Remote publish (`git push`, release/image push) still asks.
+4. User Rules + option-c → **V15.7** (installs ACT). Session roof drops ASK installs.
+5. Residual: Cursor product UI may still confirm some tools; secrets + prose comments still deny.
+
+## V16.0.5 — Max memory fleet refeed
+
+1. Ingest Cyril/Degen/Iolld threads; concepts for Kimi agent, skills+qmd, max refeed.
+2. Seed `wiki/projects/*` for every Documents coding repo + notes/research/skills-docs.
+3. `instructions/MAX-MEMORY.md` + skill/companion continuous inject loop.
+4. Catalog: `wiki/catalogs/Fleet.md`. Residual: optional ASK for kepano skills / qmd MCP.
+
+## V16.0.4 — Complete second brain (ingest/query/lint + write-back)
+
+1. Harvest Dezo + Obsidian/LLM-Wiki status threads into vault catalog.
+2. Ops triad + `wiki/log.md`, `raw/processed/`, concepts/entities/sources/catalogs.
+3. Skill + companion: context ≠ memory; model = reasoning; vault = SSOT; write-back mandatory.
+4. Cite: [0xDezo](https://x.com/0xDezo/status/2079595162955571339),
+   [Karpathy gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
+
+## V16.0.3 — Karpathy LLM Wiki vault layout
+
+1. Vault `/home/kleosr/rootsidian/kleosr` → `raw/` · `wiki/` · `instructions/`.
+2. Special files: `wiki/hot.md`, `wiki/index.md`, `instructions/PROCESSING.md`,
+   root `AGENT.md`. Concepts under `wiki/concepts/`; projects under `wiki/projects/`.
+3. Skill + companion + kleos-gate recall/flush strings point at wiki paths;
+   never edit `raw/`; query wiki only.
+4. Cite: [0xkkai / Karpathy LLM Wiki](https://x.com/0xkkai/status/2081005037992464894).
+
+## V16.0.2 — Obsidian amnesia roofs (auto recall/flush)
+
+1. kleos-gate `sessionStart` injects mandatory Obsidian recall context.
+2. `stop` followup if tool work ran with no vault write logged; `preCompact`
+   flush warning; mid-session duty nudge every 12 tools.
+3. Companion + skill: every-chat loop + `journals/YYYY-MM-DD.md` mid-capture.
+4. Residual: Obsidian app must run; agent must obey flush followup (J until write).
+
+## V16.0.1 — Obsidian memory graph wired
+
+1. Skill `obsidian-memory` + always-on companion `obsidian-memory.mdc`.
+2. MCP `user-obsidian` = durable knowledge graph (wikilinks); AST graph stays
+   `codebase-memory`. Session start/end + dual-write with `HANDOFF.md`.
+3. USER-RULES / option-c / agent SESSION / AGENTIAL-CONTROL / EPISTEMIC-PERSIST
+   updated. Vault seed under `/home/kleosr/rootsidian/kleosr`.
+4. Residual: Obsidian app must be running; vault ≠ TOOLCHAIN proof.
+
 ## V16.0.0 — Shell zero in pack (Rust fleet CLI)
 
 1. Port pack shell to `kleos-gate` fleet subcommands: `install`, `install-hooks`,

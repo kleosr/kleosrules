@@ -15,6 +15,16 @@ fn policy_dir() -> PathBuf {
     hooks_root().join("policy")
 }
 
+fn copy_policy_dir() -> PathBuf {
+    let dest = tempfile_dir().join("policy");
+    let ignored = std::fs::create_dir_all(&dest);
+    drop(ignored);
+    for name in ["shell.json", "lean.json", "ask-scope.json", "secrets.json"] {
+        std::fs::copy(policy_dir().join(name), dest.join(name)).expect(name);
+    }
+    dest
+}
+
 fn bin_path() -> PathBuf {
     env::var_os("CARGO_BIN_EXE_kleos-gate")
         .map(PathBuf::from)
@@ -93,10 +103,17 @@ fn policy_missing_denies() {
 }
 
 #[test]
-fn shell_npm_ci_asks() {
+fn shell_npm_ci_allows() {
     let (code, obj) = run_gate("shell", json!({"command": "npm ci"}));
     assert_eq!(code, 0, "{obj}");
-    assert_eq!(perm(&obj), "ask");
+    assert_eq!(perm(&obj), "allow");
+}
+
+#[test]
+fn shell_rm_rf_path_denies() {
+    let (code, obj) = run_gate("shell", json!({"command": "rm -rf ./foo"}));
+    assert_eq!(code, 2, "{obj}");
+    assert_eq!(perm(&obj), "deny");
 }
 
 #[test]
@@ -159,7 +176,7 @@ fn read_env_denies() {
 }
 
 #[test]
-fn mcp_drop_asks() {
+fn mcp_drop_allows() {
     let (code, obj) = run_gate(
         "mcp",
         json!({
@@ -168,7 +185,7 @@ fn mcp_drop_asks() {
         }),
     );
     assert_eq!(code, 0, "{obj}");
-    assert_eq!(perm(&obj), "ask");
+    assert_eq!(perm(&obj), "allow");
 }
 
 #[test]
@@ -226,7 +243,42 @@ fn prompt_secret_continues_false() {
 }
 
 #[test]
-fn ask_scope_drive_by_asks() {
+fn ask_scope_disabled_allows_drive_by() {
+    let pol = copy_policy_dir();
+    let raw = std::fs::read_to_string(pol.join("ask-scope.json")).unwrap();
+    let mut v: Value = serde_json::from_str(&raw).unwrap();
+    v["enabled"] = json!(false);
+    std::fs::write(pol.join("ask-scope.json"), v.to_string()).unwrap();
+    let state = tempfile_dir();
+    let ignored = run_gate_env(
+        "beforeSubmitPrompt",
+        json!({
+            "hook_event_name": "beforeSubmitPrompt",
+            "prompt": "rename foo in auth.ts please",
+            "attachments": []
+        }),
+        &pol,
+        Some(&state),
+    );
+    drop(ignored);
+    let (code, obj) = run_gate_env(
+        "write",
+        json!({
+            "tool_name": "Write",
+            "tool_input": {
+                "path": "utils.ts",
+                "contents": "export const n = 1;\n"
+            }
+        }),
+        &pol,
+        Some(&state),
+    );
+    assert_eq!(code, 0, "{obj}");
+    assert_eq!(perm(&obj), "allow");
+}
+
+#[test]
+fn ask_scope_enabled_asks_drive_by() {
     let state = tempfile_dir();
     let ignored = run_gate_env(
         "beforeSubmitPrompt",
@@ -252,7 +304,42 @@ fn ask_scope_drive_by_asks() {
         Some(&state),
     );
     assert_eq!(code, 0, "{obj}");
-    assert_eq!(perm(&obj), "ask", "drive-by outside prompt paths should ask: {obj}");
+    assert_eq!(perm(&obj), "ask");
+}
+
+#[test]
+fn shell_heredoc_oversize_denies_lean() {
+    let mut body = String::new();
+    for i in 0..130 {
+        body.push_str(&format!("export const x{i} = {i};\n"));
+    }
+    let cmd = format!("cat > hooks/tmp_shell_big.ts <<'END'\n{body}END\n");
+    let (code, obj) = run_gate("shell", json!({ "command": cmd }));
+    assert_eq!(code, 2, "{obj}");
+    assert_eq!(perm(&obj), "deny");
+    let msg = obj
+        .get("agent_message")
+        .or_else(|| obj.get("user_message"))
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    assert!(msg.contains("Lean meter"), "{msg}");
+}
+
+#[test]
+fn shell_tee_code_asks_opaque() {
+    let (code, obj) = run_gate(
+        "shell",
+        json!({ "command": "printf 'export const n = 1\\n' | tee hooks/tmp_tee.ts" }),
+    );
+    assert_eq!(code, 0, "{obj}");
+    assert_eq!(perm(&obj), "ask");
+}
+
+#[test]
+fn shell_git_apply_asks_opaque() {
+    let (code, obj) = run_gate("shell", json!({ "command": "git apply foo.patch" }));
+    assert_eq!(code, 0, "{obj}");
+    assert_eq!(perm(&obj), "ask");
 }
 
 #[test]
@@ -326,6 +413,69 @@ fn session_stop_followup_on_unverified() {
     assert!(
         follow.contains("unverified") || follow.contains("Unverified"),
         "expected stop followup, got {obj}"
+    );
+    assert!(
+        follow.contains("ACT NOW"),
+        "expected auto-gauntlet ACT NOW, got {obj}"
+    );
+    assert!(
+        !follow.contains("accept-no-gauntlet-risk"),
+        "must not ask human accept-risk, got {obj}"
+    );
+    assert!(
+        follow.contains("Obsidian write-back"),
+        "expected Obsidian write-back with unverified, got {obj}"
+    );
+}
+
+#[test]
+fn session_start_injects_obsidian_recall() {
+    let (code, obj) = run_gate(
+        "sessionStart",
+        json!({
+            "conversation_id": "s1",
+            "hook_event_name": "sessionStart"
+        }),
+    );
+    assert_eq!(code, 0, "{obj}");
+    let ctx = obj
+        .get("additional_context")
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    assert!(
+        ctx.contains("Obsidian memory MANDATORY"),
+        "expected Obsidian recall inject, got {obj}"
+    );
+}
+
+#[test]
+fn session_stop_obsidian_flush_without_vault_write() {
+    let state = tempfile_dir();
+    let ignored = run_gate_env(
+        "postToolUse",
+        json!({
+            "conversation_id": "obs1",
+            "tool_name": "Shell",
+            "tool_input": {"command": "echo hi"}
+        }),
+        &policy_dir(),
+        Some(&state),
+    );
+    drop(ignored);
+    let (code, obj) = run_gate_env(
+        "stop",
+        json!({
+            "conversation_id": "obs1",
+            "status": "completed"
+        }),
+        &policy_dir(),
+        Some(&state),
+    );
+    assert_eq!(code, 0, "{obj}");
+    let follow = obj.get("followup_message").and_then(|v| v.as_str()).unwrap_or("");
+    assert!(
+        follow.contains("Obsidian write-back"),
+        "expected Obsidian write-back, got {obj}"
     );
 }
 

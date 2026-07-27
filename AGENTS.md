@@ -26,9 +26,9 @@ kleosr — Cursor harness pack (Master Mind **V16**): User Rules paste, always-o
 
 | Need | Path | Notes |
 |------|------|-------|
-| Paste User Rules | `user-rules/USER-RULES.paste.txt` | V15.6 Option C (M/J + soft J) |
+| Paste User Rules | `user-rules/USER-RULES.paste.txt` | V16.0.10 Option C (install ACT) |
 | Option C disk mirror | `user-rules/option-c-core.mdc` | often `alwaysApply: true` |
-| Always-on companions | `project-rules/{native-lean-autoload,ponytail,lean-code,agent}.mdc` | Synced |
+| Always-on companions | `project-rules/{native-lean-autoload,ponytail,lean-code,agent,obsidian-memory}.mdc` | Synced |
 | Vernacular contract | `project-rules/vernacular.mdc` | Pack SSOT; live link under `.cursor/rules/` |
 | Hot path + fleet CLI | `hooks/bin/kleos-gate` | From `hooks/kleos-gate/` |
 | Policy | `hooks/policy/*.json` | No hardcode in `.rs` |
@@ -40,7 +40,8 @@ kleosr — Cursor harness pack (Master Mind **V16**): User Rules paste, always-o
 | Sync verify | `kleos-gate verify` | |
 | Release | `docs/RELEASE.md` | |
 | TOOLCHAIN | `docs/TOOLCHAIN.md` | Done recipe |
-| Pack version | `package.json` | `16.0.0` (kleosr) |
+| Pack version | `package.json` | `16.0.12` (kleosr) |
+| Layer units | `docs/LAYER-STACK.md` | prompt→context→harness→loop→graph |
 | Pack vernacular SSOT | `project-rules/vernacular.mdc` | Linked into pack `.cursor/rules` |
 | P*-13 M/J | `docs/evals/PERFORMATIVE-TRILEMMA-PSTAR.md` | Language kill |
 | P*-14 soft-force | `docs/evals/SOFT-FORCE-SCHISM-PSTAR.md` | Skill Self-target |

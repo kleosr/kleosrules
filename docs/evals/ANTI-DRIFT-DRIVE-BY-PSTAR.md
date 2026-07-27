@@ -1,6 +1,7 @@
 # P* — Anti-drift / drive-by forceless (P*-12)
 
 Finished unconditional counterexample. Closed in V15.0.0 (finite ask-scope gate).
+Re-enabled after V16.0.6 ACT demotion — see V16.0.12 / P*-17 sibling.
 
 ## Verdict
 
