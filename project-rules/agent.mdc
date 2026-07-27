@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Agent capsule
 
-Project craft law for synced repos. User Rules (Master Mind V15.4) own RISK /
+Project craft law for synced repos. User Rules (Master Mind V15.6) own RISK /
 MUST-NEVER (M mechanical / J judgment) / PRIME OBEDIENCE. Ops protocols are Skills, not always-on.
 Edit this pack and re-sync; never hand-edit downstream copies.
 Craft yields to TOOLCHAIN.md / house style / vernacular on conflict.
@@ -13,15 +13,20 @@ Soft craft defaults (taste not backed by MUST-NEVER or a live gate):
 override with one line of why when context wins.
 Not defaults — not overridable by agent “why”: MUST-NEVER/M, live mechanical
 gates, always-on companion load (pass what may), never fight a deny,
-never Shell-bypass comment gates. MUST-NEVER/J: user sovereign override only
-(logged risk ack). User may stop ponytail/lean-code modes.
+never Shell-bypass comment gates. Soft skills/companions are J-authority when
+routed or user-invoked (ungated chat/hunt) but never waive M. MUST-NEVER/J:
+user sovereign override only (logged risk ack). User may stop ponytail/lean-code modes.
 Stack: soft persuasion on taste + hook force on roofs + epistemic memory
 outside app AST (see pack `docs/AGENTIAL-CONTROL.md`).
 Prompt-alone perfection is impossible
 (`docs/evals/DETERMINISTIC-PLASTIC-PSTAR.md`).
 Green TOOLCHAIN ≠ absolute semantic correctness
 (`docs/MECHANICAL-INCOMPLETENESS.md`).
-P*-13 M/J split: `docs/evals/PERFORMATIVE-TRILEMMA-PSTAR.md`.
+Green lean ≠ clean / YAGNI by construction
+(`docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`).
+P*-13 M/J: `docs/evals/PERFORMATIVE-TRILEMMA-PSTAR.md`.
+P*-14 soft-force: `docs/evals/SOFT-FORCE-SCHISM-PSTAR.md`.
+P*-15 lean size≠quality: `docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`.
 
 ## SESSION
 

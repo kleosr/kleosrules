@@ -1,4 +1,37 @@
-# Release — v15.4.0
+# Release — v16.0.0
+
+## V16.0.0 — Shell zero in pack (Rust fleet CLI)
+
+1. Port pack shell to `kleos-gate` fleet subcommands: `install`, `install-hooks`,
+   `sync`, `sync-hooks`, `verify`, `bench`, `discover`, `install-pre-commit`.
+2. Delete `install.sh`, `hooks/install-user-hooks.sh`, `scripts/*.sh`,
+   `lib/discover-repos.sh`; drop empty `scripts/` + `lib/` maps.
+3. TOOLCHAIN / CI / package.json / AGENTS / README → Rust CLI only.
+4. Crate version `16.0.0`. Vernacular prefixes drop `scripts/` / `lib/`.
+5. Residual: git pre-commit wrapper body is still bash (git hook substrate);
+   Cursor data surfaces remain md/mdc/json (not executables).
+6. Brand: pack identity **kleosr** (`package.json` / README / maps); binary stays
+   `kleos-gate`. Pack vernacular SSOT: `project-rules/vernacular.mdc`.
+
+## V15.6.0 — P*-15 Lean Size ≠ Semantic Quality kill
+
+1. P*: `docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`.
+2. Kill: claim scope — lean meter = finite size M roofs; semantic quality /
+   clean / YAGNI = J soft ladder. Honesty table row + NATIVE LEAN wording.
+3. Touch: USER-RULES + option-c-core, ponytail/lean-code/agent/native-lean
+   companions, ponytail skill, doctrine (AGENTIAL-CONTROL, COGNITIVE-COLLAPSE,
+   DEFECT-COMPENSATION), breakthrough chains, README/AGENTS/rules.
+4. No Rust / policy schema change. kleos-gate crate remains 15.4.0.
+5. Residual: legal mediocre diffs under size caps; extra meters still gameable.
+
+## V15.5.0 — P*-14 Soft-Force Schism kill
+
+1. P*: `docs/evals/SOFT-FORCE-SCHISM-PSTAR.md`.
+2. Kill: skill Self-target pause (`skills/unconditional-counterexample/SKILL.md`);
+   soft = J-authority when routed (never waive M); README/contract slogan scoped.
+3. Touch: USER-RULES + option-c-core, agent.mdc, README, breakthrough chains.
+4. No Rust / policy schema change. kleos-gate crate remains 15.4.0.
+5. Residual: chat emission ungated by design; Self-target pause is J not force.
 
 ## V15.4.0 — P*-13 Performative Trilemma kill (language)
 
@@ -18,6 +51,7 @@
 2. Rust CLI on `kleos-gate`: `gate-diff`, `obedience-report`, `check-user-rules`.
 3. Pre-commit installer → `kleos-gate gate-diff`. Scrub live docs/AGENTS of python3 recipes.
 4. Residual: `.py` remains only as CODE_EXT in `lean.json` (gate foreign app code); historical P* prose may mention past Python kills.
+
 
 ## V15.2.0 — pre-flight --check-content
 
@@ -241,8 +275,10 @@ Kept from V10: PRIME OBEDIENCE contract goal; context-injection non-confirmation
 ## Install
 
 ```bash
-FORCE_SKILLS=1 bash install.sh
-python3 hooks/_selftest.py && python3 hooks/_proof_evals.py
+cargo build --release --manifest-path hooks/kleos-gate/Cargo.toml
+mkdir -p hooks/bin && cp -f hooks/kleos-gate/target/release/kleos-gate hooks/bin/kleos-gate
+FORCE_SKILLS=1 hooks/bin/kleos-gate install
+(cd hooks/kleos-gate && cargo test) && hooks/bin/kleos-gate bench
 ```
 
 Paste / inject `user-rules/USER-RULES.paste.txt` as User Rules.

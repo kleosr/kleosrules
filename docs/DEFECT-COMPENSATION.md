@@ -34,8 +34,10 @@ Clean Architecture theater, LOC growth.
 - No abstraction before the third real repetition
 - Shortest correct private-native diff; grep callers before shared change
 
-High quality here means **what the agent prevents from existing**, not how
-much it wrote. Entropy of the tree should fall or stay flat per task.
+High quality here means **what the agent prevents from existing** (persuasion
+target), not a proven gate outcome. Entropy of the tree should fall or stay
+flat per task. Lean meter only caps size — green lean ≠ clean / YAGNI
+([`evals/LEAN-SIZE-QUALITY-PSTAR.md`](evals/LEAN-SIZE-QUALITY-PSTAR.md)).
 
 ## 3. Apparent oracle (stateful tools, stateless brain)
 

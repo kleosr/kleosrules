@@ -5,6 +5,7 @@ use std::path::{Path, PathBuf};
 use std::process;
 
 mod engine;
+mod fleet;
 mod policy;
 
 use engine::{ask_scope, delete, mcp, read, session, shell, subagent, write};
@@ -175,7 +176,17 @@ fn run() {
     let event_arg = args.first().map(|s| s.as_str()).unwrap_or("auto");
     if matches!(
         event_arg,
-        "gate-diff" | "obedience-report" | "check-user-rules"
+        "gate-diff"
+            | "obedience-report"
+            | "check-user-rules"
+            | "install"
+            | "install-hooks"
+            | "sync"
+            | "sync-hooks"
+            | "verify"
+            | "bench"
+            | "discover"
+            | "install-pre-commit"
     ) {
         let hooks = hooks_dir();
         let pdir = policy_dir(&hooks);
@@ -188,6 +199,14 @@ fn run() {
             "gate-diff" => engine::tools::gate_diff(&hooks, &policy),
             "obedience-report" => engine::tools::obedience_report(&st),
             "check-user-rules" => engine::tools::check_user_rules(&hooks),
+            "install" => fleet::install::run(&hooks),
+            "install-hooks" => fleet::install::run_hooks(&hooks),
+            "sync" => fleet::sync::run(&hooks),
+            "sync-hooks" => fleet::sync::run_hooks(&hooks),
+            "verify" => fleet::verify::run(&hooks),
+            "bench" => fleet::bench::run(&hooks),
+            "discover" => fleet::discover::run(&hooks),
+            "install-pre-commit" => fleet::pre_commit::run(&hooks),
             _ => unreachable!(),
         }
     }

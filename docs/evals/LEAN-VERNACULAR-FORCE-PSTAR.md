@@ -33,9 +33,11 @@ separates force vs persuasion.
 
 Green lean + vernacular meters ≠ absolute semantic quality / taste of
 “extremely organized” / Rice Done. Import order and visibility remain soft
-unless added as machine fields.
+unless added as machine fields. Elevated to finished P*-15 kill in V15.6:
+[`LEAN-SIZE-QUALITY-PSTAR.md`](LEAN-SIZE-QUALITY-PSTAR.md).
 
 ## Related
 
+- [`LEAN-SIZE-QUALITY-PSTAR.md`](LEAN-SIZE-QUALITY-PSTAR.md) (P*-15)
 - [`MECHANICAL-INCOMPLETENESS-PSTAR.md`](MECHANICAL-INCOMPLETENESS-PSTAR.md)
 - [`VERIFY-SURFACE-PSTAR.md`](VERIFY-SURFACE-PSTAR.md)

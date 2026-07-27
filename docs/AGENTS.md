@@ -11,7 +11,8 @@ Doctrine, verification chain, release notes, house TOOLCHAIN recipe, and P* eval
 | Task | Location | Notes |
 |------|----------|-------|
 | Done / verify recipe | `TOOLCHAIN.md` | Copy-paste house gauntlet |
-| Release / version story | `RELEASE.md` | Includes V14 |
+| Release / version story | `RELEASE.md` | Includes V16 |
+| Hunt timeline | `RULES-HUNT.md` | V13→V16 P* timeline |
 | User Rules guide | `USER-RULES.md` | Paste / Option C |
 | Agential control stack | `AGENTIAL-CONTROL.md` | Soft + force + epistemic |
 | Verification chain | `VERIFICATION-CHAIN.md` | Local ⇏ global |
@@ -36,13 +37,15 @@ Doctrine, verification chain, release notes, house TOOLCHAIN recipe, and P* eval
 | Chain continuity | `evals/BREAKTHROUGH-CHAIN.md` |
 | Proof eval index | `evals/PROOF-EVALS.md` |
 | Lean + vernacular force (V14) | `evals/LEAN-VERNACULAR-FORCE-PSTAR.md` |
+| Lean size ≠ quality (V15.6 / P*-15) | `evals/LEAN-SIZE-QUALITY-PSTAR.md` |
+| Soft-force schism (V15.5 / P*-14) | `evals/SOFT-FORCE-SCHISM-PSTAR.md` |
 | Dead gate schema | `evals/DEAD-GATE-SCHEMA-PSTAR.md` |
 | Mechanical incompleteness P* | `evals/MECHANICAL-INCOMPLETENESS-PSTAR.md` |
 | Other P* surfaces | `evals/*-PSTAR.md` |
 
 ## Done (local)
 
-Docs-only: no compile gate. If TOOLCHAIN commands listed in a doc change, update `TOOLCHAIN.md` to match scripts/hooks reality.
+Docs-only: no compile gate. If TOOLCHAIN commands listed in a doc change, update `TOOLCHAIN.md` to match kleos-gate CLI reality.
 
 ## Manual notes
 

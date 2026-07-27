@@ -57,10 +57,11 @@ beliefs; re-read when needed.
 | Process | One hypothesis; no narrative anchors in the artifact |
 | Output | Lowest-entropy diff (reuse/delete); no comment noise |
 
-Total obedience and high quality are not “please be good.” They come from
-**caging CoT**: kill narrative in the tree, force one hypothesis, invert
-add-token desire, sterilize speculation. Neutralizes statistical Transformer
-defects at the generation mechanism itself.
+Total obedience is not “please be good,” and **high quality is not a gate
+guarantee**. Caging CoT (kill narrative in the tree, one hypothesis, invert
+add-token desire, sterilize speculation) steers generation — soft persuasion.
+Lean meter is a finite size roof only
+([`evals/LEAN-SIZE-QUALITY-PSTAR.md`](evals/LEAN-SIZE-QUALITY-PSTAR.md)).
 
 ## Related
 

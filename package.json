@@ -1,15 +1,16 @@
 {
-  "name": "kleosrules",
-  "version": "15.4.0",
+  "name": "kleosr",
+  "version": "16.0.0",
   "private": true,
-  "description": "kleosrules — Cursor pack Master Mind V15.4: M/J MUST-NEVER; Rust-only.",
+  "description": "kleosr — Cursor harness pack (Master Mind V16). Rust kleos-gate only.",
   "license": "MIT",
   "scripts": {
-    "install": "bash install.sh",
-    "hooks": "bash hooks/install-user-hooks.sh",
-    "sync": "bash scripts/scan-and-sync.sh",
-    "verify": "bash scripts/verify-sync.sh",
-    "bench": "bash scripts/benchmark-hooks.sh",
+    "build": "cargo build --release --manifest-path hooks/kleos-gate/Cargo.toml && mkdir -p hooks/bin && cp -f hooks/kleos-gate/target/release/kleos-gate hooks/bin/kleos-gate && chmod +x hooks/bin/kleos-gate",
+    "install": "hooks/bin/kleos-gate install",
+    "hooks": "hooks/bin/kleos-gate install-hooks",
+    "sync": "hooks/bin/kleos-gate sync",
+    "verify": "hooks/bin/kleos-gate verify",
+    "bench": "hooks/bin/kleos-gate bench",
     "gate-diff": "hooks/bin/kleos-gate gate-diff"
   }
 }

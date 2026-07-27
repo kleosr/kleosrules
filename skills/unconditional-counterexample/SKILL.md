@@ -12,7 +12,22 @@ description: >
 
 ## Auto-pipeline (do not make the user re-prompt)
 
-On invoke, fill `{problem}` from the user message (claim, conjecture, product, or rules under attack). Then run **Phases 1→2→3→4 in order in this same turn-loop**. Do not stop after Phase 1 or 2 to wait for the user to paste the next block. Advance automatically until Phase 4’s done-when is met (or a hard blocker: missing target text / no readable sources).
+On invoke, fill `{problem}` from the user message (claim, conjecture, product, or rules under attack).
+
+### Self-target rule
+
+If `{problem}` targets this pack’s Master Mind / USER-RULES / kleosr /
+always-on companions / `kleos-gate` law (the session’s own loaded constitution):
+
+1. Do **not** auto-advance Phases 1→4.
+2. Emit Phase-1 sketch only (restate \(C\), map structure, candidate seam).
+3. ASK ONCE: confirm hunt against this session’s own loaded law.
+4. On explicit confirm → resume Phases 2→4 in the same turn-loop.
+5. On no confirm → stop. Do not deliver a finished \(P^*\) against self.
+
+Foreign products/claims: keep the auto-pipeline below unchanged.
+
+Then run **Phases 1→2→3→4 in order in this same turn-loop**. Do not stop after Phase 1 or 2 to wait for the user to paste the next block. Advance automatically until Phase 4’s done-when is met (or a hard blocker: missing target text / no readable sources).
 
 Track progress mentally:
 
@@ -104,10 +119,11 @@ Sibling gaps only **after** \(P^*\). They do not replace \(P^*\).
 
 ## Anti-patterns
 
-- Stopping after Phase 1–3 for the user to paste the next prompt
-- Ending on partial concerns with no \(P^*\)
+- Stopping after Phase 1–3 for the user to paste the next prompt (except Self-target rule)
+- Ending on partial concerns with no \(P^*\) (except Self-target stop without confirm)
 - Flaky live-only “might fail”
 - Fixing during the hunt unless asked
+- Auto-finishing a \(P^*\) against this pack’s law without Self-target confirm
 
 ## After delivery
 

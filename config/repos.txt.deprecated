@@ -1,4 +1,0 @@
-# DEPRECATED — static fleet list removed.
-# Discovery is automatic via scan.roots + scan.ignore + lib/discover-repos.sh
-# Kept only so old docs/scripts that `cat repos.txt` fail closed with a comment.
-# Do not add repo names here; edit scan.roots / scan.ignore instead.

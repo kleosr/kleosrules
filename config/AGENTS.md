@@ -11,15 +11,14 @@ Install/sync inputs: which skills ship, which repos get scanned, retire lists.
 | File | Role |
 |------|------|
 | `skills.txt` | Harness-owned personal skill directory names |
-| `scan.roots` | Fleet roots for `scan-and-sync.sh` |
+| `scan.roots` | Fleet roots for `kleos-gate sync` / `discover` |
 | `scan.ignore` | Paths/repos skipped by scan |
 | `retired-skills.txt` | Skills not to install |
 | `retired.txt` | Retired pack items |
-| `repos.txt.deprecated` | Legacy — do not use |
 
 ## Done (local)
 
-After edits: `bash scripts/scan-and-sync.sh` then `bash scripts/verify-sync.sh`.
+After edits: `hooks/bin/kleos-gate sync` then `hooks/bin/kleos-gate verify`.
 
 ## Ask first
 

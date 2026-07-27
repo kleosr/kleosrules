@@ -14,7 +14,7 @@ Source of synced always-on / requestable `.mdc` companions. Edit here; re-sync �
 | `ponytail.mdc` | Always-on Native Lean ladder |
 | `lean-code.mdc` | Alias companion for ponytail |
 | `agent.mdc` | Project craft capsule |
-| `vernacular.mdc` | Not here — pack live contract is `.cursor/rules/vernacular.mdc` |
+| `vernacular.mdc` | Pack vernacular SSOT (alwaysApply); linked into pack `.cursor/rules` only |
 | `types.mdc` | Requestable types craft |
 | `testing.mdc` | Requestable testing craft |
 | `debugging.mdc` | Requestable debugging craft |
@@ -22,14 +22,14 @@ Source of synced always-on / requestable `.mdc` companions. Edit here; re-sync �
 ## Done (local)
 
 ```bash
-bash scripts/scan-and-sync.sh
-bash scripts/verify-sync.sh
+hooks/bin/kleos-gate sync
+hooks/bin/kleos-gate verify
 ```
 
 ## Hard stops (this package)
 
 - Never paste full User Rules / MUST-NEVER essays into companions (law lives in paste + hooks).
-- Never claim soft ladder taste is hook-forced — V14 force is comments/secrets/vernacular machine fields/lean meter only.
+- Never claim soft ladder taste is hook-forced — V14+ force is comments/secrets/vernacular machine fields/lean **size** meter only (not ∀ quality; P*-15).
 
 ## Ask first
 

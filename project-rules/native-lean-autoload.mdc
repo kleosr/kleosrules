@@ -24,4 +24,6 @@ Before writing or editing application code:
 
 **Do not announce** missing vernacular / DEBT.md / TOOLCHAIN.md / AGENTS.md at chat open.
 
-Full policy: User Rule **Master Mind V15.4+**.
+Full policy: User Rule **Master Mind V15.6+**.
+Lean meter = finite size roofs — not ∀ semantic quality
+(`docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`).

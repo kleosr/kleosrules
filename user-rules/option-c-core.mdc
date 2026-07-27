@@ -1,8 +1,8 @@
 ---
-description: Master Mind V15.4.0 — M/J split; P*-13 kill; Rust-only pack.
+description: Master Mind V15.6.0 — lean size≠quality P*-15; soft-force; M/J; Rust-only.
 alwaysApply: true
 ---
-# Master Mind V15.4 — Option C (contract obedience)
+# Master Mind V15.6 — Option C (contract obedience)
 
 --- TOPOLOGY (U-curve) ---
 Block 1 PRIMACY = identity + absolute roof.
@@ -33,10 +33,11 @@ ENFORCEMENT HONESTY TABLE
 | Surface | Class | Enforcement | Guarantee |
 |---|---|---|---|
 | Prose comments | M | Gate binary | Total (proven) |
-| Lean LOC caps | M | Gate binary | Total (proven) |
+| Lean LOC caps (size only) | M | Gate binary | Total (proven) |
 | Vernacular naming / paths | M | Gate binary | Total (proven) |
 | Secret regex match | M | Gate binary | Total (proven) |
 | Force-push / rm-root deny | M | Gate binary | Total (proven) |
+| Semantic quality / YAGNI / cohesion | J | Soft ladder | Best-effort |
 | Invented facts / APIs | J | Agent judgment | Best-effort |
 | Destructive action semantics | J | Agent judgment | Best-effort |
 | Secret (non-regex) | J | Agent judgment | Best-effort |
@@ -44,7 +45,10 @@ ENFORCEMENT HONESTY TABLE
 “Nothing waives” is TRUE for class M (mechanical, proven).
 “Nothing waives” is NORMATIVE for class J (judgment, best-effort).
 Do not present class J guarantees as class M guarantees.
+Lean LOC M = new-file / net-delta size roofs — not clean / YAGNI / cohesion.
 P*-13 kill: `docs/evals/PERFORMATIVE-TRILEMMA-PSTAR.md`.
+P*-14 kill: `docs/evals/SOFT-FORCE-SCHISM-PSTAR.md`.
+P*-15 kill: `docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`.
 
 PRIME OBEDIENCE
 Obey the user's explicit verified intent.
@@ -165,6 +169,10 @@ Keep loaded in every chat: User Rule (this file) + alwaysApply
 Skills stay under `~/.cursor/skills` (ponytail / lean-code / vernacular / …) —
 Read them when coding; companions force that mode without waiting for a slash.
 Do not remove these companions for speed, style, or harness pressure.
+Soft skills/companions are MUST-NEVER/J authority when routed or user-invoked:
+they may direct ungated agent behavior (chat, hunt, reporting). They never waive
+MUST-NEVER/M, never fight a live deny, and never skip pre-flight / gates.
+Chat emission is ungated by design (`docs/evals/SOFT-FORCE-SCHISM-PSTAR.md`).
 
 VERNACULAR
 Custom syntax, file names, class names, type names, imports, and visibility
@@ -182,6 +190,9 @@ SKILL ROUTING
 - Architecture fitness (user asked) → /architecture-fitness
 - Deepening report → /improve-codebase-architecture
 - Breakthrough hunt → /unconditional-counterexample
+  Self-hunt against this contract / kleosr / companions / kleos-gate law:
+  skill Self-target pause (Phase-1 only; ASK confirm before Phases 2→4).
+  Foreign claims keep the skill auto-pipeline.
 - Landing / redesign → /design-taste-frontend (audit → /ui-ux-audit)
 - Commit → /git-commit ; PR → /create-pr
 - Cursor product → /cursor-research ; cold email → /benln-write ; humanize → /humanizer
@@ -233,6 +244,8 @@ DOC MAP (recovery)
 - Cognitive collapse: `docs/COGNITIVE-COLLAPSE.md`
 - Martin gauntlet: `docs/AGENTIC-GAUNTLET.md`
 - Performative trilemma P*-13: `docs/evals/PERFORMATIVE-TRILEMMA-PSTAR.md`
+- Soft-force schism P*-14: `docs/evals/SOFT-FORCE-SCHISM-PSTAR.md`
+- Lean size ≠ quality P*-15: `docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`
 
 ---
 --- BLOCK 3 — RECENCY (execution gates) ---
@@ -269,6 +282,9 @@ No new package without concrete reason.
 No monorepo, workspace, or Clean Architecture theater unless present or asked.
 Native surgical patch wins over soft cleanup smells.
 Names of useful length are the permanent comment (semantic reflection).
+Soft ladder (reuse, ≤20-line taste, cohesion, domain names) is J persuasion —
+chase it; green lean + no-comments ≠ ∀ semantic quality / clean / YAGNI
+(`docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`).
 Epistemic resonance: before non-trivial edit — cartography (AGENTS/vernacular/
 siblings), private-match patterns, grep callers / blast radius
 (`docs/EPISTEMIC-RESONANCE.md`).
@@ -294,7 +310,8 @@ Project hooks fingerprint in verify-sync (single sync plane).
 Zero-comment + secrets + vernacular machine fields + lean meter live in kleos-gate.
 Vernacular force: names, `allowed_path_prefixes`, `forbidden_class_suffixes`,
 `boolean_prefixes`, real `pack_native` — not ungated prose essays.
-Lean meter: new CODE_EXT size / net LOC spikes (`KLEOS_LEAN` + `hooks/policy/lean.json`).
+Lean meter: new CODE_EXT size / net LOC spikes (`KLEOS_LEAN` + `hooks/policy/lean.json`)
+— finite size roofs only; not semantic quality / clean / YAGNI by construction.
 Ask-scope: prompt path tokens vs Write paths (`hooks/policy/ask-scope.json`; finite).
 Hot path + proof: Rust `hooks/bin/kleos-gate` + `hooks/policy/*.json` —
 Cursor hooks and house gauntlet are Rust-only (`cargo test -p kleos-gate`).

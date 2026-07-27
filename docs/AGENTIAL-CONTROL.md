@@ -34,13 +34,15 @@ train the model to ignore harness messages — **force scarcity** (false stop
 hurts more than a miss). User and project hook planes must fingerprint the
 same law ([`evals/VERIFY-SURFACE-PSTAR.md`](evals/VERIFY-SURFACE-PSTAR.md)).
 
-## Quality instruments (V14)
+## Quality instruments (V14 / V15.6)
 
 Persuasion companions (ponytail / vernacular essays) are not lean force.
 Finite meters close known seams: vernacular machine fields (paths, suffixes,
 boolean prefixes, real `pack_native`) and lean new-file / net-LOC caps
 ([`evals/LEAN-VERNACULAR-FORCE-PSTAR.md`](evals/LEAN-VERNACULAR-FORCE-PSTAR.md)).
 Green meters ≠ absolute “perfect / extremely organized” code (Rice residual).
+V15.6: lean size roofs ≠ semantic quality / clean / YAGNI by construction
+([`evals/LEAN-SIZE-QUALITY-PSTAR.md`](evals/LEAN-SIZE-QUALITY-PSTAR.md)).
 
 ## Why all three
 
