@@ -16,6 +16,7 @@
 
 - [ ] Re-paste User Rules V16.0.19 + new chat
 - [x] Metanoia + fleet companion sync — verify **PASS**
+- [x] Personal skill `/gh-account-switch` (`~/.cursor/skills/gh-account-switch/`) — `switch.sh` gauntlet green 2026-07-28 (vault: wiki/projects/kleosr/Sessions/2026-07-28-gh-account-switch-gauntlet)
 - [ ] Absolute Completeness NEGATE (Rice)
 
 ## Blockers
