@@ -44,7 +44,7 @@
     "these",
     "those"
   ],
-  "recall_gate_enabled": false,
+  "recall_gate_enabled": true,
   "recall_message": "Blocked write before Obsidian recall. vault_read wiki/hot.md then wiki/index.md (user-obsidian) first. Skill obsidian-memory.",
   "exempt_write_prefixes": [
     "docs/",

@@ -13,7 +13,7 @@ ask classify/pointers. Agent curates depth via MCP `user-obsidian`.
 1. Obey injected classify + pointers — drill only pages that change next action.
 2. **INTENT:** restate verified ask + done-when in chat before CODE — never rewrite
    the user prompt.
-3. Before CODE write: `vault_read` `wiki/hot.md` then `wiki/index.md` (duty; lab recall gate off — inject + companions).
+3. Before CODE write: `vault_read` `wiki/hot.md` then `wiki/index.md` (recall gate ON — deny CODE_EXT until ledger recall).
 4. Durable fact same-turn → COMPLETE `vault_append` + refresh hot; never edit `raw/`.
 5. Before Done: Session **LAYER CHECK** (prompt|context|harness|loop|graph) with evidence.
 6. Debug by layer unit: prompt | context | harness | loop | graph

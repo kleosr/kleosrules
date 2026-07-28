@@ -1,4 +1,13 @@
-# Release — kleosr (current: V16.0.19)
+# Release — kleosr (current: V16.0.20)
+
+## V16.0.20 — Recall M-on + event-loop weekly nudge
+
+1. `context.json` `recall_gate_enabled: true` — CODE_EXT write denies without ledger
+   `obsidian_recall` (exempt: docs/skills/user-rules/project-rules/hooks/policy).
+2. sessionStart injects EVENT LOOP nudge when `wiki/audits/*weekly*` missing or >7d.
+3. Honesty table + paste/option-c/skill/curator: recall ON (M Total when enabled).
+4. Pack `16.0.20`. Residual: re-paste Settings User Rules; J followup/stub meter (Rice);
+   OS cron still optional beyond sessionStart nudge.
 
 ## V16.0.19 — Retire Life OS brand
 
@@ -16,7 +25,7 @@
 2. `lean.json` code_extensions + `.css`/`.scss`/`.html` (wood-rail CSS cannot
    bypass via Shell).
 3. `git apply` / `patch` still allow. Only `rm` still asks.
-4. Lab fluid kept: recall off, shell deny empty, lean ON.
+4. Lab fluid kept: recall off (superseded V16.0.20), shell deny empty, lean ON.
 
 ## V16.0.17 — Lab fluid (only rm asks)
 

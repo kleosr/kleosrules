@@ -35,7 +35,7 @@ Crate map (proposed names → real): `gate/` → `src/engine/`; `cli/` → `src/
 
 | Need | Path | Notes |
 |------|------|-------|
-| Paste User Rules | `user-rules/USER-RULES.paste.txt` | V16.0.19 Option C (no Life OS brand; shell-write deny + lab fluid) |
+| Paste User Rules | `user-rules/USER-RULES.paste.txt` | V16.0.20 Option C (recall ON; shell-write deny) |
 | Option C disk mirror | `user-rules/option-c-core.mdc` | often `alwaysApply: true` |
 | Always-on companions | `project-rules/{native-lean-autoload,ponytail,lean-code,agent,obsidian-memory}.mdc` | Synced |
 | Vernacular contract | `project-rules/vernacular.mdc` | Pack SSOT; live link under `.cursor/rules/` |
@@ -49,7 +49,7 @@ Crate map (proposed names → real): `gate/` → `src/engine/`; `cli/` → `src/
 | Sync verify | `kleos-gate verify` | |
 | Release | `docs/RELEASE.md` | |
 | TOOLCHAIN | `docs/TOOLCHAIN.md` | Done recipe |
-| Pack version | `package.json` | `16.0.19` (kleosr) |
+| Pack version | `package.json` | `16.0.20` (kleosr) |
 | Layer units | `docs/LAYER-STACK.md` | prompt→context→harness→loop→graph |
 | Cursor curator | `docs/CURSOR-CURATOR.md` | ask classify + agent loop + 0xJeyx |
 | Pack vernacular SSOT | `project-rules/vernacular.mdc` | Linked into pack `.cursor/rules` |

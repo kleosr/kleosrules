@@ -108,7 +108,7 @@ fn write_clean_allows() {
 }
 
 #[test]
-fn write_without_recall_allows_lab() {
+fn write_without_recall_denies() {
     let (code, obj) = run_gate(
         "write",
         json!({
@@ -120,8 +120,14 @@ fn write_without_recall_allows_lab() {
             }
         }),
     );
-    assert_eq!(code, 0, "{obj}");
-    assert_eq!(perm(&obj), "allow");
+    assert_eq!(code, 2, "{obj}");
+    assert_eq!(perm(&obj), "deny");
+    let msg = obj
+        .get("agent_message")
+        .or_else(|| obj.get("user_message"))
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    assert!(msg.contains("Obsidian recall") || msg.contains("vault_read"), "{msg}");
 }
 
 #[test]

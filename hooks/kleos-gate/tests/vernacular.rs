@@ -43,6 +43,8 @@ fn check_content_path_vernacular_denies() {
 #[test]
 fn write_forbidden_class_suffix_denies() {
     let root = tempfile_dir();
+    let state = tempfile_dir();
+    seed_recall(&policy_dir(), &state, "vn1");
     std::fs::create_dir_all(root.join("project-rules")).unwrap();
     std::fs::create_dir_all(root.join("hooks")).unwrap();
     std::fs::write(
@@ -60,13 +62,14 @@ fn write_forbidden_class_suffix_denies() {
         .stderr(Stdio::piped())
         .env("KLEOS_HOOKS_DIR", hooks_root())
         .env("KLEOS_POLICY_DIR", policy_dir())
-        .env("KLEOS_STATE_DIR", tempfile_dir());
+        .env("KLEOS_STATE_DIR", &state);
     let mut child = cmd.spawn().expect("spawn");
     {
         let mut stdin = child.stdin.take().expect("stdin");
         stdin
             .write_all(
                 json!({
+                    "conversation_id": "vn1",
                     "tool_name": "Write",
                     "tool_input": {
                         "path": path.to_string_lossy(),

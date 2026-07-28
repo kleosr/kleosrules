@@ -169,7 +169,7 @@ pub fn run(hooks: &Path) -> ! {
         ("write".into(), write_prose, "deny".into(), "write_prose".into()),
         ("write".into(), write_inline, "deny".into(), "write_inline_prose".into()),
         ("write".into(), "{\"tool_name\":\"Write\",\"tool_input\":{\"path\":\"docs/tmp_c.ts\",\"contents\":\"export const n=1;\\n\"}}".into(), "allow".into(), "write_clean".into()),
-        ("write".into(), "{\"tool_name\":\"Write\",\"tool_input\":{\"path\":\"hooks/tmp_recall.ts\",\"contents\":\"export const n=1;\\n\"}}".into(), "allow".into(), "write_recall_gate".into()),
+        ("write".into(), "{\"tool_name\":\"Write\",\"tool_input\":{\"path\":\"hooks/tmp_recall.ts\",\"contents\":\"export const n=1;\\n\"}}".into(), "deny".into(), "write_recall_gate".into()),
         ("write".into(), "{\"tool_name\":\"Write\",\"tool_input\":{\"path\":\"src/FooUseCase.rs\",\"contents\":\"pub struct X{}\\n\"}}".into(), "deny".into(), "write_vernacular_name".into()),
         ("beforeReadFile".into(), "{\"hook_event_name\":\"beforeReadFile\",\"path\":\".env\"}".into(), "deny".into(), "read_env".into()),
         ("beforeReadFile".into(), "{\"hook_event_name\":\"beforeReadFile\",\"path\":\".env.example\"}".into(), "allow".into(), "read_env_example".into()),

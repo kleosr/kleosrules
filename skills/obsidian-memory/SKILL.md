@@ -23,7 +23,7 @@ Pattern: **raw = source, wiki = compiled, continuous refeed**
 | sessionStart | playbook + capped hot + context-meter + recall nudge |
 | beforeSubmitPrompt | classify hints (≤2) + index/hot pointers (stopwords; min 2 hits) |
 | Mid-session | companion + roof nudge every 12 tools |
-| CODE write roof | soft when `recall_gate_enabled: false` (lab); deny only when ON |
+| CODE write roof | deny CODE_EXT until ledger `obsidian_recall` when `recall_gate_enabled` (default ON) |
 | Durable fact | same-turn `vault_append` (agent must) |
 | Ops triad | **ingest → query → lint** (+ write-back) |
 | Fleet | missing hub → refeed disk AGENTS/README/HANDOFF ([[instructions/MAX-MEMORY]]) |

@@ -40,6 +40,41 @@ pub fn hot_slice(policy: &ContextPolicy) -> Option<(String, usize, usize)> {
     Some((format!("wiki/hot.md (capped):\n{body}"), used, full))
 }
 
+const WEEKLY_LINT_MAX_AGE_SECS: u64 = 7 * 24 * 3600;
+const WEEKLY_LINT_NUDGE: &str = "EVENT LOOP: weekly lint stale or missing (>7d). Run lint triad → wiki/audits/YYYY-MM-DD-weekly.md (template wiki/_templates/weekly-lint). Skill obsidian-memory.";
+
+fn weekly_lint_stale(policy: &ContextPolicy) -> bool {
+    let audits = vault_root(policy).join("wiki/audits");
+    let Ok(rd) = fs::read_dir(&audits) else {
+        return true;
+    };
+    let now = std::time::SystemTime::now();
+    let mut freshest: Option<std::time::SystemTime> = None;
+    for ent in rd.flatten() {
+        let name = ent.file_name().to_string_lossy().to_lowercase();
+        if !name.contains("weekly") {
+            continue;
+        }
+        let Ok(meta) = ent.metadata() else {
+            continue;
+        };
+        let Ok(mtime) = meta.modified() else {
+            continue;
+        };
+        freshest = Some(match freshest {
+            Some(prev) if prev > mtime => prev,
+            _ => mtime,
+        });
+    }
+    match freshest {
+        None => true,
+        Some(m) => now
+            .duration_since(m)
+            .map(|d| d.as_secs() > WEEKLY_LINT_MAX_AGE_SECS)
+            .unwrap_or(true),
+    }
+}
+
 pub fn session_seed(policy: &ContextPolicy) -> Vec<String> {
     let mut parts = Vec::new();
     if !policy.playbook.is_empty() {
@@ -53,6 +88,9 @@ pub fn session_seed(policy: &ContextPolicy) -> Vec<String> {
                 cap = policy.hot_chars_max
             ));
         }
+    }
+    if weekly_lint_stale(policy) {
+        parts.push(WEEKLY_LINT_NUDGE.into());
     }
     parts
 }

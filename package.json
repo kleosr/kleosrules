@@ -1,7 +1,7 @@
 {
   "name": "kleosr",
-  "version": "16.0.19",
+  "version": "16.0.20",
   "private": true,
-  "description": "kleosr — Cursor harness (V16.0.19). Shell-write deny; recall off; lean ON; only rm ASK.",
+  "description": "kleosr — Cursor harness (V16.0.20). Shell-write deny; recall ON; lean ON; only rm ASK.",
   "license": "MIT"
 }

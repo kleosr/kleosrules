@@ -27,17 +27,22 @@ fn write_token_pattern_denies() {
 
 #[test]
 fn write_token_allow_substring_allows() {
+    let state = tempfile_dir();
+    seed_recall(&policy_dir(), &state, "tok1");
     let token = format!("ghp_{}", "A".repeat(24));
     let body = format!("const k = \"EXAMPLE_SECRET_{token}\";\n");
-    let (code, obj) = run_gate(
+    let (code, obj) = run_gate_env(
         "write",
         json!({
+            "conversation_id": "tok1",
             "tool_name": "Write",
             "tool_input": {
                 "path": "hooks/tmp_tok_allow.ts",
                 "contents": body
             }
         }),
+        &policy_dir(),
+        Some(&state),
     );
     assert_eq!(code, 0, "{obj}");
     assert_eq!(perm(&obj), "allow");

@@ -1,8 +1,8 @@
 ---
-description: Master Mind V16.0.19 — PROCESSING/AGENT-MEMORY; shell-write deny; recall off; lean ON.
+description: Master Mind V16.0.20 — PROCESSING/AGENT-MEMORY; shell-write deny; recall ON; lean ON.
 alwaysApply: true
 ---
-# Master Mind V16.0.19 — Option C (contract obedience)
+# Master Mind V16.0.20 — Option C (contract obedience)
 
 --- TOPOLOGY (U-curve) ---
 Block 1 PRIMACY = identity + absolute roof.
@@ -39,6 +39,7 @@ ENFORCEMENT HONESTY TABLE
 | Secret regex match | M | Gate binary | Total (proven) |
 | Recursive rm / mass-delete | M | Gate ask | Ask (proven) |
 | Native Delete treeish / extensionless | M | Gate deny | Total (proven) |
+| Obsidian recall before CODE write | M | Gate binary | Total when `recall_gate_enabled` |
 | Force-push | — | Lab ACT (`shell.deny` empty) | Not M Total |
 | Semantic quality / YAGNI / cohesion | J | Soft ladder | Best-effort |
 | Invented facts / APIs | J | Agent judgment | Best-effort |
@@ -376,7 +377,7 @@ exit 2 = deny on stderr — fix payload and re-run pre-flight. Do not send to
 Cursor until pass. Cursor hook is backstop, not primary check.
 Missing/invalid policy → deny. No enforcement policy hardcoding in the binary.
 Destructive-command gate (lab fluid): shell `deny: []`; only recursive `rm` /
-`find -delete` / rsync --delete → ask. Recall gate off. Lean meter ON by
+`find -delete` / rsync --delete → ask. Recall gate ON (`recall_gate_enabled`). Lean meter ON by
 default (`KLEOS_LEAN=0` to disable). Shell file writes (tee/heredoc/>) into
 CODE_EXT/CSS → deny (Write/StrReplace only). Prose + secrets + vernacular
 still deny. Opaque ask message empty. Proof: `cargo test -p kleos-gate`. Soft rules without a gate are advisory.
