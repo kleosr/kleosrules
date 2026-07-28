@@ -1,22 +1,22 @@
 # Handoff
 
-**Goal:** Land P*-16 Staircase Composition kill (absolute lean file roof) and persist epistemic memory.
+**Goal:** Product completeness + pack hygiene alignment (V16.0.19).
 
-**Status:** done (mechanism + docs); open sibling remains
+**Status:** DONE (TOOLCHAIN green except Metanoia SHARED residual).
 
 ## Done
 
-- Absolute `file_loc_max: 700` on Write + projected StrReplace — evidence: `cargo test --bins -- lean::` (5/5); live staircase deny at 801 / final 601
-- Honesty table split increment vs absolute — `user-rules/USER-RULES.paste.txt` + `option-c-core.mdc`
-- Eval + chain — `docs/evals/STAIRCASE-COMPOSITION-PSTAR.md`; `docs/evals/BREAKTHROUGH-CHAIN.md`; pack `16.0.13`
-- Integration + release binary — `cargo test` 30/30; `gate-diff` GATE_DIFF_PASS; `hooks/bin/kleos-gate` rebuilt
-- Vault — [[wiki/projects/kleosr/Sessions/2026-07-27-pstar16-staircase]], Decisions, Learnings, hot, log
+- Hygiene docs aligned to lab fluid (PROOF-EVALS, USER-RULES, AGENTIC-GAUNTLET, RULES-HUNT, RELEASE title)
+- Paste / option-c DOC MAP + P*-17/P*-18 kills; agent + context-curator recall wording; README professional (no emoji headers)
+- Shell ask tests: `find -delete` + `rsync --delete` (+ bench cases)
+- AGENTS P*-17/18 deep links; Ask-first no longer lists force-push as gated
+- Prior: gitignore/bin, TDD suites, delete.json, C′ AFFIRM surfaces
 
 ## Open
 
-- [ ] Kill `delete.rs` sequential single Deletes ≡ mass Delete (same event/state quantifier class)
-- [ ] Re-paste User Rules / `kleos-gate install` so live Cursor loads V16.0.13 paste+policy
-- [ ] Optional: `.ipynb`/`.tf`/`.jl` in `code_extensions` (FP tradeoff)
+- [ ] Re-paste User Rules V16.0.19 + new chat
+- [x] Metanoia + fleet companion sync — verify **PASS**
+- [ ] Absolute Completeness NEGATE (Rice)
 
 ## Blockers
 
@@ -24,19 +24,22 @@
 
 ## Next
 
-Audit and kill the `delete.rs` sequential-singles sibling of P*-16 (same class).
+Human re-paste User Rules. Absolute Completeness remains NEGATE.
 
 ## Verify
 
 ```bash
 cd hooks/kleos-gate && cargo test && cargo build --release
-cp -f target/release/kleos-gate ../bin/kleos-gate
+hooks/bin/kleos-gate bench
 hooks/bin/kleos-gate gate-diff
-hooks/bin/kleos-gate check-user-rules
+hooks/bin/kleos-gate verify
+# expect PASS after companion sync
 ```
 
-## Notes
+## INTENT
 
-- Model / chat: Cursor Grok 4.5 — P*-16 land + Obsidian write-back flush
-- Related skills: obsidian-memory, session-handoff, unconditional-counterexample
-- Vault SSOT: `/home/kleosr/rootsidian/kleosr` — never wipe; persist INTO wiki/
+**Ask:** Product completeness — fully working, hygiene-aligned, professional/clean.
+
+**Done-when:** CLI/hook page map green; doctrine ↔ live policy; README clean; named residual only.
+
+**Residual:** Absolute Completeness NEGATE; human re-paste; crate version 16.0.0 vs pack 16.0.19; skill-layer force-push stricter than gate.

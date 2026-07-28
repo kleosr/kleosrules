@@ -1,16 +1,7 @@
 {
   "name": "kleosr",
-  "version": "16.0.13",
+  "version": "16.0.19",
   "private": true,
-  "description": "kleosr — Cursor harness (V16.0.13). Absolute lean file roof (P*-16).",
-  "license": "MIT",
-  "scripts": {
-    "build": "cargo build --release --manifest-path hooks/kleos-gate/Cargo.toml && mkdir -p hooks/bin && cp -f hooks/kleos-gate/target/release/kleos-gate hooks/bin/kleos-gate && chmod +x hooks/bin/kleos-gate",
-    "install": "hooks/bin/kleos-gate install",
-    "hooks": "hooks/bin/kleos-gate install-hooks",
-    "sync": "hooks/bin/kleos-gate sync",
-    "verify": "hooks/bin/kleos-gate verify",
-    "bench": "hooks/bin/kleos-gate bench",
-    "gate-diff": "hooks/bin/kleos-gate gate-diff"
-  }
+  "description": "kleosr — Cursor harness (V16.0.19). Shell-write deny; recall off; lean ON; only rm ASK.",
+  "license": "MIT"
 }

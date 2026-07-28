@@ -2,12 +2,14 @@
 
 ## Claim (C′)
 
-Master Mind V16.0.13: MUST-NEVER/M surfaces are 100% gated (proven). Soft
-skills/companions are J-authority when routed (never waive M). Lean meter =
-finite size roofs on Write **and** Shell embedded CODE_EXT bodies — per-event
-increments **and** absolute post-state `file_loc_max`; opaque Shell CODE_EXT
-without embedded body → ask. Ask-scope ledger enabled (finite).
-Self-hunt against this pack’s law requires Self-target confirm before Phases 2→4.
+Master Mind V16.0.19: MUST-NEVER/M surfaces that the honesty table claims as
+Total match live gates (proven). Soft skills/companions are J-authority when
+routed (never waive M). Lean meter = finite size roofs on Write **and** Shell
+embedded CODE_EXT bodies — per-event increments **and** absolute post-state
+`file_loc_max`; opaque Shell CODE_EXT without embedded body → **deny**
+(V16.0.18). Ask-scope ledger enabled (finite). Native Delete extensionless /
+treeish → deny (`delete.json`). Force-push is lab ACT (not M deny). Self-hunt
+against this pack’s law requires Self-target confirm before Phases 2→4.
 
 ## Pack
 
@@ -18,7 +20,9 @@ artifact
 Not absolute ∀. P*-13 killed V15.4 (M/J). P*-14 killed V15.5 (soft-force).
 P*-15 killed V15.6 (lean size ≠ quality). P*-16 killed V16.0.13 (staircase
 composition / absolute file roof). P*-17 killed V16.0.12 (dual-write lean
-bypass + ask-scope re-enabled). Mechanism residuals remain A2.
+bypass + ask-scope). P*-18 killed V16.0.19 (Delete extensionless / bare roots).
+Mechanism residuals remain A2. Absolute Completeness (blocks invented facts
+without well-behaved-model assumption) remains **NEGATE**.
 
 ## Chain (oldest → newest)
 
@@ -56,10 +60,20 @@ Mechanism seams — closed V11–V15. See sibling PSTAR docs.
 - Class: Shell CODE_EXT write plane without lean; opaque ask emptied; ask-scope off
 - Instance: 130-LOC heredoc Shell allow / Write deny; tee allow; drive-by allow
 - Evidence: docs/evals/DUAL-WRITE-LEAN-PSTAR.md
-- Kill: V16.0.12 embedded heredoc → lean/vernacular/prose; opaque ask restored;
-  ask-scope `enabled: true`
+- Kill: V16.0.12 embedded heredoc → lean/vernacular/prose; later V16.0.18
+  opaque Shell CODE_EXT → **deny**; ask-scope `enabled: true` (restored again
+  V16.0.19 after lab drift)
 - Why beats “shell argv smuggle” residual: size roofs were **absent** on Shell,
   not merely comment-FN
+
+### P*-18 DELETE STAIRCASE
+- Class: Hardcoded basename denylist sold as total Native Delete tree/mass M
+- Instance: bare `hooks` / `skills` / `docs` allow; `payments` deny
+- Evidence: docs/evals/DELETE-STAIRCASE-PSTAR.md
+- Kill: V16.0.19 `hooks/policy/delete.json` `deny_extensionless_basename` +
+  DeletePolicy wire; integration tests bare roots deny / surgical file allow
+- Why beats denylist pad: same finite-list FN class as pre-kill; policy flag
+  covers all extensionless basenames
 
 ## Ruled out
 
@@ -71,6 +85,7 @@ Mechanism seams — closed V11–V15. See sibling PSTAR docs.
 | Lean green ⇒ clean/YAGNI | Size roofs only; quality = J | LEAN-SIZE-QUALITY-PSTAR.md |
 | Per-event lean ⇒ bounded file | Absolute `file_loc_max` | STAIRCASE-COMPOSITION-PSTAR.md |
 | Shell heredoc skips lean | Embedded body checked | DUAL-WRITE-LEAN-PSTAR.md |
+| Bare pack-root Native Delete allow | Extensionless deny | DELETE-STAIRCASE-PSTAR.md |
 
 ## Open absolute residuals
 
@@ -79,11 +94,16 @@ Mechanism seams — closed V11–V15. See sibling PSTAR docs.
 | Chat emission ungated | Named design; C′ does not claim chat force | No chat event contract |
 | Self-target pause is J | Persuasion; user can still confirm hunt | Not mechanical |
 | Soft ladder yield / legal mediocre under size caps | Named A2; C′ does not claim ∀ quality | Soft |
-| Opaque Shell without argv body (tee/sed) | Asks (confirm) — not silent allow | Confirm path |
+| Opaque Shell CODE_EXT (tee/heredoc redirect) | **Deny** (V16.0.18) — not silent allow | Named plane |
+| `git apply` / non-redirect Shell writers | Named A2 allow residual | Heuristic / plane |
 | Template prose FN | Heuristic | Heuristics |
-| Sequential single Deletes ≡ mass | Same event/state class; sibling site | delete.rs |
+| Sequential N× dotted-file Deletes | Weaker sibling after P*-18; no compose ledger | State bound |
+| Invented facts / semantic context drift | Honesty J Best-effort | Rice |
+| Force-push | Lab ACT; honesty row Not M Total | Lab fluid |
+| Fleet Metanoia SHARED companions | Needs explicit `sync` | Ops |
 
 ## Status
 
-Deepened and resolved — P*-16 killed in V16.0.13 (absolute file roof);
-P*-17 killed in V16.0.12 (dual-write).
+P*-16 killed V16.0.13; P*-17 ask-scope restored V16.0.19 (after drift);
+P*-18 killed V16.0.19. Scoped C′ AFFIRM after those closes + honesty reconcile.
+Absolute Completeness NEGATE.

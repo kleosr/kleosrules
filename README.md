@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://img.shields.io/badge/version-16.0.13-blue?style=flat-square" />
+  <img src="https://img.shields.io/badge/version-16.0.19-blue?style=flat-square" />
   <img src="https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square" />
   <img src="https://img.shields.io/badge/status-stable-2ea44f?style=flat-square" />
   <img src="https://img.shields.io/badge/built%20for-Cursor%20hooks-111827?style=flat-square" />
@@ -10,14 +10,14 @@
 <div align="center">
   <h1>kleosr</h1>
   <p><strong>Cursor harness pack — User Rules, companions, skills, and a Rust gate.</strong></p>
-  <p>Master Mind V16 plus <code>kleos-gate</code>: block the usual agent failure modes,<br />keep fleet repos in sync, and persist memory outside the chat.</p>
+  <p>Master Mind V16.0.19 plus <code>kleos-gate</code>: block usual agent failure modes,<br />keep fleet repos in sync, and persist memory outside the chat.</p>
 </div>
 
 <br />
 
 ---
 
-## 📦 Setup
+## Setup
 
 ```bash
 git clone https://github.com/kleosr/kleosrules.git
@@ -28,7 +28,7 @@ cp -f hooks/kleos-gate/target/release/kleos-gate hooks/bin/kleos-gate
 FORCE_SKILLS=1 hooks/bin/kleos-gate install
 ```
 
-Then paste `user-rules/USER-RULES.paste.txt` into Cursor → Settings → Rules → User Rules, start a **new** agent chat, and confirm Hooks loaded `kleos-gate`. Needs `cargo` once (or use the binary under `hooks/bin/`). Tooling is Rust-only — no Python, no pack shell.
+Paste `user-rules/USER-RULES.paste.txt` into Cursor → Settings → Rules → User Rules, start a **new** agent chat, and confirm Hooks loaded `kleos-gate`. Needs `cargo` once (or use the binary under `hooks/bin/`). Tooling is Rust-only — no Python, no pack shell.
 
 Optional naming contract per app:
 
@@ -37,7 +37,7 @@ mkdir -p .cursor/rules
 cp skills/vernacular/TEMPLATE.md .cursor/rules/vernacular.mdc
 ```
 
-## 🚀 Usage
+## Usage
 
 ```bash
 # Install / refresh global + fleet hooks and skills
@@ -56,17 +56,17 @@ hooks/bin/kleos-gate gate-diff
 hooks/bin/kleos-gate --check-content --path path/to/file.rs < payload.rs
 ```
 
-The loop: **paste rules → install gate → agent works under hooks → TOOLCHAIN green → write-back vault/HANDOFF**. Soft skills guide taste when you invoke them. Mechanical roofs (comments, secrets, vernacular, lean size) deny in `kleos-gate` — rewrite or stop; do not fight a deny.
+Loop: **paste rules → install gate → work under hooks → TOOLCHAIN green → write-back vault/HANDOFF**. Soft skills guide taste when invoked. Mechanical roofs (comments, secrets, vernacular, lean size) deny in `kleos-gate` — rewrite or stop; do not fight a deny.
 
-Skill routes (examples): lean → `/ponytail`; dialect → `/vernacular`; vault → `/obsidian-memory`; AST → `/codebase-memory`.
+Skill routes: lean → `/ponytail`; dialect → `/vernacular`; vault → `/obsidian-memory`; AST → `/codebase-memory`; product pass → `/product-completeness`.
 
-## 📂 Files
+## Files
 
 | File | Purpose |
 |------|---------|
 | `user-rules/USER-RULES.paste.txt` | Master Mind paste (Settings User Rules) |
 | `project-rules/*.mdc` | Always-on companions synced into `.cursor/rules` |
-| `hooks/bin/kleos-gate` | Hot path + fleet CLI |
+| `hooks/bin/kleos-gate` | Hot path + fleet CLI (regenerable; gitignored) |
 | `hooks/policy/*.json` | Enforcement SSOT (no hardcoded policy in `.rs`) |
 | `hooks/hooks.json` | Cursor hook registry (kleos-gate only) |
 | `skills/` | On-demand Cursor skills (`config/skills.txt`) |
@@ -74,12 +74,12 @@ Skill routes (examples): lean → `/ponytail`; dialect → `/vernacular`; vault 
 | `docs/TOOLCHAIN.md` | Done recipe |
 | `AGENTS.md` | Pack map |
 
-## 🔄 Workflow Loop
+## Workflow
 
 ```
 paste User Rules → kleos-gate install → work under hooks
                      ↓
-         recall vault → edit → pre-flight → verify → write-back
+    vault hot (lab: inject; recall gate off) → edit → pre-flight → verify → write-back
 ```
 
 ```mermaid
@@ -87,7 +87,7 @@ graph LR
     S[Session Start] --> H[Read wiki/hot + AGENTS];
     H --> A[Agent task];
     A --> P{CODE write?};
-    P -- Yes --> R[Obsidian recall + pre-flight];
+    P -- Yes --> R[Obsidian duty + pre-flight];
     R --> W[Write / StrReplace];
     W --> G{kleos-gate};
     G -- Deny --> F[Fix payload];
@@ -98,7 +98,7 @@ graph LR
     B --> I[Idle / next ask];
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 .
@@ -118,7 +118,7 @@ graph LR
 
 Single pack topology — not an app monorepo. Live `.cursor/` copies are sync destinations; edit this pack and re-run `install` / `sync`.
 
-## 🛠️ Development
+## Development
 
 ```bash
 cd hooks/kleos-gate && cargo test && cargo build --release
@@ -130,16 +130,16 @@ hooks/bin/kleos-gate gate-diff
 
 Full checklist: [`docs/TOOLCHAIN.md`](docs/TOOLCHAIN.md). Release notes: [`docs/RELEASE.md`](docs/RELEASE.md).
 
-## 🤖 Integration
+## Integration
 
 Built for Cursor Hooks + User Rules. `kleos-gate install` wires global `~/.cursor` and scanned fleet roots. Soft companions (`ponytail`, `obsidian-memory`, …) stay always-on; skills under `~/.cursor/skills` run on demand. Optional Obsidian MCP `user-obsidian` holds durable memory (COMPLETE CAPTURE — full write-backs, not stubs). Green TOOLCHAIN is a finite known-case pass, not absolute semantic proof — see [`docs/MECHANICAL-INCOMPLETENESS.md`](docs/MECHANICAL-INCOMPLETENESS.md).
 
-## 🦀 Why Rust + policy JSON?
+## Why Rust + policy JSON?
 
 Hooks that fail open need a fail-closed binary. Policy lives in JSON so you can change roofs without rewriting the gate. Lean meter = size roofs only ([`docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`](docs/evals/LEAN-SIZE-QUALITY-PSTAR.md)). Stack map: [`docs/LAYER-STACK.md`](docs/LAYER-STACK.md) · curator: [`docs/CURSOR-CURATOR.md`](docs/CURSOR-CURATOR.md).
 
 Built for Cursor. Sibling workflow-memory skill: [cursorkleosr](https://github.com/kleosr/cursorkleosr).
 
-## 📄 License
+## License
 
 MIT. See [LICENSE](LICENSE).

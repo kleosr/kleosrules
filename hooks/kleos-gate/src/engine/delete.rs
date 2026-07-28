@@ -1,25 +1,26 @@
 use serde_json::Value;
 
+use crate::policy::{DeletePolicy, Policy};
 use crate::{allow, deny, tool_input};
 
-pub fn run(data: &Value) {
-    if is_treeish(data) {
-        deny(
-            "Blocked tree/mass Delete via native tool. Native Delete cannot ask (preToolUse ask is unenforced). State the exact path list, get user assent, then delete via Shell so beforeShellExecution can ask.",
-        );
+pub fn run(data: &Value, policy: &Policy) {
+    if is_treeish(data, &policy.delete) {
+        deny(&policy.delete.message);
     }
     allow();
 }
 
-fn is_treeish(data: &Value) -> bool {
+fn is_treeish(data: &Value, pol: &DeletePolicy) -> bool {
     let inp = tool_input(data);
-    if matches!(
-        inp.get("recursive"),
-        Some(v) if v.as_bool() == Some(true)
-            || v.as_str() == Some("true")
-            || v.as_str() == Some("True")
-            || v.as_i64() == Some(1)
-    ) {
+    if pol.deny_recursive
+        && matches!(
+            inp.get("recursive"),
+            Some(v) if v.as_bool() == Some(true)
+                || v.as_str() == Some("true")
+                || v.as_str() == Some("True")
+                || v.as_i64() == Some(1)
+        )
+    {
         return true;
     }
     let mut paths: Vec<String> = Vec::new();
@@ -45,25 +46,24 @@ fn is_treeish(data: &Value) -> bool {
     if paths.is_empty() {
         return false;
     }
-    if paths.len() > 1 {
+    if pol.deny_multi_path && paths.len() > 1 {
         return true;
     }
     let s = paths[0].trim_end_matches('/');
     let base = s.rsplit('/').next().unwrap_or(s);
+    if pol.deny_globs_and_roots && (s.contains('*') || matches!(s.trim(), "." | "/" | "~")) {
+        return true;
+    }
     if base.contains('.') {
-        return s.contains('*') || matches!(s.trim(), "." | "/" | "~");
+        return false;
     }
-    if s.ends_with("src")
-        || s.ends_with("lib")
-        || s.ends_with("app")
-        || s.ends_with("packages")
-        || s.ends_with("payments")
-        || s.ends_with("ledger")
-    {
+    if pol.deny_extensionless_basename {
         return true;
     }
-    if s.contains('/') && !base.contains('.') {
-        return true;
+    for suf in &pol.tree_basename_suffixes {
+        if !suf.is_empty() && s.ends_with(suf.as_str()) {
+            return true;
+        }
     }
-    s.contains('*') || matches!(s.trim(), "." | "/" | "~")
+    s.contains('/') && !base.contains('.')
 }

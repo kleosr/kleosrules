@@ -40,13 +40,12 @@ until closed (fix hook, do not demote roof):
 
 | Class | Status |
 |-------|--------|
-| Force-push / `--no-verify` | deny (live) |
-| Plain `git push` | ask (live) |
-| `gh release create` / `docker push` | ask (live after 10.1.3) |
+| Force-push / plain `git push` / `gh release` / `docker push` | allow (lab; `shell.deny` empty — V16.0.17+) |
 | Tree `rm -rf` | ask (live) |
-| `find … -delete` / `rsync --delete` | ask (live after 10.1.3) |
-| `rm -rf /` / pipe-to-shell / `npm publish` | deny (live) |
-| `git reset --hard` / `git clean -fdx` | hard-deny subset (stronger than ASK; allowed by “hooks may hard-deny”) |
+| `find … -delete` / `rsync --delete` | ask (live) |
+| Shell tee/heredoc into CODE_EXT | deny (opaque_write; V16.0.18) |
+| Native Delete treeish / extensionless | deny (live; `delete.json`) |
+| `git reset --hard` / `git clean -fdx` | soft J when ungated (lab shell deny empty) |
 | Invented APIs / skip verification | soft (policy + spot-check) |
 | Product mutation / Gherkin / coverage bar | **per-repo only** — pack does not supply |
 

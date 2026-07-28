@@ -23,7 +23,7 @@ Pattern: **raw = source, wiki = compiled, continuous refeed**
 | sessionStart | playbook + capped hot + context-meter + recall nudge |
 | beforeSubmitPrompt | classify hints (≤2) + index/hot pointers (stopwords; min 2 hits) |
 | Mid-session | companion + roof nudge every 12 tools |
-| CODE write roof | deny until ledger `obsidian_recall` |
+| CODE write roof | soft when `recall_gate_enabled: false` (lab); deny only when ON |
 | Durable fact | same-turn `vault_append` (agent must) |
 | Ops triad | **ingest → query → lint** (+ write-back) |
 | Fleet | missing hub → refeed disk AGENTS/README/HANDOFF ([[instructions/MAX-MEMORY]]) |
@@ -140,7 +140,8 @@ update `wiki/catalogs/Fleet.md` + index + log. Never dump full source trees into
 ### Lint (daily light / weekly full)
 
 Orphans, dead links, contradictions, 90d stale, **summary-only pages of any
-type** → `wiki/audits/YYYY-MM-DD.md`.
+type** → `wiki/audits/YYYY-MM-DD.md` (weekly: `wiki/audits/YYYY-MM-DD-weekly.md`).
+Ingest/lint law: vault `instructions/PROCESSING.md` + `instructions/AGENT-MEMORY.md`.
 
 ### During — same turn as the fact
 

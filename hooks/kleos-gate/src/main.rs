@@ -254,12 +254,12 @@ fn run() {
                 .and_then(|v| v.as_str())
                 .unwrap_or("");
             if tool == "Delete" || tool.contains("Delete") {
-                delete::run(&data);
+                delete::run(&data, &policy);
             } else {
                 write::run(&data, &policy, &st, &hooks);
             }
         }
-        "delete" | "gate-delete" => delete::run(&data),
+        "delete" | "gate-delete" => delete::run(&data, &policy),
         "beforeReadFile" | "beforeTabFileRead" | "read" | "gate-read" => {
             read::run(&data, &policy, hook_event);
         }

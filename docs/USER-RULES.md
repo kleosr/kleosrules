@@ -1,4 +1,4 @@
-# USER RULES — how to load Master Mind V16.0.12
+# USER RULES — how to load Master Mind V16.0.19
 
 ## Preferred (Settings User Rules)
 
@@ -16,17 +16,19 @@
 
 SINGLE SOURCE: Settings paste **or** option-c alwaysApply — not both with different bodies.
 
-V16.0.10: pack version + layer stack DOC MAP; package installs / npx / MCP are ACT (gate allows); remote publish still ASK;
-recursive `rm -rf` and mass-delete deny; secrets + prose comments still deny;
-house gauntlet is ACT NOW (agent runs TOOLCHAIN — never ask accept-no-gauntlet-risk).
-V15.6: lean meter = size roofs (not ∀ quality); soft skills = J when routed
-(never waive M). See `docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`,
-`docs/evals/SOFT-FORCE-SCHISM-PSTAR.md`.
+Lab fluid (V16.0.17–19): package installs / npx / MCP are ACT; remote publish and
+force-push are ACT (`shell.deny` empty); recursive `rm` / `find -delete` /
+`rsync --delete` ASK; shell tee/heredoc into CODE_EXT **deny**; secrets + prose
+comments still deny; recall gate off; lean ON; Native Delete treeish/extensionless
+deny. House gauntlet is ACT NOW (agent runs TOOLCHAIN — never ask
+accept-no-gauntlet-risk). Soft skills = J when routed (never waive M). See
+`docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`, `docs/evals/SOFT-FORCE-SCHISM-PSTAR.md`,
+`docs/evals/DELETE-STAIRCASE-PSTAR.md`.
 
 Layout is topological (U-curve): primacy roof → mid dictionary → recency
 execution gates; hooks re-anchor at write time (`docs/TOPOLOGICAL-PROMPT.md`).
 
-V16.0.12: INTENT restatement + COMPLETE CAPTURE + Session LAYER CHECK named in paste
+INTENT restatement + COMPLETE CAPTURE + Session LAYER CHECK named in paste
 (gate + companions already force; paste is recovery SSOT). `docs/CURSOR-CURATOR.md`.
 
 Then: `hooks/bin/kleos-gate install`

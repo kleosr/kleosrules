@@ -13,6 +13,13 @@ kleosr — Cursor harness pack (Master Mind **V16**): User Rules paste, always-o
 
 ## Boundaries
 
+| Capa | Qué vive ahí | Qué NO |
+|------|--------------|--------|
+| Mechanical | `hooks/kleos-gate` + `hooks/policy/*.json` | prose, skills, doctrine essays |
+| Soft / J | `skills/` + `project-rules/*.mdc` | roofs de comments/secrets/lean |
+| Doctrine | `docs/` + `user-rules/USER-RULES.paste.txt` | código ejecutable del gate |
+| Sync dest | `.cursor/` (gitignored) | nunca SSOT |
+
 | Boundary | Nested map | Owns |
 |----------|------------|------|
 | `hooks/` | [hooks/AGENTS.md](hooks/AGENTS.md) | kleos-gate (engine + fleet) + policy |
@@ -22,15 +29,17 @@ kleosr — Cursor harness pack (Master Mind **V16**): User Rules paste, always-o
 | `user-rules/` | [user-rules/AGENTS.md](user-rules/AGENTS.md) | Paste + Option C mirror |
 | `config/` | [config/AGENTS.md](config/AGENTS.md) | Skills list + scan roots |
 
+Crate map (proposed names → real): `gate/` → `src/engine/`; `cli/` → `src/fleet/` + `main.rs`; policy load → `src/policy.rs` + `hooks/policy/*.json`.
+
 ## Where to look
 
 | Need | Path | Notes |
 |------|------|-------|
-| Paste User Rules | `user-rules/USER-RULES.paste.txt` | V16.0.10 Option C (install ACT) |
+| Paste User Rules | `user-rules/USER-RULES.paste.txt` | V16.0.19 Option C (no Life OS brand; shell-write deny + lab fluid) |
 | Option C disk mirror | `user-rules/option-c-core.mdc` | often `alwaysApply: true` |
 | Always-on companions | `project-rules/{native-lean-autoload,ponytail,lean-code,agent,obsidian-memory}.mdc` | Synced |
 | Vernacular contract | `project-rules/vernacular.mdc` | Pack SSOT; live link under `.cursor/rules/` |
-| Hot path + fleet CLI | `hooks/bin/kleos-gate` | From `hooks/kleos-gate/` |
+| Hot path + fleet CLI | `hooks/bin/kleos-gate` | Regenerable (`cargo build --release` + cp); gitignored |
 | Policy | `hooks/policy/*.json` | No hardcode in `.rs` |
 | Hook registry | `hooks/hooks.json`, `hooks/hooks.project.json` | kleos-gate only |
 | House verify | `cargo test -p kleos-gate` | + `kleos-gate bench` |
@@ -40,7 +49,7 @@ kleosr — Cursor harness pack (Master Mind **V16**): User Rules paste, always-o
 | Sync verify | `kleos-gate verify` | |
 | Release | `docs/RELEASE.md` | |
 | TOOLCHAIN | `docs/TOOLCHAIN.md` | Done recipe |
-| Pack version | `package.json` | `16.0.13` (kleosr) |
+| Pack version | `package.json` | `16.0.19` (kleosr) |
 | Layer units | `docs/LAYER-STACK.md` | prompt→context→harness→loop→graph |
 | Cursor curator | `docs/CURSOR-CURATOR.md` | ask classify + agent loop + 0xJeyx |
 | Pack vernacular SSOT | `project-rules/vernacular.mdc` | Linked into pack `.cursor/rules` |
@@ -48,6 +57,8 @@ kleosr — Cursor harness pack (Master Mind **V16**): User Rules paste, always-o
 | P*-14 soft-force | `docs/evals/SOFT-FORCE-SCHISM-PSTAR.md` | Skill Self-target |
 | P*-15 lean≠quality | `docs/evals/LEAN-SIZE-QUALITY-PSTAR.md` | Size roofs ≠ YAGNI |
 | P*-16 staircase | `docs/evals/STAIRCASE-COMPOSITION-PSTAR.md` | Absolute file roof |
+| P*-17 dual-write lean | `docs/evals/DUAL-WRITE-LEAN-PSTAR.md` | Shell heredoc + ask-scope |
+| P*-18 delete staircase | `docs/evals/DELETE-STAIRCASE-PSTAR.md` | Extensionless / bare roots |
 
 ## Tree (depth 2)
 
@@ -59,14 +70,15 @@ kleosr — Cursor harness pack (Master Mind **V16**): User Rules paste, always-o
 ├── package.json
 ├── user-rules/
 ├── project-rules/
-├── hooks/               # kleos-gate (engine + fleet) + policy + bin
+├── hooks/               # kleos-gate (engine + fleet) + policy; bin/ gitignored
 ├── skills/
 ├── config/
 ├── docs/
 └── .github/            # CI only; not enforcement
 ```
 
-`.cursor/` is local/sync dest (gitignored) — not SSOT. Enforcement = `hooks/policy/*.json` + `hooks/bin/kleos-gate` only.
+`.cursor/` is local/sync dest (gitignored) — not SSOT. Enforcement = `hooks/policy/*.json` + rebuilt `hooks/bin/kleos-gate` only.
+`hooks/bin/` is regenerable — never commit the binary. Keep `hooks/kleos-gate/Cargo.lock` tracked (CLI).
 
 Hunt timeline: [`docs/RULES-HUNT.md`](docs/RULES-HUNT.md).
 
@@ -91,8 +103,8 @@ hooks/bin/kleos-gate gate-diff
 
 ## Ask first
 
-- Fleet `sync` against new/untrusted roots
-- Remote publish / force-push / hard reset / tree wipe
+- Fleet `sync` against new/untrusted roots (incl. Metanoia SHARED)
+- Hard reset / tree wipe / DB drop
 - Changing User Rules paste via MCP for other machines/users
 
 ## Deep links

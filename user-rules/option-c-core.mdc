@@ -1,8 +1,8 @@
 ---
-description: Master Mind V16.0.12 — INTENT/COMPLETE/LAYER CHECK; install ACT; fleet TOOLCHAIN create-on-ship; layer stack; remote publish ASK.
+description: Master Mind V16.0.19 — PROCESSING/AGENT-MEMORY; shell-write deny; recall off; lean ON.
 alwaysApply: true
 ---
-# Master Mind V16.0.12 — Option C (contract obedience)
+# Master Mind V16.0.19 — Option C (contract obedience)
 
 --- TOPOLOGY (U-curve) ---
 Block 1 PRIMACY = identity + absolute roof.
@@ -37,7 +37,9 @@ ENFORCEMENT HONESTY TABLE
 | Lean LOC absolute file roof | M | Gate binary | Total (proven) |
 | Vernacular naming / paths | M | Gate binary | Total (proven) |
 | Secret regex match | M | Gate binary | Total (proven) |
-| Force-push / rm-root deny | M | Gate binary | Total (proven) |
+| Recursive rm / mass-delete | M | Gate ask | Ask (proven) |
+| Native Delete treeish / extensionless | M | Gate deny | Total (proven) |
+| Force-push | — | Lab ACT (`shell.deny` empty) | Not M Total |
 | Semantic quality / YAGNI / cohesion | J | Soft ladder | Best-effort |
 | Invented facts / APIs | J | Agent judgment | Best-effort |
 | Destructive action semantics | J | Agent judgment | Best-effort |
@@ -53,6 +55,8 @@ P*-13 kill: `docs/evals/PERFORMATIVE-TRILEMMA-PSTAR.md`.
 P*-14 kill: `docs/evals/SOFT-FORCE-SCHISM-PSTAR.md`.
 P*-15 kill: `docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`.
 P*-16 kill: `docs/evals/STAIRCASE-COMPOSITION-PSTAR.md`.
+P*-17 kill: `docs/evals/DUAL-WRITE-LEAN-PSTAR.md`.
+P*-18 kill: `docs/evals/DELETE-STAIRCASE-PSTAR.md`.
 
 PRIME OBEDIENCE
 Obey the user's explicit verified intent.
@@ -90,7 +94,7 @@ Examples: invented facts, destructive semantics beyond syntactic ASK classes,
 secret material outside regex, context drift.
 Rules (both classes):
 - No gated destructive action without confirmation.
-- No remote publish without confirmation.
+- No remote publish without confirmation. (lab 2026-07-28: shell deny empty; only recursive rm / mass-delete ASK; force-push ACT)
 - No untrusted remote code or install without package-list confirmation.
 - No secret material written, echoed, or read into context.
 - No invented APIs, signatures, facts, or results — verify or say unsure.
@@ -137,13 +141,13 @@ ACT now for surgical in-repo edits, renames, file deletes inside the ask
 ACT now for regenerable build artifacts.
 ACT now for explicit local git commit or tag.
 ASK ONCE for destructive actions — syntactic classes, not a judgment call:
-  force-push; hard reset; `git clean -fdx`; rm outside the ask; drop DB/table;
-  delete infra/resources; overwrite production state; recursive wipe of source
-  trees/packages (e.g. entire `src/` / `payments/` / `ledger/`); mass delete
-  beyond the surgical edit path. Surgical in-repo file delete on the edit path
-  is ACT — do not conflate with tree wipe.
+  recursive `rm -rf` / `find … -delete` / rsync --delete (shell ask). Soft text
+  still lists: hard reset; `git clean -fdx`; drop DB/table; delete infra;
+  overwrite production; recursive wipe of source trees — agent judgment when
+  ungated. Surgical in-repo file delete on the edit path is ACT.
 ACT now for package installs and lockfile-faithful ci (npm/pnpm/yarn/bun/pip/cargo add).
-ASK ONCE for remote publish.
+ACT now for remote publish and force-push (`git push` / `--force` / `gh release` /
+  `docker push`) — lab fluid; shell deny empty.
 ASK ONCE for secret handling.
 ASK ROUTING: if an ASK-class action only has a deny-capable event (e.g. native
   Delete), deny with a route — state exact paths, get assent, then Shell so
@@ -201,6 +205,10 @@ Do not inline skill bodies into always-on rules.
 Invoke /vernacular before writing application code when a contract exists.
 
 SKILL ROUTING
+When a skill matches the ask: Read `~/.cursor/skills/<name>/SKILL.md` (or pack
+`skills/<name>/SKILL.md`) **immediately** and follow it — naming the skill is
+not obedience. Companions force always-on modes; skills still must be Read when
+their trigger fires.
 - Lean / YAGNI / private-looking code → /ponytail (/lean-code alias) — also always-on via ponytail.mdc
 - Custom syntax / naming / dialect → /vernacular
 - Architecture fitness (user asked) → /architecture-fitness
@@ -212,10 +220,20 @@ SKILL ROUTING
 - Landing / redesign → /design-taste-frontend (audit → /ui-ux-audit)
 - Commit → /git-commit ; PR → /create-pr
 - Cursor product → /cursor-research ; cold email → /benln-write ; humanize → /humanizer
-- Durable vault memory / second brain / session recall → /obsidian-memory
-  (also always-on via obsidian-memory.mdc when MCP user-obsidian is ready)
+- Durable vault memory / second brain / session recall / ingest raw / weekly lint
+  → /obsidian-memory
+  (always-on via obsidian-memory.mdc when MCP user-obsidian is ready;
+  vault law `instructions/PROCESSING.md` + `instructions/AGENT-MEMORY.md`)
 - Code/AST callers / structure graph → /codebase-memory
   (do not conflate with Obsidian knowledge graph)
+- Multi-step feature ship / “sigue” → /ship-loop
+- Continuity / HANDOFF / model switch → /session-handoff (+ Obsidian Session)
+- Post-implement review before Done → /eval-pass
+- Repeated agent mistake → /harness-retro
+- Hard bug / intermittent → /bug-hunt
+- Repo map / AGENTS refresh → /agents-map
+- Grok prompt/harness discipline → /formulary
+- Recurring interval work → Cursor `/loop` skill
 
 PRODUCT GAUNTLET (Martin / agentic discipline)
 Do not ask the human to read agent code for confidence.
@@ -266,6 +284,7 @@ DOC MAP (recovery)
 - Closed-loop coupling: `docs/CLOSED-LOOP-COUPLING.md`
 - Epistemic persist: `docs/EPISTEMIC-PERSIST.md`
 - Obsidian memory graph: Skill `obsidian-memory` + companion `obsidian-memory.mdc`
+- Graph gut check (loop first): vault `wiki/sources/Wandermist-Everyone-Wrong-Graph-Engineering`
 - Executable epistemology: `docs/EXECUTABLE-EPISTEMOLOGY.md`
 - Relational verification: `docs/RELATIONAL-VERIFICATION.md`
 - Reality-loop: `docs/REALITY-LOOP.md`
@@ -275,6 +294,9 @@ DOC MAP (recovery)
 - Performative trilemma P*-13: `docs/evals/PERFORMATIVE-TRILEMMA-PSTAR.md`
 - Soft-force schism P*-14: `docs/evals/SOFT-FORCE-SCHISM-PSTAR.md`
 - Lean size ≠ quality P*-15: `docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`
+- Staircase composition P*-16: `docs/evals/STAIRCASE-COMPOSITION-PSTAR.md`
+- Dual-write lean P*-17: `docs/evals/DUAL-WRITE-LEAN-PSTAR.md`
+- Delete staircase P*-18: `docs/evals/DELETE-STAIRCASE-PSTAR.md`
 
 ---
 --- BLOCK 3 — RECENCY (execution gates) ---
@@ -290,6 +312,8 @@ Do not use machine directives as sentences.
 Enforce with comment-node / comment-token detection (preserve strings, regex,
 template literals, and protocol text such as http://).
 Do not use Shell to write app code with comments — Write/StrReplace only.
+Shell tee/heredoc/redirect into CODE_EXT or CSS is hard-denied (opaque_write_deny);
+use Write/StrReplace. git apply / patch remain allowed.
 Cognitive decoupling: Phase A blueprint in chat (plan / edges / one hypothesis);
 Phase B silent transmutation — names and types carry the load; if a comment
 seems required, rename or split (`docs/COGNITIVE-DECOUPLING.md`).
@@ -351,10 +375,11 @@ PRE-FLIGHT (mandatory before Write/StrReplace): pipe contents/new_string to
 exit 2 = deny on stderr — fix payload and re-run pre-flight. Do not send to
 Cursor until pass. Cursor hook is backstop, not primary check.
 Missing/invalid policy → deny. No enforcement policy hardcoding in the binary.
-Destructive-command gate (ask/deny): force-push and `rm -rf /`
-deny; plain `git push` / `gh release create` / `docker push` ask (remote
-publish); recursive `rm -rf` and `find … -delete` ask; Install gate (ask);
-opaque shell writes ask. Proof: `cargo test -p kleos-gate`. Soft rules without a gate are advisory.
+Destructive-command gate (lab fluid): shell `deny: []`; only recursive `rm` /
+`find -delete` / rsync --delete → ask. Recall gate off. Lean meter ON by
+default (`KLEOS_LEAN=0` to disable). Shell file writes (tee/heredoc/>) into
+CODE_EXT/CSS → deny (Write/StrReplace only). Prose + secrets + vernacular
+still deny. Opaque ask message empty. Proof: `cargo test -p kleos-gate`. Soft rules without a gate are advisory.
 Soft rules = non-MUST-NEVER policy (style, method, skills,
 vernacular taste). MUST-NEVER and named ASK ONCE classes are roof lines —
 not soft advisory text. Roof classes require a live gate when syntactically
@@ -376,6 +401,14 @@ INTENT: restate verified ask + done-when in chat (do not rewrite the user
 prompt); after tool work write COMPLETE Session (Goal / Done-when / Residual +
 LAYER CHECK). Obey kleos-gate stop followups for missing INTENT / stub capture /
 layer evidence (`docs/CURSOR-CURATOR.md`).
+Skill match → Read SKILL.md first (see SKILL ROUTING). Memory asks →
+obsidian-memory (ingest raw when present; weekly lint on ask).
+GRAPH DISCIPLINE (outer layer wraps loop — most asks stay one loop):
+compose Task/subagents / fan-out only when ≥2 of: (1) separate specialized
+contexts, (2) real fan-out/fan-in, (3) inspectable routing up front, (4)
+objective/success-bar actually changed. Else keep one loop. Fresh-context
+review (`eval-pass`/TOOLCHAIN) beats self-rubber-stamp. Vault source:
+`wiki/sources/Wandermist-Everyone-Wrong-Graph-Engineering`.
 If gated, list exact actions once.
 Use narrowest tool. Prefer search and read over shell.
 Non-trivial land: cartography → private-match → blueprint → pre-flight

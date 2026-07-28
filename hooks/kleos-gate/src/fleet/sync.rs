@@ -22,6 +22,7 @@ fn sync_hooks_into(pack: &Path, root: &Path, label: &str) -> Result<(), String> 
         "ask-scope.json",
         "secrets.json",
         "context.json",
+        "delete.json",
     ] {
         fs::copy(
             pack.join("hooks/policy").join(name),

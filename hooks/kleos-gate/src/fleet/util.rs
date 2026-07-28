@@ -23,6 +23,7 @@ pub const HOOK_NEED: &[&str] = &[
     "policy/lean.json",
     "policy/secrets.json",
     "policy/ask-scope.json",
+    "policy/delete.json",
     "policy/context.json",
 ];
 

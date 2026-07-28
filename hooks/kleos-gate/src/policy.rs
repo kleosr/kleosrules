@@ -13,6 +13,8 @@ pub struct ShellPolicy {
     pub deny: Vec<Rule>,
     pub ask: Vec<Rule>,
     pub opaque_write_ask_message: String,
+    #[serde(default)]
+    pub opaque_write_deny_message: String,
     pub prose_shell_deny_message: String,
 }
 
@@ -53,6 +55,17 @@ pub struct AskScopePolicy {
 }
 
 #[derive(Debug, Deserialize)]
+pub struct DeletePolicy {
+    pub message: String,
+    pub deny_recursive: bool,
+    pub deny_multi_path: bool,
+    pub deny_globs_and_roots: bool,
+    pub deny_extensionless_basename: bool,
+    #[serde(default)]
+    pub tree_basename_suffixes: Vec<String>,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct ClassifyRule {
     pub id: String,
     pub pattern: String,
@@ -85,6 +98,7 @@ pub struct Policy {
     pub lean: LeanPolicy,
     pub secrets: SecretsPolicy,
     pub ask_scope: AskScopePolicy,
+    pub delete: DeletePolicy,
     pub context: ContextPolicy,
 }
 
@@ -94,12 +108,14 @@ impl Policy {
         let lean: LeanPolicy = read_json(&dir.join("lean.json"))?;
         let secrets: SecretsPolicy = read_json(&dir.join("secrets.json"))?;
         let ask_scope: AskScopePolicy = read_json(&dir.join("ask-scope.json"))?;
+        let delete: DeletePolicy = read_json(&dir.join("delete.json"))?;
         let context: ContextPolicy = read_json(&dir.join("context.json"))?;
         Ok(Self {
             shell,
             lean,
             secrets,
             ask_scope,
+            delete,
             context,
         })
     }

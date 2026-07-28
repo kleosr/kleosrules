@@ -21,7 +21,7 @@ pub fn run(data: &Value, policy: &Policy, state: &PathBuf, _hooks: &PathBuf) {
         .and_then(|v| v.as_str())
         .unwrap_or("preToolUse");
     if event == "preToolUse" && tool == "Delete" {
-        crate::engine::delete::run(data);
+        crate::engine::delete::run(data, policy);
     }
 
     let inp = tool_input(data);

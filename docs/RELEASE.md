@@ -1,4 +1,57 @@
-# Release — v16.0.0
+# Release — kleosr (current: V16.0.19)
+
+## V16.0.19 — Retire Life OS brand
+
+1. Delete vault `instructions/LIFE-OS.md` — habits stay in PROCESSING + AGENT-MEMORY.
+2. User Rules / option-c: strip Life OS pointers; keep GRAPH DISCIPLINE + skill Read.
+3. Pack `16.0.19`. Residual: re-paste Settings User Rules; new chat.
+4. Completeness C′ closes: ask-scope `enabled: true` (P*-17 restore); `delete.json`
+   `deny_extensionless_basename` (P*-18); honesty table Force-push → lab ACT /
+   Native Delete treeish M; opaque residual text → deny; recall-overclaim scrub.
+
+## V16.0.18 — Deny shell file writes (force Write/StrReplace)
+
+1. `shell.json` `opaque_write_deny_message` — tee/heredoc/redirect into CODE_EXT
+   or CSS hard-deny; message routes to Write/StrReplace.
+2. `lean.json` code_extensions + `.css`/`.scss`/`.html` (wood-rail CSS cannot
+   bypass via Shell).
+3. `git apply` / `patch` still allow. Only `rm` still asks.
+4. Lab fluid kept: recall off, shell deny empty, lean ON.
+
+## V16.0.17 — Lab fluid (only rm asks)
+
+1. `context.json` `recall_gate_enabled: false` — no write deny for missing vault recall
+  (fixes Metanoia fingerprint freeze from recall races).
+2. `lean.json` `enabled_default: true` — lean meter stays ON (size roofs); `KLEOS_LEAN=0` to disable.
+3. `shell.json` `deny: []`; `ask` = recursive rm + find -delete / rsync --delete only.
+4. Still deny: prose comments, secrets, vernacular, Delete tree, subagent force brief.
+5. User Rules V16.0.17 + option-c sync. Residual: re-paste Settings.
+
+## V16.0.16 — wandermist graph gut check
+
+1. Ingest: `wiki/sources/Wandermist-Everyone-Wrong-Graph-Engineering` (X Article FULL).
+2. User Rules / option-c: GRAPH DISCIPLINE in LOOP (≥2 of 4 before fan-out);
+   DOC MAP pointer; LIFE-OS parallel + gut check.
+3. Pack `16.0.16`. Residual: re-paste Settings if paste is SSOT.
+
+## V16.0.15 — Life OS + skill Read obedience (User Rules)
+
+1. User Rules / option-c: SKILL ROUTING requires Read SKILL.md on match;
+   Life OS (`instructions/LIFE-OS.md`) in INTENT + DOC MAP + LOOP;
+   routes for ship-loop / session-handoff / eval-pass / harness-retro /
+   bug-hunt / agents-map / formulary / `/loop`.
+2. Pack `16.0.15`; disk mirror synced to `~/.cursor/rules/option-c-core.mdc`.
+3. Residual: human must re-paste `USER-RULES.paste.txt` into Cursor Settings
+   if Settings paste is the live constitution (SINGLE SOURCE — do not run
+   both paste and alwaysApply option-c with divergent bodies).
+
+## V16.0.14 — Lab auto-allow asks (no human Approve)
+
+1. Policy: `shell.json` `ask: []`; `opaque_write_ask_message: ""`;
+   `ask-scope.json` `enabled: false`. MCP danger already `a^`.
+2. Hard deny unchanged: force-push, recursive rm, secrets, prose, lean, vernacular.
+3. User Rules / option-c: remote publish ACT (lab); sovereign override logged.
+4. Meters: opaque/push bench+tests expect `allow`; ask-scope enable still proven via copy.
 
 ## V16.0.13 — P*-16 Staircase Composition kill
 

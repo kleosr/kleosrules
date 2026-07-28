@@ -29,14 +29,19 @@ V16.0.12
 V16.0.13
   P*-16 KILL: absolute `file_loc_max` — per-event lean does not compose to
     state bound (staircase composition)
+V16.0.17–18
+  Lab fluid: shell deny empty; opaque Shell CODE_EXT deny; only rm ASK
+V16.0.19
+  P*-18 KILL: Native Delete extensionless / bare roots (`delete.json`);
+    ask-scope restore; Life OS brand retired; honesty ↔ lab reconcile
 ```
 
 ## Status
 
-P*-13 / P*-14 / P*-15 / P*-16 / P*-17 deepened and resolved. Mechanism A2
-residuals remain (incl. delete.rs sequential-singles sibling of P*-16).
-Implementation: kleosr Master Mind V16.0.13 — see `docs/RELEASE.md`,
-`docs/evals/STAIRCASE-COMPOSITION-PSTAR.md`, `user-rules/USER-RULES.paste.txt`.
+P*-13…P*-18 deepened and resolved. Mechanism A2 residuals remain (incl.
+delete.rs sequential-singles sibling of P*-16). Implementation: kleosr Master
+Mind V16.0.19 — see `docs/RELEASE.md`, `docs/evals/DELETE-STAIRCASE-PSTAR.md`,
+`user-rules/USER-RULES.paste.txt`.
 
 Fictional “V14 Rust-Core” paste in older drafts is **superseded** — pack V14
 was Python lean/vernacular; Rust is **V15**. Shell fleet tooling retired in **V16**.

@@ -147,6 +147,7 @@ pub fn verify(pack: &Path) -> Result<(), String> {
         "hooks/policy/lean.json",
         "hooks/policy/secrets.json",
         "hooks/policy/ask-scope.json",
+        "hooks/policy/delete.json",
         "hooks/policy/context.json",
         "hooks/kleos-gate/Cargo.toml",
         "hooks/kleos-gate/tests/integration.rs",

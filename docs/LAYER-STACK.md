@@ -9,7 +9,7 @@ Debug by unit of work: find which layer’s unit broke, then fix that layer
 | Layer | Is | Unit of work | kleosr surface |
 |-------|-----|--------------|----------------|
 | **Prompt** | Message — model starts empty each call | One input | User Rules U-curve Blocks 1–3; companions; vault `AGENT.md` / `instructions/*`; skill prompts |
-| **Context** | Memory / curation — finite window | What stays in the window | Force: playbook + capped hot + **ask classify/pointers** + meter (`hooks/policy/context.json`). Agent: targeted MCP. Ledger: recall before CODE write; COMPLETE write-back INTO vault; INTENT restatement + Session LAYER CHECK (see [`CURSOR-CURATOR.md`](CURSOR-CURATOR.md)). Playbook never rewrites the user prompt. |
+| **Context** | Memory / curation — finite window | What stays in the window | Force: playbook + capped hot + **ask classify/pointers** + meter (`hooks/policy/context.json`; lab `recall_gate_enabled: false`). Agent: targeted MCP + vault duty before CODE. Ledger: COMPLETE write-back INTO vault; INTENT restatement + Session LAYER CHECK (see [`CURSOR-CURATOR.md`](CURSOR-CURATOR.md)). Playbook never rewrites the user prompt. |
 | **Harness** | Machine — gather → tools → verify | One pass | Cursor + MCP + `kleos-gate` (deny/ask roofs) + TOOLCHAIN verify; judge = green checks |
 | **Loop** | Run — goal, brakes, completion | Whole run | stop ACT-NOW verify followup; ship-loop / session-handoff; max retries; goal in Session note |
 | **Graph** | Coordination — nodes, edges, shared state | Whole job | **Knowledge:** Obsidian wikilinks. **AST:** codebase-memory. **Work lineage:** git / HANDOFF / Sessions. **Org/workflow:** skills + subagents + eval-pass as reviewer (not Neo4j) |

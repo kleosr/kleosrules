@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Agent capsule
 
-Project craft law for synced repos. User Rules (Master Mind V16.0.11) own RISK /
+Project craft law for synced repos. User Rules (Master Mind V16.0.19) own RISK /
 MUST-NEVER (M mechanical / J judgment) / PRIME OBEDIENCE. Ops protocols are Skills, not always-on.
 Edit this pack and re-sync; never hand-edit downstream copies.
 Craft yields to TOOLCHAIN.md / house style / vernacular on conflict.
@@ -46,7 +46,7 @@ P*-15 lean size≠quality: `docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`.
 
 ## SAFETY
 
-- No force-push without confirmation. Gated destructive → ask once with exact list.
+- Gated destructive (recursive rm / mass-delete) → ask once with exact list. Force-push / remote publish: lab ACT (`shell.deny` empty).
 - Git writes only when explicitly requested. Reads always allowed.
 - No MCP additions unless asked. Read before edit.
 - Never weaken a failing test to pass unless factually wrong — say so.

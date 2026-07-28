@@ -1,29 +1,10 @@
 {
-  "deny": [
-    { "pattern": "rm\\s+(-[a-zA-Z]*r[a-zA-Z]*f|-[a-zA-Z]*f[a-zA-Z]*r|-[rf]{2})(?:\\s|$)", "message": "Blocked recursive rm (tree wipe class)." },
-    { "pattern": "find\\s+.*-delete(?:\\s|$)|rsync\\s+.*--delete", "message": "Blocked mass delete / sync-delete." },
-    { "pattern": "rm\\s+-[a-z]*rf\\s+/", "message": "Blocked destructive rm (lab gate)" },
-    { "pattern": "rm\\s+-[a-z]*fr\\s+/", "message": "Blocked destructive rm (lab gate)" },
-    { "pattern": "rm\\s+-[a-z]*rf\\s+/\\*", "message": "Blocked destructive rm (lab gate)" },
-    { "pattern": "rm\\s+-[a-z]*fr\\s+/\\*", "message": "Blocked destructive rm (lab gate)" },
-    { "pattern": "rm\\s+-[a-z]*rf\\s+~", "message": "Blocked destructive rm (lab gate)" },
-    { "pattern": "git\\s+push[^;&|]*(?:--force|--force-with-lease|\\s-f(?:\\s|$))", "message": "Blocked force-push (lab gate)" },
-    { "pattern": "git\\s+reset\\s+--hard", "message": "Blocked destructive git reset/clean (lab gate)" },
-    { "pattern": "git\\s+clean\\s+-[a-zA-Z]*f", "message": "Blocked destructive git clean (lab gate)" },
-    { "pattern": "curl[^\\n]*\\|\\s*(?:sh|bash)", "message": "Blocked pipe-to-interpreter (lab gate)" },
-    { "pattern": "wget[^\\n]*\\|\\s*(?:sh|bash)", "message": "Blocked pipe-to-interpreter (lab gate)" },
-    { "pattern": "mkfs\\.", "message": "Blocked disk-destructive command (lab gate)" },
-    { "pattern": "dd\\s+if=", "message": "Blocked disk-destructive command (lab gate)" },
-    { "pattern": "npm\\s+publish", "message": "Blocked publish/destroy (lab gate)" },
-    { "pattern": "pnpm\\s+publish", "message": "Blocked publish/destroy (lab gate)" },
-    { "pattern": "terraform\\s+destroy", "message": "Blocked publish/destroy (lab gate)" },
-    { "pattern": "git\\s+(?:commit|push|rebase)[^;&|]*(?:--no-verify|--no-gpg-sign)", "message": "Blocked by harness: no --no-verify / --no-gpg-sign unless user explicitly overrides outside hooks." },
-    { "pattern": "git\\s+push[^;&|]*(?:--force| -f\\s|--force-with-lease)", "message": "Blocked by harness: no force-push (agent.mdc SAFETY)." }
-  ],
+  "deny": [],
   "ask": [
-    { "pattern": "git\\s+push(?:\\s|$)", "message": "Remote publish (git push). Confirm remote/ref. MUST-NEVER: no remote publish without confirmation." },
-    { "pattern": "(?:^|[^a-z])(?:gh\\s+release\\s+create|docker\\s+push|podman\\s+push)(?:\\s|$)", "message": "Remote publish (release/image push). Confirm target. MUST-NEVER: no remote publish without confirmation." }
+    { "pattern": "rm\\s+(-[a-zA-Z]*r[a-zA-Z]*f|-[a-zA-Z]*f[a-zA-Z]*r|-[rf]{2})(?:\\s|$)", "message": "Confirm recursive rm (tree wipe)." },
+    { "pattern": "find\\s+.*-delete(?:\\s|$)|rsync\\s+.*--delete", "message": "Confirm mass delete / sync-delete." }
   ],
-  "opaque_write_ask_message": "Opaque shell write to CODE_EXT. Confirm or use Write/StrReplace so lean/vernacular/prose roofs apply.",
+  "opaque_write_ask_message": "",
+  "opaque_write_deny_message": "Blocked shell write of app files. Use Cursor Write/StrReplace only — never tee/heredoc/redirect for CODE_EXT or CSS.",
   "prose_shell_deny_message": "Blocked prose comment in code write (Native Lean NO COMMENTS)."
 }

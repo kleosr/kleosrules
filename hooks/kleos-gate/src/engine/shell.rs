@@ -21,7 +21,6 @@ pub fn run(data: &Value, policy: &Policy) {
     if looks_like_prose_shell_write(&cmd) {
         deny(&policy.shell.prose_shell_deny_message);
     }
-    let mut body_checked = false;
     if let Some((path, body)) = embedded_code_write(&cmd, &policy.lean) {
         if prose::has_prose(&body) {
             deny(&policy.shell.prose_shell_deny_message);
@@ -33,7 +32,7 @@ pub fn run(data: &Value, policy: &Policy) {
             if let Some(reason) = lean::check(&path, Some(&body), None, None, &policy.lean) {
                 deny(&reason);
             }
-            body_checked = true;
+            deny_shell_file_write(policy);
         }
     }
     for rule in &policy.shell.ask {
@@ -44,13 +43,31 @@ pub fn run(data: &Value, policy: &Policy) {
             ask(&rule.message);
         }
     }
-    if !body_checked && looks_opaque_write(&cmd, &policy.lean) {
+    if looks_opaque_write(&cmd, &policy.lean) && !is_patch_or_apply(&cmd) {
+        deny_shell_file_write(policy);
+    }
+    if looks_opaque_write(&cmd, &policy.lean) && is_patch_or_apply(&cmd) {
         let msg = &policy.shell.opaque_write_ask_message;
         if !msg.is_empty() {
             ask(msg);
         }
     }
     allow();
+}
+
+fn deny_shell_file_write(policy: &Policy) -> ! {
+    let msg = policy.shell.opaque_write_deny_message.trim();
+    if msg.is_empty() {
+        deny("Blocked shell write of app files. Use Cursor Write/StrReplace only.");
+    }
+    deny(msg);
+}
+
+fn is_patch_or_apply(cmd: &str) -> bool {
+    let lower = cmd.to_lowercase();
+    lower.contains("git apply")
+        || lower.contains("git am ")
+        || (lower.contains("patch ") && !lower.contains("dispatch"))
 }
 
 fn scrub_fd_redirects(cmd: &str) -> String {
@@ -62,7 +79,23 @@ fn scrub_fd_redirects(cmd: &str) -> String {
 
 fn has_code_ext(cmd: &str, pol: &LeanPolicy) -> bool {
     let lower = cmd.to_lowercase();
-    pol.code_extensions.iter().any(|ext| lower.contains(ext))
+    let mut exts: Vec<&String> = pol.code_extensions.iter().collect();
+    exts.sort_by_key(|e| std::cmp::Reverse(e.len()));
+    for ext in exts {
+        let e = ext.to_lowercase();
+        let mut from = 0usize;
+        while let Some(rel) = lower[from..].find(&e) {
+            let at = from + rel;
+            let after = at + e.len();
+            let ok_after = after >= lower.len()
+                || !lower.as_bytes().get(after).is_some_and(|b| b.is_ascii_alphanumeric());
+            if ok_after {
+                return true;
+            }
+            from = at + 1;
+        }
+    }
+    false
 }
 
 fn looks_like_prose_shell_write(cmd: &str) -> bool {
@@ -71,7 +104,8 @@ fn looks_like_prose_shell_write(cmd: &str) -> bool {
         || lower.contains(".js")
         || lower.contains(".py")
         || lower.contains(".rs")
-        || lower.contains(".go"))
+        || lower.contains(".go")
+        || lower.contains(".css"))
     {
         return false;
     }

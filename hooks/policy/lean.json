@@ -12,6 +12,7 @@
     ".rs", ".go", ".java", ".kt", ".kts", ".swift", ".rb", ".php", ".c", ".cc",
     ".cpp", ".cxx", ".h", ".hpp", ".cs", ".scala", ".sh", ".bash", ".zsh",
     ".ps1", ".sql", ".r", ".lua", ".vim", ".el", ".ex", ".exs", ".erl", ".hs",
-    ".ml", ".mli", ".zig", ".nim", ".dart", ".vue", ".svelte"
+    ".ml", ".mli", ".zig", ".nim", ".dart", ".vue", ".svelte",
+    ".css", ".scss", ".sass", ".less", ".html", ".htm"
   ]
 }
