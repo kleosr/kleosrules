@@ -1,5 +1,15 @@
 # Release — kleosr (current: V16.0.22)
 
+## V16.0.22+ — Cursor MCP:vault_* recall detection
+
+1. Recall/persist no longer require `user-obsidian` string in the full hook blob.
+2. Cursor `MCP:vault_read` / `MCP:search_*` / `MCP:vault_write` tool names count;
+   `beforeMCPExecution` with bare `vault_read` + `command: user-obsidian` + JSON-string
+   `tool_input` also sets ledger `obsidian_recall`.
+3. Args from tool_name + tool_input (+ command/server); no full-result walk — kills
+   Shell false-positive persist from grepping vault strings.
+4. Tests: cursor MCP recall, beforeMCP string input, MCP write persist, Shell FP guard.
+
 ## V16.0.22 — pack_native React + rules honesty (Rust ≠ Python)
 1. `pack_native` allows PascalCase `.tsx`/`.jsx`/`.vue`/`.svelte`; snake function
    gate off on those + CSS/HTML.

@@ -39,6 +39,20 @@ pub fn seed_recall(policy: &Path, state: &Path, cid: &str) {
         "postToolUse",
         json!({
             "conversation_id": cid,
+            "tool_name": "MCP:vault_read",
+            "tool_input": {"path": "wiki/hot.md"}
+        }),
+        policy,
+        Some(state),
+    );
+    drop(ignored);
+}
+
+pub fn seed_recall_callmcp(policy: &Path, state: &Path, cid: &str) {
+    let ignored = run_gate_env(
+        "postToolUse",
+        json!({
+            "conversation_id": cid,
             "tool_name": "CallMcpTool",
             "tool_input": {
                 "server": "user-obsidian",

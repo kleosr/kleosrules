@@ -52,5 +52,6 @@ When Obsidian is down: say so; use repo HANDOFF/AGENTS/DEBT. Never invent vault 
 - **COMPLETE CAPTURE (universal):** every durable write-back (ingest, sources, concepts, Decisions, Learnings, Sessions, journals) must be complete enough to recall without the chat or external URL. Thin summary-only = defect. Law: vault `instructions/PROCESSING.md`.
 - **INTENT + LAYER CHECK:** restate ask + done-when before CODE; Session must include Goal / Done-when / Residual and a five-layer evidence table before Done (`docs/CURSOR-CURATOR.md`). Never rewrite the user prompt.
 - GetMcpTools before CallMcpTool on `user-obsidian`.
+- Recall ledger: Cursor `MCP:vault_read` / `MCP:search_*` of hot|index counts (no blob `user-obsidian` required).
 - Vault ≠ TOOLCHAIN proof.
 - Soft J-authority; never waives MUST-NEVER/M or fights a deny.

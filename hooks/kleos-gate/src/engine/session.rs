@@ -14,7 +14,7 @@ const ROOF: &str = "Master Mind roof: NO prose comments; no remote publish witho
 const ROOF_EVERY: usize = 12;
 const FOLLOW: &str = "Session has unverified edits. ACT NOW: run the house gauntlet yourself (TOOLCHAIN.md / tests / lint / kleos-gate verify) and cite evidence. Never ask the human to waive verification. Do not claim Done without verification evidence or a named residual.";
 const LOOP_MSG: &str = "Freeze loop detected (repeat deny fingerprints). Stop retrying the same blocked write; vault_read hot|index if recall, then Cursor Write/StrReplace — never Python/shell file-write bypass.";
-const OBSIDIAN_RECALL: &str = "Obsidian memory MANDATORY before substantive work: GetMcpTools user-obsidian → vault_read wiki/hot.md then wiki/index.md then wiki/projects/<slug>/Index.md + latest Sessions/. Query wiki only; never edit raw/. Skill obsidian-memory.";
+const OBSIDIAN_RECALL: &str = "Obsidian memory MANDATORY before substantive work: GetMcpTools user-obsidian → vault_read wiki/hot.md then wiki/index.md then wiki/projects/<slug>/Index.md + latest Sessions/ (Cursor MCP:vault_read counts for ledger recall — server marker not required). Query wiki only; never edit raw/. Skill obsidian-memory.";
 const OBSIDIAN_FLUSH: &str = "Obsidian write-back required (persist INTO vault — never wipe): session had tool work but no vault write logged. vault_append/vault_write wiki/projects/<slug>/Decisions|Learnings|Sessions/YYYY-MM-DD-<topic>.md + refresh wiki/hot.md; mirror HANDOFF.md. Skill obsidian-memory.";
 const OBSIDIAN_COMPACT: &str = "Compaction imminent — write-back TO Obsidian NOW (Session + Decisions/Learnings via user-obsidian) before chat context dies. This saves memory; it does not clear the vault.";
 const OBSIDIAN_DUTY: &str = "Obsidian duty: if this block produced a durable decision/learning/landmine, vault_append it now with [[wikilinks]] (wiki/ only; never edit raw/).";
@@ -42,41 +42,176 @@ fn is_edit_tool(tool: &str) -> bool {
         || tool.contains("Delete")
 }
 
-fn obsidian_blob(data: &Value) -> String {
-    let mut blobs = Vec::new();
-    if let Some(t) = data
-        .get("tool_name")
+fn tool_name_of(data: &Value) -> String {
+    data.get("tool_name")
         .or_else(|| data.get("toolName"))
+        .or_else(|| data.get("name"))
         .and_then(|v| v.as_str())
-    {
-        blobs.push(t.to_string());
-    }
-    walk_strings(tool_input(data), &mut blobs);
-    walk_strings(data, &mut blobs);
-    blobs.join("\n").to_lowercase()
+        .unwrap_or("")
+        .to_lowercase()
 }
 
-fn is_obsidian_server(t: &str) -> bool {
-    t.contains("user-obsidian") || t.contains("\"obsidian\"") || t.contains("server\":\"obsidian")
+fn mcp_args_text(data: &Value) -> String {
+    let mut parts: Vec<String> = Vec::new();
+    parts.push(tool_name_of(data));
+    for key in ["command", "server", "url"] {
+        if let Some(s) = data.get(key).and_then(|v| v.as_str()) {
+            parts.push(s.to_lowercase());
+        }
+    }
+    if let Some(v) = data
+        .get("tool_input")
+        .or_else(|| data.get("input"))
+        .or_else(|| data.get("arguments"))
+    {
+        if let Some(s) = v.as_str() {
+            parts.push(s.to_lowercase());
+        } else {
+            let mut nested = Vec::new();
+            walk_strings(v, &mut nested);
+            for s in nested {
+                parts.push(s.to_lowercase());
+            }
+        }
+    }
+    parts.join("\n")
+}
+
+fn result_path_hint(data: &Value) -> String {
+    for key in ["mcp_tool_output", "tool_output", "result_json", "result", "output"] {
+        if let Some(v) = data.get(key) {
+            if let Some(p) = v.get("path").and_then(|x| x.as_str()) {
+                return p.to_lowercase();
+            }
+            if let Some(s) = v.as_str() {
+                if let Ok(j) = serde_json::from_str::<Value>(s) {
+                    if let Some(p) = j.get("path").and_then(|x| x.as_str()) {
+                        return p.to_lowercase();
+                    }
+                }
+                let low = s.to_lowercase();
+                if low.contains("\"path\"")
+                    && (low.contains("wiki/hot") || low.contains("wiki/index"))
+                {
+                    return low;
+                }
+            }
+        }
+    }
+    String::new()
+}
+
+fn bare_mcp_tool(name: &str) -> &str {
+    name.strip_prefix("mcp:").unwrap_or(name)
+}
+
+fn is_obsidian_vault_tool(bare: &str) -> bool {
+    matches!(
+        bare,
+        "vault_read"
+            | "vault_write"
+            | "vault_append"
+            | "vault_patch"
+            | "vault_list"
+            | "vault_move"
+            | "vault_copy"
+            | "vault_delete"
+            | "search_simple"
+            | "search_query"
+            | "vault_get_document_map"
+            | "open_file"
+            | "active_file_get_path"
+            | "tag_list"
+            | "command_list"
+            | "command_execute"
+    ) || bare.starts_with("vault_")
+}
+
+fn is_obsidian_mcp(data: &Value) -> bool {
+    let name = tool_name_of(data);
+    let bare = bare_mcp_tool(&name);
+    if name.starts_with("mcp:") && is_obsidian_vault_tool(bare) {
+        return true;
+    }
+    let args = mcp_args_text(data);
+    let server_hit = args.contains("user-obsidian")
+        || args.contains("server\":\"obsidian")
+        || args.contains("\"obsidian\"")
+        || data
+            .get("command")
+            .and_then(|v| v.as_str())
+            .map(|c| {
+                let c = c.to_lowercase();
+                c.contains("obsidian") || c == "user-obsidian"
+            })
+            .unwrap_or(false)
+        || data
+            .get("server")
+            .and_then(|v| v.as_str())
+            .map(|c| c.to_lowercase().contains("obsidian"))
+            .unwrap_or(false);
+    if is_obsidian_vault_tool(bare) && server_hit {
+        return true;
+    }
+    (name.contains("callmcp") || name == "callmcptool") && server_hit
 }
 
 fn is_obsidian_persist(data: &Value) -> bool {
-    let t = obsidian_blob(data);
-    let write_hit = t.contains("vault_write")
-        || t.contains("vault_append")
-        || t.contains("vault_patch");
-    is_obsidian_server(&t) && write_hit
+    if !is_obsidian_mcp(data) {
+        return false;
+    }
+    let name = tool_name_of(data);
+    let bare = bare_mcp_tool(&name);
+    if matches!(bare, "vault_write" | "vault_append" | "vault_patch") {
+        return true;
+    }
+    let args = mcp_args_text(data);
+    args.contains("vault_write") || args.contains("vault_append") || args.contains("vault_patch")
 }
 
 fn is_obsidian_recall(data: &Value) -> bool {
-    let t = obsidian_blob(data);
-    if !is_obsidian_server(&t) {
+    if !is_obsidian_mcp(data) {
         return false;
     }
-    let search_hit = t.contains("search_simple") || t.contains("search_query");
-    let read_hit = t.contains("vault_read")
-        && (t.contains("wiki/hot") || t.contains("wiki/index"));
-    search_hit || read_hit
+    let name = tool_name_of(data);
+    let bare = bare_mcp_tool(&name);
+    let mut blob = mcp_args_text(data);
+    let path_hint = result_path_hint(data);
+    if !path_hint.is_empty() {
+        blob.push('\n');
+        blob.push_str(&path_hint);
+    }
+    if matches!(bare, "search_simple" | "search_query")
+        || blob.contains("search_simple")
+        || blob.contains("search_query")
+    {
+        return true;
+    }
+    let read = bare == "vault_read" || blob.contains("vault_read");
+    read && (blob.contains("wiki/hot") || blob.contains("wiki/index"))
+}
+
+pub fn note_obsidian_events(data: &Value, state: &Path) {
+    let cid = ledger::conversation_id(data);
+    if is_obsidian_persist(data) {
+        ledger::append_event(state, &cid, "obsidian", json!({}));
+        let flags = capture::classify_persist(tool_input(data));
+        if flags.complete {
+            ledger::append_event(state, &cid, "obsidian_complete", json!({}));
+        }
+        if flags.stub {
+            ledger::append_event(state, &cid, "obsidian_stub", json!({}));
+        }
+        if flags.intent {
+            ledger::append_event(state, &cid, "intent_stated", json!({}));
+        }
+        if flags.layer {
+            ledger::append_event(state, &cid, "layer_check", json!({}));
+        }
+    }
+    if is_obsidian_recall(data) {
+        ledger::append_event(state, &cid, "obsidian_recall", json!({}));
+    }
 }
 
 fn tool_result_text(data: &Value) -> String {
@@ -129,25 +264,7 @@ pub fn post_tool_use(data: &Value, state: &Path) {
         }
     }
 
-    if is_obsidian_persist(data) {
-        ledger::append_event(state, &cid, "obsidian", json!({}));
-        let flags = capture::classify_persist(tool_input(data));
-        if flags.complete {
-            ledger::append_event(state, &cid, "obsidian_complete", json!({}));
-        }
-        if flags.stub {
-            ledger::append_event(state, &cid, "obsidian_stub", json!({}));
-        }
-        if flags.intent {
-            ledger::append_event(state, &cid, "intent_stated", json!({}));
-        }
-        if flags.layer {
-            ledger::append_event(state, &cid, "layer_check", json!({}));
-        }
-    }
-    if is_obsidian_recall(data) {
-        ledger::append_event(state, &cid, "obsidian_recall", json!({}));
-    }
+    note_obsidian_events(data, state);
 
     let cmd = command_from(data);
     if !cmd.is_empty() && verify_re().is_match(&cmd) {

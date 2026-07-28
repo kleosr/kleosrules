@@ -383,7 +383,9 @@ exit 2 = deny on stderr — fix payload and re-run pre-flight. Do not send to
 Cursor until pass. Cursor hook is backstop, not primary check.
 Missing/invalid policy → deny. No enforcement policy hardcoding in the binary.
 Destructive-command gate (lab fluid): shell `deny: []`; only recursive `rm` /
-`find -delete` / rsync --delete → ask. Recall gate ON (`recall_gate_enabled`). Lean meter ON by
+`find -delete` / rsync --delete → ask. Recall gate ON (`recall_gate_enabled`) —
+Cursor `MCP:vault_read` / `MCP:search_*` of wiki/hot|index sets ledger recall
+(CallMcpTool + user-obsidian still valid). Lean meter ON by
 default (`KLEOS_LEAN=0` to disable). Shell file writes (tee/heredoc/>) into
 CODE_EXT/CSS → deny (Write/StrReplace only). Python file-write → deny. Prose +
 secrets + vernacular still deny. Opaque ask message empty. Proof:

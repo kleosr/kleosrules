@@ -23,7 +23,7 @@ Pattern: **raw = source, wiki = compiled, continuous refeed**
 | sessionStart | playbook + capped hot + context-meter + recall nudge |
 | beforeSubmitPrompt | classify hints (≤2) + index/hot pointers (stopwords; min 2 hits) |
 | Mid-session | companion + roof nudge every 12 tools |
-| CODE write roof | deny CODE_EXT until ledger `obsidian_recall` when `recall_gate_enabled` (default ON) |
+| CODE write roof | deny CODE_EXT until ledger `obsidian_recall` when `recall_gate_enabled` (default ON). Cursor `MCP:vault_read` of `wiki/hot`\|`wiki/index` (or `MCP:search_*`) sets recall; CallMcpTool + `user-obsidian` still works. |
 | Durable fact | same-turn `vault_append` (agent must) |
 | Ops triad | **ingest → query → lint** (+ write-back) |
 | Fleet | missing hub → refeed disk AGENTS/README/HANDOFF ([[instructions/MAX-MEMORY]]) |

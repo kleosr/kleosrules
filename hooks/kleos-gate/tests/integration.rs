@@ -131,6 +131,129 @@ fn write_without_recall_denies() {
 }
 
 #[test]
+fn cursor_mcp_vault_read_sets_recall() {
+    let state = tempfile_dir();
+    let pol = policy_dir();
+    seed_recall(&pol, &state, "mcp_cursor1");
+    let (code, obj) = run_gate_env(
+        "write",
+        json!({
+            "conversation_id": "mcp_cursor1",
+            "tool_name": "Write",
+            "tool_input": {
+                "path": "hooks/tmp_recall_ok.rs",
+                "contents": "fn x() {}\n"
+            }
+        }),
+        &pol,
+        Some(&state),
+    );
+    assert_eq!(code, 0, "{obj}");
+    assert_eq!(perm(&obj), "allow");
+}
+
+#[test]
+fn before_mcp_vault_read_string_input_sets_recall() {
+    let state = tempfile_dir();
+    let pol = policy_dir();
+    let ignored = run_gate_env(
+        "beforeMCPExecution",
+        json!({
+            "conversation_id": "mcp_before1",
+            "tool_name": "vault_read",
+            "tool_input": "{\"path\":\"wiki/index.md\"}",
+            "command": "user-obsidian"
+        }),
+        &pol,
+        Some(&state),
+    );
+    drop(ignored);
+    let (code, obj) = run_gate_env(
+        "write",
+        json!({
+            "conversation_id": "mcp_before1",
+            "tool_name": "Write",
+            "tool_input": {
+                "path": "hooks/tmp_before_mcp.rs",
+                "contents": "fn y() {}\n"
+            }
+        }),
+        &pol,
+        Some(&state),
+    );
+    assert_eq!(code, 0, "{obj}");
+    assert_eq!(perm(&obj), "allow");
+}
+
+#[test]
+fn cursor_mcp_vault_write_sets_persist_without_server_marker() {
+    let state = tempfile_dir();
+    let pol = policy_dir();
+    let ignored = run_gate_env(
+        "postToolUse",
+        json!({
+            "conversation_id": "mcp_persist1",
+            "tool_name": "MCP:vault_write",
+            "tool_input": {
+                "path": "wiki/projects/kleosr/Sessions/2026-07-28-x.md",
+                "content": "## Goal\nfix recall\n\n## Done-when\ngreen\n\n## Residual\nnone\n\n## Layer check\n| Layer | Evidence |\n| Prompt | ask |\n| Context | vault |\n| Harness | cargo |\n| Loop | session |\n| Graph | wiki |\n"
+            }
+        }),
+        &pol,
+        Some(&state),
+    );
+    drop(ignored);
+    let (code, obj) = run_gate_env(
+        "stop",
+        json!({
+            "conversation_id": "mcp_persist1",
+            "status": "completed"
+        }),
+        &pol,
+        Some(&state),
+    );
+    assert_eq!(code, 0, "{obj}");
+    let follow = obj.get("followup_message").and_then(|v| v.as_str()).unwrap_or("");
+    assert!(
+        !follow.contains("Obsidian write-back required"),
+        "MCP:vault_write should clear persist duty, got {obj}"
+    );
+}
+
+#[test]
+fn shell_mentions_vault_write_does_not_set_persist() {
+    let state = tempfile_dir();
+    let pol = policy_dir();
+    let ignored = run_gate_env(
+        "postToolUse",
+        json!({
+            "conversation_id": "shell_fp1",
+            "tool_name": "Shell",
+            "tool_input": {"command": "rg vault_write user-obsidian wiki/hot"},
+            "tool_output": "MCP:vault_write user-obsidian wiki/hot.md"
+        }),
+        &pol,
+        Some(&state),
+    );
+    drop(ignored);
+    let (code, obj) = run_gate_env(
+        "stop",
+        json!({
+            "conversation_id": "shell_fp1",
+            "status": "completed"
+        }),
+        &pol,
+        Some(&state),
+    );
+    assert_eq!(code, 0, "{obj}");
+    let follow = obj.get("followup_message").and_then(|v| v.as_str()).unwrap_or("");
+    assert!(
+        follow.contains("Obsidian write-back required") || follow.contains("vault_append"),
+        "Shell false-positive must not clear obsidian persist, got {obj}"
+    );
+}
+
+#[test]
 fn read_env_denies() {
     let (code, obj) = run_gate(
         "beforeReadFile",

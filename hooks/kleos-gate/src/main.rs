@@ -263,7 +263,7 @@ fn run() {
         "beforeReadFile" | "beforeTabFileRead" | "read" | "gate-read" => {
             read::run(&data, &policy, hook_event);
         }
-        "beforeMCPExecution" | "mcp" | "gate-mcp" => mcp::run(&data, &policy),
+        "beforeMCPExecution" | "mcp" | "gate-mcp" => mcp::run(&data, &policy, &st),
         "postToolUse" | "session-ledger" => session::post_tool_use(&data, &st),
         "postToolUseFailure" | "gate-fail" => allow(),
         "subagentStart" | "gate-subagent" => subagent::run_start(&data),

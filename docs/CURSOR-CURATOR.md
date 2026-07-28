@@ -20,7 +20,7 @@ User prompt text is never rewritten — restate intent beside it (2B).
 2. **INTENT** — restate verified ask + done-when in chat (do not rewrite the user prompt).  
 3. If insufficient → `search_simple` / `vault_read` project Index + latest Session.  
 4. Load **only** pages that change the next action.  
-5. CODE write → ledger must have `obsidian_recall` when `recall_gate_enabled` is true (default **ON** — gate denies CODE_EXT until vault_read hot|index).  
+5. CODE write → ledger must have `obsidian_recall` when `recall_gate_enabled` is true (default **ON** — gate denies CODE_EXT until vault_read hot|index). Cursor logs `MCP:vault_read` for that call; the gate keys off that tool name (plus path), not a required `user-obsidian` substring in the blob.  
 6. Durable fact → **COMPLETE** `vault_append` (Sessions/Decisions/Learnings/sources/concepts/journals — not vibe summaries) + refresh hot.  
 7. Before Done → Session with Goal / Done-when / Residual + **LAYER CHECK** table.  
 8. Done → TOOLCHAIN evidence. Summary-only write-back = defect (`instructions/PROCESSING.md` COMPLETE CAPTURE).
