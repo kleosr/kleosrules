@@ -146,6 +146,26 @@ fn pack_native_ok(name: &str) -> bool {
     if name == "__init__.py" || name == "__main__.py" {
         return true;
     }
+    let lower = name.to_lowercase();
+    if lower == "index.tsx"
+        || lower == "index.jsx"
+        || lower == "main.tsx"
+        || lower == "main.jsx"
+        || lower == "app.tsx"
+        || lower == "app.jsx"
+    {
+        return true;
+    }
+    if is_component_ext(&lower) {
+        let base = name.split('.').next().unwrap_or("");
+        if Regex::new(r"^[A-Z][A-Za-z0-9]*$")
+            .ok()
+            .map(|re| re.is_match(base))
+            .unwrap_or(false)
+        {
+            return true;
+        }
+    }
     if name.starts_with('_') {
         return Regex::new(r"^_[a-z][a-z0-9_-]*(\.[a-z0-9_-]+)+$")
             .ok()
@@ -156,6 +176,24 @@ fn pack_native_ok(name: &str) -> bool {
         .ok()
         .map(|re| re.is_match(name))
         .unwrap_or(true)
+}
+
+fn is_component_ext(lower_name: &str) -> bool {
+    lower_name.ends_with(".tsx")
+        || lower_name.ends_with(".jsx")
+        || lower_name.ends_with(".vue")
+        || lower_name.ends_with(".svelte")
+}
+
+fn snake_functions_apply(path: &str) -> bool {
+    let lower = path.to_lowercase();
+    !is_component_ext(&lower)
+        && !lower.ends_with(".css")
+        && !lower.ends_with(".scss")
+        && !lower.ends_with(".sass")
+        && !lower.ends_with(".less")
+        && !lower.ends_with(".html")
+        && !lower.ends_with(".htm")
 }
 
 pub fn file_name_ok(name: &str, fields: &VernFields) -> bool {
@@ -223,7 +261,7 @@ pub fn check_body_and_path(path: &str, body: &str) -> Result<(), String> {
     if body.is_empty() {
         return Ok(());
     }
-    if fields.function_pattern == "snake_case" {
+    if fields.function_pattern == "snake_case" && snake_functions_apply(path) {
         let re = Regex::new(
             r"(?:^|\n)\s*(?:export\s+)?(?:async\s+)?function\s+([A-Za-z_][A-Za-z0-9_]*)|(?:^|\n)\s*def\s+([A-Za-z_][A-Za-z0-9_]*)|(?:^|\n)\s*(?:export\s+)?(?:const|let|var)\s+([A-Za-z_][A-Za-z0-9_]*)\s*=",
         )
@@ -293,5 +331,25 @@ mod tests {
         assert!(err.is_err(), "{err:?}");
         let ignored2 = fs::remove_dir_all(&root);
         drop(ignored2);
+    }
+
+    #[test]
+    fn pack_native_allows_react_pascal_tsx() {
+        let f = VernFields {
+            file_name_pattern: "pack_native".into(),
+            ..VernFields::default()
+        };
+        assert!(file_name_ok("Button.tsx", &f));
+        assert!(file_name_ok("App.tsx", &f));
+        assert!(file_name_ok("main.tsx", &f));
+        assert!(file_name_ok("hub.home.page.tsx", &f));
+        assert!(!file_name_ok("FooUseCase.rs", &f));
+        assert!(!file_name_ok("Bad Name.tsx", &f));
+    }
+
+    #[test]
+    fn snake_functions_skip_tsx() {
+        assert!(!snake_functions_apply("src/Button.tsx"));
+        assert!(snake_functions_apply("hooks/kleos-gate/src/engine/shell.rs"));
     }
 }

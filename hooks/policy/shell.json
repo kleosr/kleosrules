@@ -6,5 +6,6 @@
   ],
   "opaque_write_ask_message": "",
   "opaque_write_deny_message": "Blocked shell write of app files. Use Cursor Write/StrReplace only — never tee/heredoc/redirect for CODE_EXT or CSS.",
+  "python_write_deny_message": "Blocked agent Python file-write bypass. Pack tooling is Rust-only. Use Cursor Write/StrReplace (vault_read hot|index first if recall). Never python -c write_text/open(w).",
   "prose_shell_deny_message": "Blocked prose comment in code write (Native Lean NO COMMENTS)."
 }

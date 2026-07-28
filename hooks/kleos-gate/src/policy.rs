@@ -15,6 +15,8 @@ pub struct ShellPolicy {
     pub opaque_write_ask_message: String,
     #[serde(default)]
     pub opaque_write_deny_message: String,
+    #[serde(default)]
+    pub python_write_deny_message: String,
     pub prose_shell_deny_message: String,
 }
 

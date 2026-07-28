@@ -13,7 +13,7 @@ use crate::{allow_empty_prompt, command_from, emit, path_from, tool_input, walk_
 const ROOF: &str = "Master Mind roof: NO prose comments; no remote publish without confirmation; verify before Done; never fight a deny.";
 const ROOF_EVERY: usize = 12;
 const FOLLOW: &str = "Session has unverified edits. ACT NOW: run the house gauntlet yourself (TOOLCHAIN.md / tests / lint / kleos-gate verify) and cite evidence. Never ask the human to waive verification. Do not claim Done without verification evidence or a named residual.";
-const LOOP_MSG: &str = "Freeze loop detected (repeat deny fingerprints). Stop retrying the same blocked write; rewrite to an allowed surface or ask the user.";
+const LOOP_MSG: &str = "Freeze loop detected (repeat deny fingerprints). Stop retrying the same blocked write; vault_read hot|index if recall, then Cursor Write/StrReplace — never Python/shell file-write bypass.";
 const OBSIDIAN_RECALL: &str = "Obsidian memory MANDATORY before substantive work: GetMcpTools user-obsidian → vault_read wiki/hot.md then wiki/index.md then wiki/projects/<slug>/Index.md + latest Sessions/. Query wiki only; never edit raw/. Skill obsidian-memory.";
 const OBSIDIAN_FLUSH: &str = "Obsidian write-back required (persist INTO vault — never wipe): session had tool work but no vault write logged. vault_append/vault_write wiki/projects/<slug>/Decisions|Learnings|Sessions/YYYY-MM-DD-<topic>.md + refresh wiki/hot.md; mirror HANDOFF.md. Skill obsidian-memory.";
 const OBSIDIAN_COMPACT: &str = "Compaction imminent — write-back TO Obsidian NOW (Session + Decisions/Learnings via user-obsidian) before chat context dies. This saves memory; it does not clear the vault.";

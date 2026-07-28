@@ -1,4 +1,22 @@
-# Release — kleosr (current: V16.0.20)
+# Release — kleosr (current: V16.0.22)
+
+## V16.0.22 — pack_native React + rules honesty (Rust ≠ Python)
+1. `pack_native` allows PascalCase `.tsx`/`.jsx`/`.vue`/`.svelte`; snake function
+   gate off on those + CSS/HTML.
+2. Paste / option-c / vernacular.mdc: Rust-only pack tooling; Python/shell
+   file-write = anti-bypass; `.sh` in lean ≠ pack bash; no fingerprint dodge.
+3. Pack `16.0.22`. Residual: re-paste Settings User Rules; `python script.py`
+   internal writes still argv-opaque.
+
+## V16.0.21 — Kill Python Write bypass after recall/fingerprint
+
+1. Recall deny no longer fingerprints — retry keeps `vault_read` route (no fingerprint
+   freeze that pushed agents to Python).
+2. Shell denies `python`/`python3` file writes (`write_text` / `open(w|a|x)` / Path.write).
+3. Deny messages + stop LOOP_MSG: Cursor Write/StrReplace only after recall; never
+   Python/shell bypass.
+4. Pack `16.0.21`. Residual: `python script.py` that writes inside the script body
+   still opaque to argv scan; re-paste optional.
 
 ## V16.0.20 — Recall M-on + event-loop weekly nudge
 

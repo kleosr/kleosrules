@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://img.shields.io/badge/version-16.0.20-blue?style=flat-square" />
+  <img src="https://img.shields.io/badge/version-16.0.22-blue?style=flat-square" />
   <img src="https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square" />
   <img src="https://img.shields.io/badge/status-stable-2ea44f?style=flat-square" />
   <img src="https://img.shields.io/badge/built%20for-Cursor%20hooks-111827?style=flat-square" />
@@ -10,7 +10,7 @@
 <div align="center">
   <h1>kleosr</h1>
   <p><strong>Cursor harness pack — User Rules, companions, skills, and a Rust gate.</strong></p>
-  <p>Master Mind V16.0.20 plus <code>kleos-gate</code>: block usual agent failure modes,<br />keep fleet repos in sync, and persist memory outside the chat.</p>
+  <p>Master Mind V16.0.22 plus <code>kleos-gate</code>: block usual agent failure modes,<br />keep fleet repos in sync, and persist memory outside the chat.</p>
 </div>
 
 <br />

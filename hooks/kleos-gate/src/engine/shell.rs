@@ -21,6 +21,9 @@ pub fn run(data: &Value, policy: &Policy) {
     if looks_like_prose_shell_write(&cmd, &policy.lean) {
         deny(&policy.shell.prose_shell_deny_message);
     }
+    if looks_like_python_file_write(&cmd) {
+        deny_python_file_write(policy);
+    }
     if let Some((path, body)) = embedded_code_write(&cmd, &policy.lean) {
         if prose::has_prose(&body) {
             deny(&policy.shell.prose_shell_deny_message);
@@ -61,6 +64,53 @@ fn deny_shell_file_write(policy: &Policy) -> ! {
         deny("Blocked shell write of app files. Use Cursor Write/StrReplace only.");
     }
     deny(msg);
+}
+
+fn deny_python_file_write(policy: &Policy) -> ! {
+    let msg = policy.shell.python_write_deny_message.trim();
+    if msg.is_empty() {
+        deny("Blocked Python file write. Use Cursor Write/StrReplace only.");
+    }
+    deny(msg);
+}
+
+fn is_python_invoke(cmd: &str) -> bool {
+    Regex::new(r"(?i)(^|[\s;/\\|])python3?(\s|$)|(^|[\s;/\\|])python3?\.")
+        .map(|re| re.is_match(cmd))
+        .unwrap_or_else(|_| {
+            let lower = cmd.to_lowercase();
+            lower.contains("python3") || lower.contains("python ")
+        })
+}
+
+fn looks_like_python_file_write(cmd: &str) -> bool {
+    if !is_python_invoke(cmd) {
+        return false;
+    }
+    let lower = cmd.to_lowercase();
+    if lower.contains("write_text")
+        || lower.contains("write_bytes")
+        || lower.contains("writelines")
+    {
+        return true;
+    }
+    if lower.contains("open(")
+        && (lower.contains("'w'")
+            || lower.contains("\"w\"")
+            || lower.contains("'a'")
+            || lower.contains("\"a\"")
+            || lower.contains("'wb'")
+            || lower.contains("\"wb\"")
+            || lower.contains("'x'")
+            || lower.contains("\"x\"")
+            || lower.contains("mode='w'")
+            || lower.contains("mode=\"w\"")
+            || lower.contains("mode='a'")
+            || lower.contains("mode=\"a\""))
+    {
+        return true;
+    }
+    (lower.contains("pathlib") || lower.contains("path(")) && lower.contains(".write(")
 }
 
 fn is_patch_or_apply(cmd: &str) -> bool {

@@ -1,8 +1,8 @@
 ---
-description: Master Mind V16.0.20 — PROCESSING/AGENT-MEMORY; shell-write deny; recall ON; lean ON.
+description: Master Mind V16.0.22 — pack_native React TSX; Rust-only; Python write bypass deny; recall ON; lean ON.
 alwaysApply: true
 ---
-# Master Mind V16.0.20 — Option C (contract obedience)
+# Master Mind V16.0.22 — Option C (contract obedience)
 
 --- TOPOLOGY (U-curve) ---
 Block 1 PRIMACY = identity + absolute roof.
@@ -315,6 +315,10 @@ template literals, and protocol text such as http://).
 Do not use Shell to write app code with comments — Write/StrReplace only.
 Shell tee/heredoc/redirect into CODE_EXT or CSS is hard-denied (opaque_write_deny);
 use Write/StrReplace. git apply / patch remain allowed.
+Python/`python3` file writes (`write_text` / `open(w|a|x)` / Path.write) are
+hard-denied — anti-bypass only. Pack tooling is Rust-only; never use Python to
+land app or policy files. After a deny: fix the root cause — never reorder CSS
+or trivial fingerprint diffs to dodge.
 Cognitive decoupling: Phase A blueprint in chat (plan / edges / one hypothesis);
 Phase B silent transmutation — names and types carry the load; if a comment
 seems required, rename or split (`docs/COGNITIVE-DECOUPLING.md`).
@@ -365,12 +369,18 @@ Project hooks fingerprint in verify-sync (single sync plane).
 Zero-comment + secrets + vernacular machine fields + lean meter live in kleos-gate.
 Vernacular force: names, `allowed_path_prefixes`, `forbidden_class_suffixes`,
 `boolean_prefixes`, real `pack_native` — not ungated prose essays.
+`pack_native`: snake/kebab default; PascalCase basename OK for `.tsx`/`.jsx`/
+`.vue`/`.svelte`; snake_case function gate off on those + CSS/HTML (React
+camelCase). App repos keep their own vernacular — fleet sync does not overwrite.
 Lean meter: new CODE_EXT size / net LOC spikes **and** absolute post-state
 `file_loc_max` (`KLEOS_LEAN` + `hooks/policy/lean.json`)
 — finite size roofs only; not semantic quality / clean / YAGNI by construction.
+`.sh`/`.py` in lean CODE_EXT = size roofs on foreign scripts, not pack tooling.
 Ask-scope: prompt path tokens vs Write paths (`hooks/policy/ask-scope.json`; finite).
 Hot path + proof: Rust `hooks/bin/kleos-gate` + `hooks/policy/*.json` —
 Cursor hooks and house gauntlet are Rust-only (`cargo test -p kleos-gate`).
+No pack Python runtime. No pack `.sh` tooling. Shell/Python file-write denies =
+anti-bypass (Cursor Write/StrReplace only).
 PRE-FLIGHT (mandatory before Write/StrReplace): pipe contents/new_string to
 `hooks/bin/kleos-gate --check-content` (optional `--path PATH`). Exit 0 = pass;
 exit 2 = deny on stderr — fix payload and re-run pre-flight. Do not send to
@@ -379,8 +389,9 @@ Missing/invalid policy → deny. No enforcement policy hardcoding in the binary.
 Destructive-command gate (lab fluid): shell `deny: []`; only recursive `rm` /
 `find -delete` / rsync --delete → ask. Recall gate ON (`recall_gate_enabled`). Lean meter ON by
 default (`KLEOS_LEAN=0` to disable). Shell file writes (tee/heredoc/>) into
-CODE_EXT/CSS → deny (Write/StrReplace only). Prose + secrets + vernacular
-still deny. Opaque ask message empty. Proof: `cargo test -p kleos-gate`. Soft rules without a gate are advisory.
+CODE_EXT/CSS → deny (Write/StrReplace only). Python file-write → deny. Prose +
+secrets + vernacular still deny. Opaque ask message empty. Proof:
+`cargo test -p kleos-gate`. Soft rules without a gate are advisory.
 Soft rules = non-MUST-NEVER policy (style, method, skills,
 vernacular taste). MUST-NEVER and named ASK ONCE classes are roof lines —
 not soft advisory text. Roof classes require a live gate when syntactically

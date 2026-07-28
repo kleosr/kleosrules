@@ -30,7 +30,8 @@ Native Lean quality = **this repo’s private dialect**, not a global Clean Code
 Hooks enforce **machine fields** only (when a contract exists), via
 `deny-vernacular-drift` / `gate-write`:
 
-- `file_name_pattern` (incl. real `pack_native` kebab/snake files)
+- `file_name_pattern` (incl. real `pack_native`: snake/kebab + PascalCase
+  `.tsx`/`.jsx`/`.vue`/`.svelte` components)
 - `allowed_kinds` (with `domain.kind.ext`)
 - `allowed_path_prefixes` (topology allow-list)
 - `forbidden_class_suffixes` (theater class endings)
@@ -52,7 +53,8 @@ ungated prose.
 ## Anti-patterns
 
 - Applying another repo’s vernacular here
-- Introducing PascalCase services / UseCase folders when the repo forbids them
+- Introducing UseCase / Repository folder theater when the repo forbids them
+  (React PascalCase components are OK under `pack_native` + `.tsx`)
 - “Improving” names into a foreign style on a surgical fix
 - Claiming always-on companions alone force dialect depth
 

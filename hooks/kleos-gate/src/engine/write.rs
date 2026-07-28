@@ -8,7 +8,7 @@ use super::lean;
 use super::ledger;
 
 const REPEAT_MSG: &str =
-    "Blocked repeat deny of the same write fingerprint. Rewrite to an allowed surface or ask the user — do not retry the same blocked payload.";
+    "Blocked repeat deny of the same write fingerprint. Fix the root deny (e.g. vault_read hot|index for recall; strip prose) then Cursor Write/StrReplace — never retry the same payload, never Python/shell file-write bypass.";
 
 pub fn run(data: &Value, policy: &Policy, state: &PathBuf, _hooks: &PathBuf) {
     let tool = data
@@ -64,14 +64,7 @@ pub fn run(data: &Value, policy: &Policy, state: &PathBuf, _hooks: &PathBuf) {
             && !context::is_write_exempt(&path, &policy.context)
             && !ledger::freshness(state, &ledger::conversation_id(data)).recall
         {
-            deny_with_repeat(
-                data,
-                state,
-                &path,
-                &body,
-                event,
-                &policy.context.recall_message,
-            );
+            deny(&policy.context.recall_message);
         }
         if let Err(reason) = crate::engine::vernacular::check_body_and_path(&path, &body) {
             deny_with_repeat(data, state, &path, &body, event, &reason);

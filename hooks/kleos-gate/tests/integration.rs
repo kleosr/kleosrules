@@ -364,6 +364,64 @@ fn shell_check_content_path_flag_allows() {
 }
 
 #[test]
+fn shell_python_write_text_denies() {
+    let (code, obj) = run_gate(
+        "shell",
+        json!({
+            "command": "python3 -c \"from pathlib import Path; Path('hooks/tmp_py.ts').write_text('export const n=1\\n')\""
+        }),
+    );
+    assert_eq!(code, 2, "{obj}");
+    assert_eq!(perm(&obj), "deny");
+    let msg = obj
+        .get("agent_message")
+        .or_else(|| obj.get("user_message"))
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    assert!(msg.to_lowercase().contains("python"), "{msg}");
+}
+
+#[test]
+fn shell_python_print_allows() {
+    let (code, obj) = run_gate("shell", json!({ "command": "python3 -c \"print(1)\"" }));
+    assert_eq!(code, 0, "{obj}");
+    assert_eq!(perm(&obj), "allow");
+}
+
+#[test]
+fn write_recall_retry_keeps_recall_message() {
+    let state = tempfile_dir();
+    let payload = json!({
+        "conversation_id": "rr1",
+        "tool_name": "Write",
+        "tool_input": {
+            "path": "src/a.ts",
+            "contents": "const x = 1;\n"
+        }
+    });
+    let (c1, o1) = run_gate_env("write", payload.clone(), &policy_dir(), Some(&state));
+    assert_eq!(c1, 2, "{o1}");
+    let m1 = o1
+        .get("agent_message")
+        .or_else(|| o1.get("user_message"))
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    assert!(m1.contains("Obsidian recall") || m1.contains("vault_read"), "{m1}");
+    let (c2, o2) = run_gate_env("write", payload, &policy_dir(), Some(&state));
+    assert_eq!(c2, 2, "{o2}");
+    let m2 = o2
+        .get("agent_message")
+        .or_else(|| o2.get("user_message"))
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    assert!(
+        m2.contains("Obsidian recall") || m2.contains("vault_read"),
+        "expected recall route not fingerprint freeze, got {o2}"
+    );
+    assert!(!m2.to_lowercase().contains("fingerprint"), "{m2}");
+}
+
+#[test]
 fn shell_git_apply_allows_opaque() {
     let (code, obj) = run_gate("shell", json!({ "command": "git apply foo.patch" }));
     assert_eq!(code, 0, "{obj}");

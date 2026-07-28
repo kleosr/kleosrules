@@ -165,6 +165,7 @@ pub fn run(hooks: &Path) -> ! {
         ("shell".into(), "{\"command\":\"rsync -a --delete ./a/ ./b/\"}".into(), "ask".into(), "shell_rsync_delete".into()),
         ("shell".into(), "{\"command\":\"echo hi\"}".into(), "allow".into(), "shell_echo".into()),
         ("shell".into(), "{\"command\":\"printf 'export const n = 1\\n' | tee hooks/tmp_tee.ts\"}".into(), "deny".into(), "shell_tee_opaque".into()),
+        ("shell".into(), "{\"command\":\"python3 -c \\\"from pathlib import Path; Path('hooks/t.ts').write_text('x')\\\"\"}".into(), "deny".into(), "shell_python_write".into()),
         ("shell".into(), "{\"command\":\"git apply foo.patch\"}".into(), "allow".into(), "shell_git_apply_opaque".into()),
         ("write".into(), write_prose, "deny".into(), "write_prose".into()),
         ("write".into(), write_inline, "deny".into(), "write_inline_prose".into()),

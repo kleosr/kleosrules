@@ -10,7 +10,7 @@ Master Mind Option C paste body and disk mirror for Cursor User Rules.
 
 | File | Role |
 |------|-------|
-| `USER-RULES.paste.txt` | Canonical paste → Cursor Settings → User Rules (V16.0.20) |
+| `USER-RULES.paste.txt` | Canonical paste → Cursor Settings → User Rules (V16.0.22) |
 | `option-c-core.mdc` | Disk mirror; SINGLE SOURCE with paste (not both different bodies) |
 
 ## Done (local)

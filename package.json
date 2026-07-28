@@ -1,7 +1,7 @@
 {
   "name": "kleosr",
-  "version": "16.0.20",
+  "version": "16.0.22",
   "private": true,
-  "description": "kleosr — Cursor harness (V16.0.20). Shell-write deny; recall ON; lean ON; only rm ASK.",
+  "description": "kleosr — Cursor harness (V16.0.22). pack_native React TSX; Rust-only; Python write bypass deny; recall ON; lean ON.",
   "license": "MIT"
 }

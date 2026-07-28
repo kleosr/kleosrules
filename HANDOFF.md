@@ -1,23 +1,21 @@
 # Handoff
 
-**Goal:** Product completeness + pack hygiene alignment (V16.0.19).
+**Goal:** V16.0.22 — pack_native React TSX + rules honesty (Rust-only; Python = write bypass).
 
-**Status:** DONE (TOOLCHAIN green except Metanoia SHARED residual).
+**Status:** DONE (TOOLCHAIN green; verify PASS; bench 32/32).
 
 ## Done
 
-- Hygiene docs aligned to lab fluid (PROOF-EVALS, USER-RULES, AGENTIC-GAUNTLET, RULES-HUNT, RELEASE title)
-- Paste / option-c DOC MAP + P*-17/P*-18 kills; agent + context-curator recall wording; README professional (no emoji headers)
-- Shell ask tests: `find -delete` + `rsync --delete` (+ bench cases)
-- AGENTS P*-17/18 deep links; Ask-first no longer lists force-push as gated
-- Prior: gitignore/bin, TDD suites, delete.json, C′ AFFIRM surfaces
+- `pack_native` allows PascalCase `.tsx`/`.jsx`/`.vue`/`.svelte`; snake fn gate off on components/CSS/HTML
+- Paste / option-c / vernacular.mdc / AGENTS / README / TOOLCHAIN / RELEASE → **16.0.22**
+- Python/shell file-write denies labeled anti-bypass; no fingerprint dodge
+- Fleet sync + verify **PASS**; install + bench + gate-diff green
 
 ## Open
 
-- [ ] Re-paste User Rules V16.0.19 + new chat
-- [x] Metanoia + fleet companion sync — verify **PASS**
-- [x] Personal skill `/gh-account-switch` (`~/.cursor/skills/gh-account-switch/`) — `switch.sh` gauntlet green 2026-07-28 (vault: wiki/projects/kleosr/Sessions/2026-07-28-gh-account-switch-gauntlet)
+- [ ] Re-paste User Rules **V16.0.22** + new chat
 - [ ] Absolute Completeness NEGATE (Rice)
+- [ ] Pack git still largely uncommitted (commit only if asked)
 
 ## Blockers
 
@@ -25,7 +23,7 @@
 
 ## Next
 
-Human re-paste User Rules. Absolute Completeness remains NEGATE.
+Human re-paste `user-rules/USER-RULES.paste.txt`. Residual: `python script.py` internal writes argv-opaque.
 
 ## Verify
 
@@ -34,13 +32,12 @@ cd hooks/kleos-gate && cargo test && cargo build --release
 hooks/bin/kleos-gate bench
 hooks/bin/kleos-gate gate-diff
 hooks/bin/kleos-gate verify
-# expect PASS after companion sync
 ```
 
 ## INTENT
 
-**Ask:** Product completeness — fully working, hygiene-aligned, professional/clean.
+**Ask:** Fix pack_native/TSX deny + align all rules (Rust-only vs Python bypass).
 
-**Done-when:** CLI/hook page map green; doctrine ↔ live policy; README clean; named residual only.
+**Done-when:** cargo green; live hooks synced; paste/companions/docs match gate; named residual only.
 
-**Residual:** Absolute Completeness NEGATE; human re-paste; crate version 16.0.0 vs pack 16.0.19; skill-layer force-push stricter than gate.
+**Residual:** Absolute Completeness NEGATE; human re-paste; crate 16.0.0 vs pack 16.0.22; script-body Python writes not argv-visible.
