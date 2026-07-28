@@ -18,7 +18,7 @@ pub fn run(data: &Value, policy: &Policy) {
             deny(&rule.message);
         }
     }
-    if looks_like_prose_shell_write(&cmd) {
+    if looks_like_prose_shell_write(&cmd, &policy.lean) {
         deny(&policy.shell.prose_shell_deny_message);
     }
     if let Some((path, body)) = embedded_code_write(&cmd, &policy.lean) {
@@ -77,64 +77,82 @@ fn scrub_fd_redirects(cmd: &str) -> String {
         .replace("&>", " ")
 }
 
-fn has_code_ext(cmd: &str, pol: &LeanPolicy) -> bool {
-    let lower = cmd.to_lowercase();
-    let mut exts: Vec<&String> = pol.code_extensions.iter().collect();
-    exts.sort_by_key(|e| std::cmp::Reverse(e.len()));
-    for ext in exts {
-        let e = ext.to_lowercase();
-        let mut from = 0usize;
-        while let Some(rel) = lower[from..].find(&e) {
-            let at = from + rel;
-            let after = at + e.len();
-            let ok_after = after >= lower.len()
-                || !lower.as_bytes().get(after).is_some_and(|b| b.is_ascii_alphanumeric());
-            if ok_after {
-                return true;
-            }
-            from = at + 1;
-        }
+fn push_dest(out: &mut Vec<String>, raw: &str) {
+    let t = raw
+        .trim_matches(|c| c == '"' || c == '\'')
+        .trim()
+        .trim_end_matches(['\\', ';']);
+    if t.is_empty() || t == "/dev/null" {
+        return;
     }
-    false
+    if !out.iter().any(|p| p == t) {
+        out.push(t.to_string());
+    }
 }
 
-fn looks_like_prose_shell_write(cmd: &str) -> bool {
-    let lower = cmd.to_lowercase();
-    if !(lower.contains(".ts")
-        || lower.contains(".js")
-        || lower.contains(".py")
-        || lower.contains(".rs")
-        || lower.contains(".go")
-        || lower.contains(".css"))
-    {
+fn shell_write_dests(cmd: &str) -> Vec<String> {
+    let mut out = Vec::new();
+    let scrubbed = scrub_fd_redirects(cmd);
+    if let Ok(re) = Regex::new(r"(?:^|[\s;|&])(?:\d*)>>?\s*([^\s;|&><]+)") {
+        for cap in re.captures_iter(&scrubbed) {
+            push_dest(&mut out, cap.get(1).map(|m| m.as_str()).unwrap_or(""));
+        }
+    }
+    let lower = scrubbed.to_lowercase();
+    let mut search_from = 0usize;
+    while let Some(rel) = lower[search_from..].find("tee ") {
+        let at = search_from + rel + 4;
+        let after = &scrubbed[at..];
+        for tok in after.split_whitespace() {
+            let clean = tok.trim_matches(|c| c == '"' || c == '\'');
+            if clean.starts_with('-') {
+                continue;
+            }
+            if clean.contains('|') || clean.contains(';') || clean.contains('&') {
+                break;
+            }
+            push_dest(&mut out, clean);
+            break;
+        }
+        search_from = at;
+    }
+    if lower.contains("sed -i") {
+        for tok in scrubbed.split_whitespace() {
+            let clean = tok.trim_matches(|c| c == '"' || c == '\'');
+            if clean.starts_with('-') || clean.eq_ignore_ascii_case("sed") {
+                continue;
+            }
+            if clean.contains('/') || clean.contains('.') {
+                push_dest(&mut out, clean);
+            }
+        }
+    }
+    out
+}
+
+fn writes_code_dest(cmd: &str, pol: &LeanPolicy) -> bool {
+    shell_write_dests(cmd)
+        .iter()
+        .any(|p| lean::is_code_path(p, pol))
+}
+
+fn looks_like_prose_shell_write(cmd: &str, pol: &LeanPolicy) -> bool {
+    if !writes_code_dest(cmd, pol) {
         return false;
     }
     let has_line = cmd.contains("//");
     let has_block = cmd.contains("/*");
-    if !has_line && !has_block {
-        return false;
-    }
-    if lower.contains("tee ") || cmd.contains(">>") {
-        return true;
-    }
-    scrub_fd_redirects(cmd).contains('>')
+    has_line || has_block
 }
 
 fn looks_opaque_write(cmd: &str, pol: &LeanPolicy) -> bool {
     let lower = cmd.to_lowercase();
-    if lower.contains("sed -i")
-        || lower.contains("git apply")
-        || lower.contains("patch ")
+    if lower.contains("git apply")
+        || (lower.contains("patch ") && !lower.contains("dispatch"))
     {
         return true;
     }
-    if !has_code_ext(cmd, pol) {
-        return false;
-    }
-    if lower.contains("tee ") || lower.contains("<<") {
-        return true;
-    }
-    scrub_fd_redirects(cmd).contains('>')
+    writes_code_dest(cmd, pol)
 }
 
 fn embedded_code_write(cmd: &str, pol: &LeanPolicy) -> Option<(String, String)> {

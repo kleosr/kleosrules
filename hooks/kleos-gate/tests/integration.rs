@@ -332,6 +332,38 @@ fn shell_tee_code_denies_opaque() {
 }
 
 #[test]
+fn shell_redirect_txt_allows_ts_body() {
+    let (code, obj) = run_gate(
+        "shell",
+        json!({ "command": "printf 'export const n: number = 1\\n' > /tmp/notes.txt" }),
+    );
+    assert_eq!(code, 0, "{obj}");
+    assert_eq!(perm(&obj), "allow");
+}
+
+#[test]
+fn shell_tee_txt_allows_ts_body() {
+    let (code, obj) = run_gate(
+        "shell",
+        json!({ "command": "printf 'export const n = 1\\n' | tee /tmp/notes.txt" }),
+    );
+    assert_eq!(code, 0, "{obj}");
+    assert_eq!(perm(&obj), "allow");
+}
+
+#[test]
+fn shell_check_content_path_flag_allows() {
+    let (code, obj) = run_gate(
+        "shell",
+        json!({
+            "command": "hooks/bin/kleos-gate --check-content --path hooks/tmp_gate.ts <<'END'\nexport const n = 1\nEND"
+        }),
+    );
+    assert_eq!(code, 0, "{obj}");
+    assert_eq!(perm(&obj), "allow");
+}
+
+#[test]
 fn shell_git_apply_allows_opaque() {
     let (code, obj) = run_gate("shell", json!({ "command": "git apply foo.patch" }));
     assert_eq!(code, 0, "{obj}");
