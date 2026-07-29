@@ -28,13 +28,13 @@
     "postToolUse": [
       {
         "command": "./hooks/bin/kleos-gate postToolUse",
-        "failClosed": false
+        "failClosed": true
       }
     ],
     "postToolUseFailure": [
       {
         "command": "./hooks/bin/kleos-gate postToolUseFailure",
-        "failClosed": false
+        "failClosed": true
       }
     ],
     "beforeReadFile": [
@@ -64,26 +64,26 @@
     "subagentStop": [
       {
         "command": "./hooks/bin/kleos-gate subagentStop",
-        "failClosed": false
+        "failClosed": true
       }
     ],
     "sessionStart": [
       {
         "command": "./hooks/bin/kleos-gate sessionStart",
-        "failClosed": false
+        "failClosed": true
       }
     ],
     "preCompact": [
       {
         "command": "./hooks/bin/kleos-gate preCompact",
-        "failClosed": false
+        "failClosed": true
       }
     ],
     "stop": [
       {
         "command": "./hooks/bin/kleos-gate stop",
         "loop_limit": 1,
-        "failClosed": false
+        "failClosed": true
       }
     ]
   }

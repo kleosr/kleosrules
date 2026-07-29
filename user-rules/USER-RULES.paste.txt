@@ -37,6 +37,8 @@ ENFORCEMENT HONESTY TABLE
 | Native Delete treeish / extensionless | M | Gate deny | Total (proven) |
 | Obsidian recall before CODE write | M | Gate binary | Total when `recall_gate_enabled` |
 | Force-push | — | Lab ACT (`shell.deny` empty) | Not M Total |
+| Python file-write | M | Gate deny | Total (proven) |
+| Shell patch/apply (git apply / patch / git am) | M | Gate deny | Total (proven)
 | Semantic quality / YAGNI / cohesion | J | Soft ladder | Best-effort |
 | Invented facts / APIs | J | Agent judgment | Best-effort |
 | Destructive action semantics | J | Agent judgment | Best-effort |
@@ -386,9 +388,9 @@ Destructive-command gate (lab fluid): shell `deny: []`; only recursive `rm` /
 `find -delete` / rsync --delete → ask. Recall gate ON (`recall_gate_enabled`) —
 Cursor `MCP:vault_read` / `MCP:search_*` of wiki/hot|index sets ledger recall
 (CallMcpTool + user-obsidian still valid). Lean meter ON by
-default (`KLEOS_LEAN=0` to disable). Shell file writes (tee/heredoc/>) into
+default (enforce_always in lean policy). Shell file writes (tee/heredoc/>) into
 CODE_EXT/CSS → deny (Write/StrReplace only). Python file-write → deny. Prose +
-secrets + vernacular still deny. Opaque ask message empty. Proof:
+secrets + vernacular still deny. Opaque ask message populated for shell gate. Proof:
 `cargo test -p kleos-gate`. Soft rules without a gate are advisory.
 Soft rules = non-MUST-NEVER policy (style, method, skills,
 vernacular taste). MUST-NEVER and named ASK ONCE classes are roof lines —

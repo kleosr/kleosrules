@@ -14,5 +14,6 @@
     ".ps1", ".sql", ".r", ".lua", ".vim", ".el", ".ex", ".exs", ".erl", ".hs",
     ".ml", ".mli", ".zig", ".nim", ".dart", ".vue", ".svelte",
     ".css", ".scss", ".sass", ".less", ".html", ".htm"
-  ]
+  ],
+  "enforce_always": true
 }

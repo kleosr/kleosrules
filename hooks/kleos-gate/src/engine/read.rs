@@ -19,11 +19,6 @@ pub fn run(data: &Value, policy: &Policy, hook_event: &str) {
         allow();
     }
     let norm = path.replace('\\', "/");
-    let allow_re = Regex::new(&policy.secrets.read_allow_pattern)
-        .unwrap_or_else(|_| deny("kleos-gate invalid read_allow_pattern"));
-    if allow_re.is_match(&norm) {
-        allow();
-    }
     let deny_re = Regex::new(&policy.secrets.read_path_pattern)
         .unwrap_or_else(|_| deny("kleos-gate invalid read_path_pattern"));
     if deny_re.is_match(&norm) {
@@ -38,5 +33,20 @@ pub fn run(data: &Value, policy: &Policy, hook_event: &str) {
             2,
         );
     }
-    allow();
+    let allow_re = Regex::new(&policy.secrets.read_allow_pattern)
+        .unwrap_or_else(|_| deny("kleos-gate invalid read_allow_pattern"));
+    if allow_re.is_match(&norm) {
+        allow();
+        return;
+    }
+    if hook_event == "beforeTabFileRead" {
+        crate::emit(&serde_json::json!({"permission": "deny"}), 2);
+    }
+    crate::emit(
+        &serde_json::json!({
+            "permission": "deny",
+            "user_message": policy.secrets.read_message
+        }),
+        2,
+    );
 }

@@ -545,10 +545,10 @@ fn write_recall_retry_keeps_recall_message() {
 }
 
 #[test]
-fn shell_git_apply_allows_opaque() {
+fn shell_git_apply_denies() {
     let (code, obj) = run_gate("shell", json!({ "command": "git apply foo.patch" }));
-    assert_eq!(code, 0, "{obj}");
-    assert_eq!(perm(&obj), "allow");
+    assert_eq!(code, 2, "{obj}");
+    assert_eq!(perm(&obj), "deny");
 }
 
 #[test]

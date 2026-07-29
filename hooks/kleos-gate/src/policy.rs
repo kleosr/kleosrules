@@ -31,6 +31,8 @@ pub struct LeanPolicy {
     pub file_loc_max_env: String,
     pub file_loc_max: usize,
     pub code_extensions: Vec<String>,
+    #[serde(default)]
+    pub enforce_always: bool,
 }
 
 #[derive(Debug, Deserialize)]

@@ -4,6 +4,9 @@ use std::fs;
 use std::path::Path;
 
 pub fn enabled(pol: &LeanPolicy) -> bool {
+    if pol.enforce_always {
+        return true;
+    }
     match env::var(&pol.enabled_env) {
         Ok(v) => !(v == "0" || v.eq_ignore_ascii_case("false") || v.eq_ignore_ascii_case("no")),
         Err(_) => pol.enabled_default,
@@ -117,6 +120,7 @@ mod tests {
             file_loc_max_env: "KLEOS_LEAN_FM_T_UNSET".into(),
             file_loc_max: 700,
             code_extensions: vec![".ts".into()],
+            enforce_always: false,
         }
     }
 

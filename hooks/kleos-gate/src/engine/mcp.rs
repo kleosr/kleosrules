@@ -24,10 +24,26 @@ pub fn run(data: &Value, policy: &Policy, state: &Path) {
         }
     }
     let joined = format!("{tool}\n{text}");
-    let danger = Regex::new(&policy.secrets.mcp_danger_pattern)
-        .unwrap_or_else(|_| deny("kleos-gate invalid mcp_danger_pattern"));
-    if danger.is_match(&joined) {
-        ask(&policy.secrets.mcp_ask_message);
+    let danger_pat = &policy.secrets.mcp_danger_pattern;
+    let danger_lower = danger_pat.to_lowercase();
+    let is_dead_pattern = danger_lower == "a^" || danger_lower.is_empty();
+    let tool_lower = tool.to_lowercase();
+    let joined_lower = joined.to_lowercase();
+    let is_mcp_write = tool_lower.contains("callmcp")
+        || tool_lower.contains("mcp:")
+        || joined_lower.contains("vault_write")
+        || joined_lower.contains("vault_append")
+        || joined_lower.contains("vault_delete");
+    if is_dead_pattern && is_mcp_write {
+        deny(&policy.secrets.mcp_ask_message);
+        return;
+    }
+    if !is_dead_pattern {
+        let danger = Regex::new(danger_pat)
+            .unwrap_or_else(|_| deny("kleos-gate invalid mcp_danger_pattern"));
+        if danger.is_match(&joined) {
+            ask(&policy.secrets.mcp_ask_message);
+        }
     }
     session::note_obsidian_events(data, state);
     allow();
