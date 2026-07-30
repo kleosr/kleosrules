@@ -6,7 +6,7 @@ alwaysApply: true
 # CONTEXT CURATOR
 
 Harness injects `additional_context` only. Never rewrite the user prompt.
-Declare `INTENT:` and `Done-when:` in chat before CODE tools.
+Declare thin `INTENT:` (OBJECTIVE ± local CONSTRAINTS) + deterministic `Done-when:` before CODE.
 Before write: `vault_read` `wiki/hot.md` then `wiki/index.md`.
 Before Done: Session LAYER CHECK (prompt|context|harness|loop|graph).
 Ephemeral: `/state/` overwrite-only; cleared on stop success.

@@ -1,0 +1,5 @@
+{
+  "max_intent_body_lines": 6,
+  "max_named_anchors": 5,
+  "duty": "Thin INTENT before CODE. Never rewrite user prompt. INTENT: <one OBJECTIVE sentence>. CONSTRAINTS: <local negation only if blast radius> optional ≤2. Done-when: <deterministic checks>. History/hot = input not authority. ≤5 anchors total. End: Session + hot + HANDOFF."
+}

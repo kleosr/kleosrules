@@ -1,13 +1,14 @@
-TASK
-English HANDOFF labels (TASK / FILES / STATUS / NEXT) — STOP ACCEPTED write-back
+TAREA
+Thin INTENT hooks — stop-flush complete
 
-FILES
-wiki/projects/kleosr/Sessions/2026-07-30-handoff-english-labels-stop-accepted.md
+ARCHIVOS
+wiki/projects/kleosr/Sessions/2026-07-30-thin-intent-hooks.md
+wiki/projects/kleosr/Sessions/2026-07-30-thin-intent-hooks-stop-flush.md
 wiki/hot.md
 HANDOFF.md
 
-STATUS
-complete — Done-when: met; stop_gate + vernacular English; fleet synced
+ESTADO
+complete — Done-when: met; Session+hot+HANDOFF flushed
 
-NEXT
-Reload Cursor; commit/push when asked
+SIGUIENTE
+Re-paste USER-RULES.paste.txt into Cursor User Rules; commit if asked

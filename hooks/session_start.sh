@@ -6,6 +6,6 @@ TAIL=""
 if [[ -f "$HANDOFF" ]]; then
   TAIL="$(tail -n 15 "$HANDOFF")"
 fi
-CTX="AMNESIA: Cursor window dies; Obsidian vault survives. vault_read wiki/hot.md then wiki/index.md. HANDOFF tail:
+CTX="AMNESIA: vault survives. vault_read wiki/hot.md then wiki/index.md. Thin INTENT: one OBJECTIVE + optional local CONSTRAINTS + deterministic Done-when (≤5 anchors). HANDOFF tail:
 ${TAIL}"
 jq -n --arg c "$CTX" '{additional_context: $c}'

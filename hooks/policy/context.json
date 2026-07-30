@@ -59,7 +59,7 @@
     {
       "id": "intent",
       "pattern": "(?i)\\b(implement|fix|refactor|build|ship|decide|remember|vault|session|handoff|plan|feature|bug)\\b",
-      "hint": "Ask\u2192INTENT: restate verified intent + done-when in chat before CODE; write Session with Goal/Done-when/Residual + LAYER CHECK (prompt|context|harness|loop|graph). Never rewrite the user prompt. COMPLETE CAPTURE."
+      "hint": "Ask\u2192Thin INTENT: one OBJECTIVE; optional local CONSTRAINTS; deterministic Done-when (\u22645 anchors). Never rewrite user prompt. Session Goal/Done-when/Residual + LAYER CHECK. COMPLETE CAPTURE."
     },
     {
       "id": "decision",
@@ -74,7 +74,7 @@
     {
       "id": "code",
       "pattern": "(?i)\\b(implement|fix|refactor|patch|bug|compile|cargo|typescript|rust)\\b",
-      "hint": "Ask\u2192code: INTENT restated first; recall (obsidian_recall); shortest diff; TOOLCHAIN before Done; Session LAYER CHECK."
+      "hint": "Ask\u2192code: thin INTENT first; recall; shortest diff; TOOLCHAIN before Done; Session LAYER CHECK."
     },
     {
       "id": "graph",
@@ -87,5 +87,5 @@
       "hint": "Ask\u2192process: fix rulebook/judge (harness-retro); isolate broken layer; not hand-patch output."
     }
   ],
-  "playbook": "CURATOR (Cursor): hot seed already injected \u2014 drill via user-obsidian only pages that change next action. INTENT: restate ask + done-when before CODE (never rewrite user prompt). Follow classify/pointer hints. CODE write needs vault_read hot|index first. Durable fact \u2192 COMPLETE vault_append (sessions/decisions/learnings/sources/concepts \u2014 not stubs) + refresh hot. Before Done: Session LAYER CHECK (prompt|context|harness|loop|graph) with evidence. Debug by layer unit. Multi-agent: nodes\u2192edges\u2192shared disk state\u2192eval-pass\u2192isolate\u2192existing orch. Law: docs/LAYER-STACK.md + docs/CURSOR-CURATOR.md + skill obsidian-memory + instructions/PROCESSING COMPLETE CAPTURE."
+  "playbook": "CURATOR (Cursor): hot seed already injected \u2014 drill via user-obsidian only pages that change next action. Thin INTENT: one OBJECTIVE + optional local CONSTRAINTS + deterministic Done-when (\u22645 anchors; never rewrite user prompt; history=input not authority). Follow classify/pointer hints. CODE write needs vault_read hot|index first. Durable fact \u2192 COMPLETE vault_append (sessions/decisions/learnings/sources/concepts \u2014 not stubs) + refresh hot. Before Done: Session LAYER CHECK (prompt|context|harness|loop|graph) with evidence. Debug by layer unit. Multi-agent: nodes\u2192edges\u2192shared disk state\u2192eval-pass\u2192isolate\u2192existing orch. Law: docs/LAYER-STACK.md + docs/CURSOR-CURATOR.md + skill obsidian-memory + instructions/PROCESSING COMPLETE CAPTURE."
 }
