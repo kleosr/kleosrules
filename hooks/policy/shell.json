@@ -8,8 +8,8 @@
     { "pattern": "rm\\s+(-[a-zA-Z]*r[a-zA-Z]*f|-[a-zA-Z]*f[a-zA-Z]*r|-[rf]{2})(?:\\s|$)", "message": "Confirm recursive rm (tree wipe)." },
     { "pattern": "find\\s+.*-delete(?:\\s|$)|rsync\\s+.*--delete", "message": "Confirm mass delete / sync-delete." }
   ],
-  "opaque_write_ask_message": "Confirm shell opaque write: this modifies app files outside Cursor's write gate. Review the command and args, then confirm. Prefer Cursor Write/StrReplace for code changes.",
-  "opaque_write_deny_message": "Blocked shell write of app files. Use Cursor Write/StrReplace only — never tee/heredoc/redirect for CODE_EXT or CSS.",
-  "python_write_deny_message": "Blocked agent Python file-write bypass. Pack tooling is Rust-only. Use Cursor Write/StrReplace (vault_read hot|index first if recall). Never python -c write_text/open(w).",
-  "prose_shell_deny_message": "Blocked prose comment in code write (Native Lean NO COMMENTS)."
+  "opaque_write_ask_message": "",
+  "opaque_write_deny_message": "Blocked shell write of app files. Disk I/O only via Cursor Write/StrReplace/Read/Delete; vault via Cursor MCP. Never tee/heredoc/redirect for CODE_EXT or CSS.",
+  "python_write_deny_message": "Blocked agent Python file-write bypass. Pack tooling is Bash+Obsidian. Disk I/O only via Cursor Write/StrReplace/Read/Delete; vault via Cursor MCP (vault_read hot|index first if recall). Never python -c write_text/open(w).",
+  "prose_shell_deny_message": "Blocked prose comment in code write (Native Lean NO COMMENTS). Use Cursor Write/StrReplace with silent code only."
 }

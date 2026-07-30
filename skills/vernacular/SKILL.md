@@ -1,61 +1,60 @@
 ---
 name: vernacular
 description: >
-  Load and enforce the project's private code vernacular — file names, class /
-  type / function naming, folders, import style, visibility. Use before writing
-  or editing application code when the repo has VERNACULAR.md or
-  .cursor/rules/vernacular.mdc, or when the user asks for custom syntax /
-  naming / private-looking code / highest-quality native match.
+  Private dialect + V2 anti-slop stack guides (TS/React, Bash hooks, Markdown,
+  JSON, state, INTENT). Read when vernacular.mdc globs match or user asks naming
+  / native match / anti-slop. Thin rule holds hard bans; this skill holds examples.
 ---
 
-# Vernacular
+# Vernacular (fat skill)
 
-Native Lean quality = **this repo’s private dialect**, not a global Clean Code essay.
+Thin roof: `project-rules/vernacular.mdc` (hard bans). This file = procedure + examples.
 
-## Before writing application code
+## Load order
+1. Read `.cursor/rules/vernacular.mdc` (or VERNACULAR.md).
+2. Follow hard bans from the thin rule first.
+3. Use sections below for stack-specific shape.
+4. If no contract: private-match siblings only. Do not invent dialect.
 
-1. Look for, in order, and **Read** the first that exists:
-   - `.cursor/rules/vernacular.mdc`
-   - `VERNACULAR.md`
-   - `docs/VERNACULAR.md`
-2. If found: follow it for file names, folders, classes/types, functions, imports,
-   visibility (private/internal), error patterns. It outranks generic taste.
-3. If missing: private-match **sibling files only** (Option C NATIVE LEAN). Do not
-   invent a new dialect. Optionally offer to scaffold from
-   `~/.cursor/skills/vernacular/TEMPLATE.md` if the user wants a contract.
-4. Still obey Option C: prefer no code, no prose comments, no monorepo theater.
+## TypeScript / React / Node
+- Comments: ban obvious what-comments; why-only if non-obvious.
+- State: `if (!data) return <Loading/>` — no redundant isLoading when data starts null.
+- Returns: early-return; max nesting depth 2.
+- Types: strict; no any; prefer type; infer when clear.
+- Async: async/await or chains; no try/catch that only logs.
+- Exports: named only.
 
-## Force vs persuasion
+## Bash hooks (`hooks/*.sh`)
+Template:
 
-Hooks enforce **machine fields** only (when a contract exists), via
-`deny-vernacular-drift` / `gate-write`:
+    #!/bin/bash
+    set -euo pipefail
+    INPUT=$(cat)
+    # parse with jq; fail-closed
+    echo '{"action":"allow"}'
+    exit 0
 
-- `file_name_pattern` (incl. real `pack_native`: snake/kebab + PascalCase
-  `.tsx`/`.jsx`/`.vue`/`.svelte` components)
-- `allowed_kinds` (with `domain.kind.ext`)
-- `allowed_path_prefixes` (topology allow-list)
-- `forbidden_class_suffixes` (theater class endings)
-- `class_pattern` / `function_pattern` / `constant_pattern`
-- `boolean_prefixes` (glued-prefix + boolean-shaped bare names)
+Banned: updated_input, Python, Node, external APIs, cd in hooks.
+Required: jq; exit non-zero on parse failure; max 80 LOC.
 
-Prose sections (import order, visibility defaults, “prefer functions” essays)
-are **soft** unless expressed as machine fields. Do not claim the gate enforces
-ungated prose.
+## Markdown & memory
+- Bullets/tables. No fluff.
+- System docs max 80 lines (HANDOFF, ARCHITECTURE).
+- HANDOFF: TAREA / ARCHIVOS / ESTADO / SIGUIENTE.
+- Sessions: `wiki/projects/<project>/Sessions/<YYYY-MM-DD>-<topic>.md`
+- Summaries not chat dumps.
 
-## What vernacular controls
+## JSON
+- Strict JSON (no comments).
+- One roof per policy file.
+- hooks.json: flat; camelCase event keys.
 
-- File and folder names (gated when fields set)
-- Class / type naming; forbidden theater suffixes when listed
-- Function naming; boolean prefixes when listed
-- Where new files may be created (`allowed_path_prefixes`)
-- Soft: import order, visibility, cohesion — private-match siblings
+## Ephemeral state
+- `/state/` atomic overwrite.
+- `current_intent.md` = raw intent only.
+- Clear on stop_gate success.
 
 ## Anti-patterns
-
-- Applying another repo’s vernacular here
-- Introducing UseCase / Repository folder theater when the repo forbids them
-  (React PascalCase components are OK under `pack_native` + `.tsx`)
-- “Improving” names into a foreign style on a surgical fix
-- Claiming always-on companions alone force dialect depth
-
-Off only: user says stop vernacular / ignore vernacular for this task.
+- Foreign UseCase/Repository theater.
+- Shell bypass of Write/StrReplace.
+- Claiming gates enforce ungated prose essays.

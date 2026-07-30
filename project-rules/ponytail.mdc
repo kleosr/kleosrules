@@ -1,40 +1,24 @@
 ---
-description: Ponytail always on — YAGNI, reuse, shortest correct Native Lean diff
+description: "Native Lean Ladder (Thin Rule). Points to ponytail skill."
 alwaysApply: true
 ---
 
-# Ponytail (always on — global)
+# NATIVE LEAN (PONYTAIL)
 
-Default coding mode for every chat and every repo. Off only if the user says
-stop ponytail / normal mode. Agent “why” cannot override this on/off — not a
-soft craft default. Soft ladder taste below may yield to context with one line.
+Doctrina: Smallest Diff. Cero bloat.
 
-Before writing or editing application code, Read and follow
-`~/.cursor/skills/ponytail/SKILL.md` (alias skill: `lean-code`).
+## THE LADDER (Hard Roof Concept)
+1. No Code
+2. Reuse (Grep codebase or Obsidian)
+3. Stdlib
+4. Platform (React/Node native)
+5. Installed Dep
+6. 1-Liner
+7. Minimum (Max 80 LOC per file)
 
-Ladder — stop at the first rung that holds:
+## PROCEDURE
+Si el problema es complejo o necesitas criterio de arquitectura para elegir un escalón:
+**Read `~/.cursor/skills/ponytail/SKILL.md`** antes de generar código.
 
-1. Prefer **NO CODE** (reuse / delete / config / existing API).
-2. Reuse in this repo (vernacular contract if present, else siblings).
-3. Stdlib → platform → already-installed dep → one line → minimum.
-
-Hard floors:
-
-- Shortest correct diff. No unrequested abstractions, deps, or drive-by refactors.
-- Deletion > addition. Boring > clever. Fewest files.
-- **NO prose comments.** Strip on touched path. Machine directives only for green build.
-- Private-match siblings; cartography then blast-radius before shared change.
-- No monorepo / Nx / Turborepo / Clean Architecture theater unless already that shape or asked.
-- Never lazy about: understanding, trust boundaries, data-loss errors, security, a11y, explicit asks.
-
-Force vs persuasion:
-
-- Roof (hooks): no prose comments; secrets; vernacular machine fields when contract exists;
-  lean meter on CODE_EXT (`KLEOS_LEAN`, new-file / net-LOC / absolute file caps) — finite **size** roofs,
-  not semantic quality / clean / YAGNI (`docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`).
-- Soft (not fully gate-backed): prefer no code, reuse ladder, ≤20-line taste, “organized”
-  beyond topology allow-list. Soft may yield with one line; roofs may not.
-  Green lean ≠ high-quality code by construction.
-
-MUST-NEVER / Master Mind outrank this when they conflict.
-Hooks may deny comment, vernacular, or lean-meter drift — fix and retry; do not fight the hook.
+## DENY RECOVERY
+Si `lean_gate.sh` bloquea tu write: Extrae a archivos nuevos (`Write`), actualiza imports (`Grep`+`StrReplace`). Nunca uses Shell `sed`.

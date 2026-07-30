@@ -5,6 +5,7 @@
 ponytail
 lean-code
 vernacular
+testing
 unconditional-counterexample
 breakthrough-deepen
 

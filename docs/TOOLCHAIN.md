@@ -17,6 +17,8 @@ chmod +x hooks/*.sh
 bash -n hooks/session_start.sh
 bash -n hooks/before_submit_prompt.sh
 bash -n hooks/stop_gate.sh
+bash -n hooks/lean_gate.sh
+bash -n hooks/fleet_sync.sh
 ```
 
 ## Smoke test
@@ -28,6 +30,15 @@ echo '{"prompt": "test code", "hook_event_name": "beforeSubmitPrompt"}' \
 
 Expect JSON with `additional_context` (and, on stop fixtures, `followup_message` when INTENT is missing).
 
+## Fleet install / sync
+
+```bash
+FORCE=1 bash hooks/fleet_sync.sh all
+FORCE=1 bash hooks/fleet_sync.sh verify
+```
+
+Installs `~/.cursor` hooks+rules+skills, syncs `.cursor/rules` + Bash hooks to every project under `config/scan.roots`.
+
 ## Size roofs
 
-Keep each hook under 80 LOC. Fail closed: bad parse or failed exec should block or return deny JSON. Review catches the rest.
+Keep each event hook under 80 LOC. Fail closed: bad parse or failed exec should block or return deny JSON. Review catches the rest.

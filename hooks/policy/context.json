@@ -45,7 +45,7 @@
     "those"
   ],
   "recall_gate_enabled": true,
-  "recall_message": "Blocked write before Obsidian recall. vault_read wiki/hot.md then wiki/index.md via user-obsidian (Cursor MCP:vault_read or CallMcpTool) first, THEN Cursor Write/StrReplace. Never retry the same Write. Never Python/shell file-write bypass (pack is Rust-only).",
+  "recall_message": "Blocked write before Obsidian recall. vault_read wiki/hot.md then wiki/index.md via user-obsidian (Cursor MCP:vault_read or CallMcpTool) first, THEN Cursor Write/StrReplace/Read/Delete only. Never retry the same Write. Never Python/shell file-write bypass (pack is Rust-only).",
   "exempt_write_prefixes": [
     "docs/",
     "skills/",

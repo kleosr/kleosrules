@@ -1,29 +1,34 @@
 ---
-description: Auto-apply Native Lean / V10.1 contract gates — always on globally and in every synced repo
+description: "Auto-loads Native Lean doctrine, native tools usage, and deny recovery."
 alwaysApply: true
 ---
 
-# Native Lean — auto gates (always on)
+# NATIVE LEAN AUTOLOAD & TOOLING
 
-These companions stay loaded pass what may: this file + `ponytail.mdc` +
-`lean-code.mdc` + User Rule Master Mind V10.1. Do not drop them for speed or style.
-Pass what may / never fight a deny / never Shell-bypass comment gates are not
-soft craft defaults — agent “why” cannot override them. User may stop
-ponytail/lean-code mode with an explicit stop phrase.
+Estás en modo Native Lean. Cero bloat. Usa herramientas nativas de Cursor.
 
-Before writing or editing application code:
+## 1. NATIVE TOOLS ONLY (No Shell hacks)
+Prohibido usar `sed`, `cat`, `echo >`, `tee`, `rg` o `find` en Shell para leer/editar código.
+- **Leer:** `Read`
+- **Buscar Código:** `Grep`
+- **Buscar Archivos:** `Glob`
+- **Editar:** `StrReplace` (cirugía) o `Write` (crear/sobrescribir)
+- **Memoria (Obsidian):** `CallMcpTool` (ej. `MCP:vault_read`)
 
-1. Prefer **NO CODE** (reuse / delete / config) when that solves the ask.
-2. **Silent** look for `.cursor/rules/vernacular.mdc`, `VERNACULAR.md`, `docs/VERNACULAR.md`. If found, Read and follow. If missing, private-match siblings only.
-3. Always apply ponytail / lean-code mode (see `ponytail.mdc`). Read the ponytail skill for the full ladder. Invoke `/vernacular` when a contract exists or naming/layout is in play. Other skills on demand when the user asks.
-4. **NO prose comments** — strip on touched path. Machine directives only for green build.
-5. No monorepo / Nx / Turborepo / Clean Architecture theater unless already that shape or asked.
-6. Zero-comment + secrets + vernacular + lean: `kleos-gate` on preToolUse /
-   beforeShellExecution / read / MCP / Delete. PRE-FLIGHT `--check-content`
-   before Write. Never fight a deny. Never use Shell to write app code with comments.
+## 2. DENY RECOVERY PROTOCOL (Cuando un hook bloquea)
+Si `lean_gate.sh` bloquea tu `Write` o `StrReplace` por tamaño (Ej: >700 LOC), NO intentes editar solo unas líneas. NO uses Shell para bypassear. Ejecuta este protocolo:
 
-**Do not announce** missing vernacular / DEBT.md / TOOLCHAIN.md / AGENTS.md at chat open.
+1. **Stop & Read:** Usa `Read` en el archivo bloqueado.
+2. **Plan Split:** Identifica funciones/clases que puedan extraerse a módulos nuevos.
+3. **Extract & Write:** Usa `Write` para crear los nuevos archivos más pequeños (ej. `utils.ts`, `helpers.ts`). Deben cumplir el techo Lean.
+4. **Update Source:** Usa `StrReplace` en el archivo original para reemplazar el código extraído con un `import`.
+5. **Cascade Fix:** Usa `Grep` para buscar dónde se importaba el código movido. Usa `StrReplace` en esos archivos para actualizar las rutas de importación.
+6. **Retry:** Reintenta tu diff original. Ahora será más pequeño y pasará el gate.
 
-Full policy: User Rule **Master Mind V15.6+**.
-Lean meter = finite size roofs — not ∀ semantic quality
-(`docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`).
+## 3. SOFT LEAN LADDER (Ponytail)
+Sigue la escalera: No code → Reuse → Stdlib → Platform → Installed Dep → 1-Liner → Minimum.
+Justifica en 1 línea si saltas un escalón.
+
+## 4. MEMORY (Amnesia Preventiva)
+- **Efímero:** `HANDOFF.md` (leer al inicio, escribir al final).
+- **Durable:** Obsidian via `CallMcpTool`.

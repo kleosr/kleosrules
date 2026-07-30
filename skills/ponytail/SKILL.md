@@ -1,113 +1,49 @@
 ---
 name: ponytail
 description: >
-  Lazy senior / Native Lean: prefer no code → reuse → stdlib → platform →
-  installed dep → one line → minimum. Never write prose comments; private-match
-  existing repo style; short LOC; kill over-engineering and monorepo theater.
-  Use when writing/editing application code, or for ponytail, yagni, short LOC,
-  native / private-looking code, over-engineering, or bloat complaints. Not for
-  unrestricted greenfield architecture theater or monorepo migrations unless asked.
+  Lazy senior / Native Lean decision trees: no code → reuse → stdlib → platform →
+  installed dep → one line → minimum. Deny recovery splits. Edge-case architecture
+  criteria. Use when writing app code or when thin ponytail.mdc points here.
 ---
 
-# Ponytail
+# Ponytail (fat skill)
 
-Lazy = efficient, not careless. Best code is never written; shipped code is clean,
-comment-free, and looks like this repo’s private team wrote it.
+Thin roof: `project-rules/ponytail.mdc` (ladder + skill pointer + deny one-liner).
+This file = decision trees and edge cases.
 
-## Ladder (after understanding the problem)
+## Ladder detail
+Stop at first rung that holds after reading the ask + touched code:
+1. NO CODE — config, delete, existing API.
+2. Reuse — Grep codebase; Obsidian MCP for prior decisions.
+3. Stdlib of the language.
+4. Framework native (React/Node/platform).
+5. Already-installed dependency (no new package without Soft Rule why).
+6. One clear line.
+7. Minimum — shortest correct private-native diff. Prefer files under soft 80 LOC;
+   hard roof `hooks/lean_gate.sh` denies existing files over 700 LOC.
 
-Read the task and touched code; trace the real flow; then stop at the first rung that holds:
+Soft Rule: skipping a rung needs one chat line naming why lower rungs fail.
 
-1. Need any application code at all? Prefer **NO CODE** (reuse / delete / config / existing API).
-2. Already in this codebase? Reuse (match vernacular contract if present, else siblings).
-3. Stdlib?
-4. Native platform?
-5. Already-installed dependency?
-6. One line?
-7. Minimum that works — shortest correct native diff.
+## Refactor decision tree
+When adding behavior to a hot file:
+- If file approaches lean_gate (700): extract first (Deny Recovery), then add.
+- Third real repetition → extract; before that, duplicate is cheaper.
+- Shared change: Grep callers; private-match siblings; blast-radius in chat.
+- Prefer deletion over wrappers. No monorepo/Nx/Clean Architecture theater.
 
-Bug fix = root cause within blast radius. Find affected callers/siblings before changing shared behavior — don't patch only the reported path.
+## Deny Recovery (full)
+On lean_gate deny:
+1. Read the blocked file.
+2. Plan split (functions/classes → new modules under vernacular paths).
+3. Write new small files under roof.
+4. StrReplace original with imports.
+5. Grep old import paths; StrReplace cascade.
+6. Retry original diff. Never Shell sed/echo>/tee bypass.
 
-## Rules
+## Hard floors
+- No prose comments in app code (machine directives only for green build).
+- Never lazy about trust boundaries, data-loss errors, security, a11y, explicit asks.
+- Off only: user says stop ponytail / stop lean-code / normal mode.
 
-- No unrequested abstractions, avoidable new deps, or boilerplate-for-later.
-- Duplication until ~3 real repetitions; extract only if simpler than the copies.
-- Deletion > addition. Boring > clever. Fewest files. Shortest correct diff.
-- **NO COMMENTS.** Never write prose comments. On the touched path, delete prose
-  comments and commented-out code. Machine directives only when required for green
-  build (`@ts-expect-error`, `eslint-disable-next-line`, shebang) — no sentences.
-- **Private match:** mirror sibling naming, visibility (private/internal), folders,
-  imports, and error patterns so new code does not look foreign.
-- **Anti theater:** never add monorepo / Nx / Turborepo / new workspace packages /
-  Clean Architecture layer trees to “improve quality” unless the repo already is
-  that shape or the user explicitly asked.
-- Complex ask with a smaller cover: ship the lazy default and question in the same response ("Did X; Y covers it. Need full X?"). Don't stall.
-- Same-size options → edge-case-correct one. Lazy means less code, not a flimsier algorithm.
-- Never lazy about: understanding, trust-boundary validation, data-loss errors, security, accessibility, explicit requests.
-
-## Decisiveness
-
-- Don't re-read or re-search answers you already have.
-- First sufficient signal → decide. No alternative tourism.
-- Ask only for destructive or scope-changing actions.
-- No plan files for tasks under ~5 steps.
-
-## Debt
-
-- No silent shortcuts that hide broken behavior. If a real constraint forces a
-  weaker fix, say so in the reply to the user — never as a code comment.
-- Cleanup only on the touched path and only if it does not widen the task. Delete
-  dead code and prose comments on that path; don't tour the repo.
-
-## Clean code (defaults) — lean ∩ native ∩ no comments
-
-Hard on every edit:
-- Names explain; no magic literals; private match to siblings.
-- Early returns when they shorten or clarify the diff.
-- **Zero prose comments.** No JSDoc/TODO/FIXME/banners/commented-out code.
-
-Soft — greenfield / new symbols, or user asked refactor/cleanup:
-- Prefer ≤20-line single-responsibility functions; stay longer if splitting widens a surgical ask.
-- Few params; no boolean behavior forks.
-- Split files by responsibility only when the repo already splits that way (~500 soft / ~700 hard). No cross-domain `utils` dumps. No new package boundaries for “architecture.”
-
-Force (hooks, when wired — finite **size**/syntax meters, not ∀ quality):
-- No prose comments (always).
-- Vernacular machine fields when a contract exists (names, paths, forbidden class suffixes, boolean prefixes).
-- Lean meter: oversized **new** CODE_EXT files / large net LOC spikes (`KLEOS_LEAN=1` default; override via env).
-  Size roofs only — green lean ≠ clean / YAGNI / cohesion
-  (`docs/evals/LEAN-SIZE-QUALITY-PSTAR.md`).
-
-Conflict with Rules (shortest correct diff / fewest files / private match / no theater / no comments):
-**native surgical / shortest correct diff wins**, and **no comments always wins**
-over “leave a note in the file.” Do not Extract Method solely to meet ≤20 on a
-surgical legacy fix. Do not merge the 2nd duplicate until ~3 or asked.
-Lean meter still applies to new-file / net-delta caps unless `KLEOS_LEAN=0`.
-
-## Force vs persuasion
-
-Always-on companions **load** this skill — they do not alone deny bloat.
-Chase the ladder; expect gates only where roofs/meters exist. Do not claim
-ponytail or lean meter guarantees extreme / semantic quality for all files.
-
-## Errors & tests
-
-- No swallowed errors; domain errors for business failures; logs without secrets.
-- Non-trivial logic ships with one smallest runnable check. Bug fix → regression test that fails before and passes after.
-- Done = lint + types + relevant tests green (or explicit why verification N/A).
-
-## Agent loop
-
-- After tool results that change facts, scope, or done-when: update done-when; then continue, replan, ask, or stop.
-- Tool failure → one narrower retry; then replan or report blocker.
-- Stop when done-when is met; else state what remains.
-
-## Conditional addenda
-
-Load only when paths match — do not apply ceremony outside these trees:
-
-- Touching `**/domains/**` → read and follow [`domains-ddd.md`](domains-ddd.md). That addendum overrides the single-check test rule for domain code.
-- Project has separate `frontend/` and `backend/` and the task touches them → read and follow [`fe-be-layout.md`](fe-be-layout.md).
-
-Off only: "stop ponytail" / "normal mode" (user phrase). Agent “why” cannot
-override companion on/off — not a soft craft default.
+## Alias
+`lean-code` skill/rule = this mode.

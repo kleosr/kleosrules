@@ -1,31 +1,24 @@
 ---
-description: Private vernacular for this repo — naming, files, visibility.
-alwaysApply: true
+description: "V2 Anti-Slop hard bans (Thin Rule). Points to vernacular skill."
+globs: "**/*.{ts,tsx,js,jsx,sh,md,json}"
+alwaysApply: false
 ---
 
-Vernacular (kleosr V2)
+# V2 VERNACULAR (THIN)
 
-Machine fields (reference; Bash hooks do not enforce):
-file_name_pattern: pack_native
-allowed_path_prefixes: hooks/, skills/, docs/, user-rules/, project-rules/, config/, state/, .cursor/
-forbidden_class_suffixes: UseCase, Repository, Interactor, Presenter, Controller
-class_pattern: PascalCase
-function_pattern: snake_case
-boolean_prefixes: is, has, can, should
-constant_pattern: SCREAMING_SNAKE_CASE
-no_prose_comments: true
+Doctrina: Smallest Diff. Cero slop.
 
-Topology
-- Shape: single pack (rules + Bash hooks + skills + config + docs)
-- Pack tooling is Bash-only (hooks scripts). No Rust. No pack Python.
-- Obsidian vault = durable memory (MCP user-obsidian).
+## HARD BANS
+- No `any`. Prefer `type` over `interface` unless extending.
+- Named exports only. No default exports.
+- Early-return only. Nesting >2 levels banned.
+- Infer loading from data. No redundant `isLoading` when data starts null.
+- Hooks Bash: max 80 LOC; `set -euo pipefail`; `jq`; fail-closed. No Python/Node/`cd`/`updated_input`.
+- Markdown system files max 80 LOC. HANDOFF: TAREA / ARCHIVOS / ESTADO / SIGUIENTE.
+- JSON: no comments; atomic policy files; camelCase hook keys.
+- State: overwrite only; clear on stop success.
+- Chat: `INTENT:` + `Done-when:` before write tools.
 
-File names
-- Default: snake_case or kebab-case + extension
-- Hooks: snake_case.sh
-- React components: PascalCase basename for tsx/jsx/vue/svelte OK
-
-Forbidden
-- Prose comments in application code
-- Foreign UseCase folder theater
-- Rust kleos-gate or pack Python
+## PROCEDURE
+Stack style guides (TS/React, Bash templates, Obsidian paths):
+**Read `~/.cursor/skills/vernacular/SKILL.md`** before writing matched files.

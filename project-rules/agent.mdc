@@ -1,13 +1,13 @@
 ---
-description: Project craft capsule for synced repos
+description: "Project craft capsule for synced repos"
 alwaysApply: true
 ---
 
-Agent capsule (kleosr V2)
-Bash hooks + Obsidian memory. Prefer one model per conversation.
-Read HANDOFF.md for multi-session work. Skill ship-loop for features.
-Every start: wiki/hot.md then wiki/index.md. Every stop with tools: Session + hot.
-Git writes only when asked. Secrets never in code or chat.
-Prefer NO CODE when reuse/delete/config solves. Smallest Diff. No prose comments.
-Done = docs/TOOLCHAIN.md smoke green with evidence.
+# AGENT CAPSULE
+
+Bash hooks + Obsidian. One model per conversation.
+Read `HANDOFF.md` for multi-session work. Prefer NO CODE. Smallest Diff.
+Start: hot then index. Stop with tools: Session + hot + HANDOFF.
+Git only when asked. Secrets never in code or chat.
+Done = `docs/TOOLCHAIN.md` green with evidence.
 Never fight a deny. Never reintroduce Rust kleos-gate or pack Python.

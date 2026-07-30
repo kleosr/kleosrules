@@ -1,23 +1,15 @@
 TAREA
-kleosrules V2 Bash plus Obsidian migration
+FORCE fleet sync Cursor + all scan.roots; push pack
 
 ARCHIVOS
-hooks/session_start.sh
-hooks/before_submit_prompt.sh
-hooks/stop_gate.sh
-hooks/hooks.json
-user-rules/USER-RULES.paste.txt
-docs/ARCHITECTURE.md
-README.md
+hooks/fleet_sync.sh
+hooks/lean_gate.sh
 docs/TOOLCHAIN.md
+~/.cursor/hooks.json rules skills
+Documents/*/.cursor/{hooks,rules}
 
 ESTADO
-complete SMOKE_OK
+complete — FORCE=1 fleet_sync all GREEN; 18 projects; zero kleos-gate hooks.json; verify smoke OK
 
 SIGUIENTE
-Re-paste User Rules in Cursor Settings; new chat
-
-INTENT
-Ask: replace Rust with Bash hooks and Obsidian memory
-Done-when: three hooks wired, paste max 15 lines, ARCHITECTURE, smoke, commits
-Residual: former M roofs not reimplemented
+reload Cursor; paste user-rules/USER-RULES.paste.txt if Settings paste stale

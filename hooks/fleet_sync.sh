@@ -1,0 +1,256 @@
+#!/usr/bin/env bash
+set -euo pipefail
+PACK="$(cd "$(dirname "$0")/.." && pwd)"
+HOME_C="${HOME}/.cursor"
+FORCE="${FORCE:-${FORCE_SKILLS:-0}}"
+CMD="${1:-all}"
+SHARED=(agent types testing debugging native-lean-autoload ponytail lean-code obsidian-memory context-curator vernacular)
+GLOBAL=(native-lean-autoload ponytail lean-code agent obsidian-memory context-curator vernacular testing)
+HOOK_SCRIPTS=(session_start.sh before_submit_prompt.sh stop_gate.sh lean_gate.sh)
+
+load_lines() {
+  local f="$1" line
+  [[ -f "$f" ]] || return 0
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    line="${line#"${line%%[![:space:]]*}"}"
+    [[ -z "$line" ]] && continue
+    [[ "${line:0:1}" == "$(printf '#')" ]] && continue
+    printf '%s\n' "$line"
+  done <"$f"
+}
+
+is_ignored() {
+  local path="$1" base pat
+  base="$(basename "$path")"
+  while IFS= read -r pat; do
+    [[ -z "$pat" ]] && continue
+    [[ "$base" == "$pat" ]] && return 0
+    [[ "$base" == "$pat"/* ]] && return 0
+  done < <(load_lines "$PACK/config/scan.ignore")
+  return 1
+}
+
+is_project() {
+  local d="$1"
+  [[ -d "$d/.git" || -f "$d/package.json" || -f "$d/pnpm-workspace.yaml" \
+    || -f "$d/Cargo.toml" || -f "$d/go.mod" || -f "$d/pyproject.toml" \
+    || -f "$d/AGENTS.md" || -d "$d/.cursor/rules" ]]
+}
+
+discover() {
+  local roots=() root child
+  mapfile -t roots < <(load_lines "$PACK/config/scan.roots")
+  if [[ ${#roots[@]} -eq 0 ]]; then
+    roots=("$(dirname "$PACK")")
+  fi
+  for root in "${roots[@]}"; do
+    [[ -d "$root" ]] || continue
+    if is_project "$root" && ! is_ignored "$root"; then
+      realpath "$root"
+    fi
+    for child in "$root"/*/; do
+      [[ -d "$child" ]] || continue
+      child="${child%/}"
+      is_ignored "$child" && continue
+      is_project "$child" || continue
+      realpath "$child"
+    done
+  done | sort -u
+}
+
+symlink_force() {
+  local src="$1" dst="$2"
+  mkdir -p "$(dirname "$dst")"
+  ln -sfn "$src" "$dst"
+}
+
+copy_hook_scripts() {
+  local dest="$1" s p
+  mkdir -p "$dest/policy"
+  for s in "${HOOK_SCRIPTS[@]}"; do
+    cp -f "$PACK/hooks/$s" "$dest/$s"
+    chmod +x "$dest/$s"
+  done
+  for p in "$PACK"/hooks/policy/*.json; do
+    [[ -f "$p" ]] || continue
+    cp -f "$p" "$dest/policy/$(basename "$p")"
+  done
+}
+
+install_home_hooks() {
+  mkdir -p "$HOME_C/hooks/policy" "$HOME_C/state"
+  copy_hook_scripts "$HOME_C/hooks"
+  cat >"$HOME_C/hooks.json" <<EOF
+{
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {"command": "bash ${HOME_C}/hooks/before_submit_prompt.sh", "failClosed": true}
+    ],
+    "sessionStart": [
+      {"command": "bash ${HOME_C}/hooks/session_start.sh", "failClosed": false}
+    ],
+    "stop": [
+      {"command": "bash ${HOME_C}/hooks/stop_gate.sh", "loop_limit": 1, "failClosed": false}
+    ],
+    "preToolUse": [
+      {
+        "matcher": "Write|StrReplace",
+        "command": "bash ${HOME_C}/hooks/lean_gate.sh",
+        "timeoutSec": 5,
+        "failClosed": true
+      }
+    ]
+  }
+}
+EOF
+  echo "[ok] ~/.cursor/hooks.json + hooks scripts"
+}
+
+install_global_rules() {
+  local name
+  mkdir -p "$HOME_C/rules"
+  cp -f "$PACK/user-rules/option-c-core.mdc" "$HOME_C/rules/option-c-core.mdc"
+  for name in "${GLOBAL[@]}"; do
+    cp -f "$PACK/project-rules/${name}.mdc" "$HOME_C/rules/${name}.mdc"
+    echo "[ok] ~/.cursor/rules/${name}.mdc"
+  done
+}
+
+install_skills() {
+  local skill src dst
+  mkdir -p "$HOME_C/skills"
+  while IFS= read -r skill; do
+    [[ -z "$skill" ]] && continue
+    src="$PACK/skills/$skill"
+    [[ -f "$src/SKILL.md" ]] || { echo "[fail] missing $src/SKILL.md"; return 1; }
+    dst="$HOME_C/skills/$skill"
+    if [[ -e "$dst" && ! -L "$dst" ]]; then
+      if [[ "$FORCE" == "1" ]]; then
+        rm -rf "$dst"
+        echo "[force] replaced: $skill"
+      else
+        echo "[warn] skip non-symlink: $dst (FORCE=1)"
+        continue
+      fi
+    fi
+    symlink_force "$src" "$dst"
+    echo "[ok] skill $skill"
+  done < <(load_lines "$PACK/config/skills.txt")
+  while IFS= read -r skill; do
+    [[ -z "$skill" ]] && continue
+    dst="$HOME_C/skills/$skill"
+    if [[ -L "$dst" ]]; then
+      rm -f "$dst"
+      echo "[rm] retired skill $skill"
+    fi
+  done < <(load_lines "$PACK/config/retired-skills.txt")
+  return 0
+}
+
+link_pack_rules() {
+  local dest="$PACK/.cursor/rules" name orphan
+  mkdir -p "$dest"
+  for name in "${SHARED[@]}"; do
+    [[ -f "$PACK/project-rules/${name}.mdc" ]] || continue
+    symlink_force "../../project-rules/${name}.mdc" "$dest/${name}.mdc"
+  done
+  while IFS= read -r orphan; do
+    [[ -z "$orphan" ]] && continue
+    [[ -e "$dest/$orphan" || -L "$dest/$orphan" ]] && rm -f "$dest/$orphan" && echo "[rm] pack/$orphan"
+  done < <(load_lines "$PACK/config/retired.txt")
+  echo "[ok] pack .cursor/rules → project-rules"
+}
+
+sync_repo_hooks() {
+  local repo="$1" label="$2" dest
+  dest="$repo/.cursor/hooks"
+  copy_hook_scripts "$dest"
+  rm -f "$dest/bin/kleos-gate" 2>/dev/null || true
+  cp -f "$PACK/hooks/hooks.project.json" "$repo/.cursor/hooks.json"
+  echo "[ok] hooks → $label"
+}
+
+sync_repo_rules() {
+  local repo="$1" label="$2" dest name orphan
+  dest="$repo/.cursor/rules"
+  mkdir -p "$dest"
+  for name in "${SHARED[@]}"; do
+    [[ -f "$PACK/project-rules/${name}.mdc" ]] || continue
+    rm -f "$dest/${name}.mdc"
+    cp -f "$PACK/project-rules/${name}.mdc" "$dest/${name}.mdc"
+  done
+  while IFS= read -r orphan; do
+    [[ -z "$orphan" ]] && continue
+    [[ -e "$dest/$orphan" || -L "$dest/$orphan" ]] && rm -f "$dest/$orphan" && echo "[rm] $label/$orphan"
+  done < <(load_lines "$PACK/config/retired.txt")
+  echo "[ok] rules → $label"
+}
+
+sync_fleet() {
+  local pack_c repos repo label
+  pack_c="$(realpath "$PACK")"
+  mapfile -t repos < <(discover)
+  echo "[scan] ${#repos[@]} project(s)"
+  link_pack_rules
+  sync_repo_hooks "$PACK" "pack"
+  for repo in "${repos[@]}"; do
+    [[ "$repo" == "$pack_c" ]] && continue
+    label="$(basename "$repo")"
+    sync_repo_rules "$repo" "$label"
+    sync_repo_hooks "$repo" "$label"
+  done
+}
+
+verify_smoke() {
+  local skill bad=0
+  chmod +x "$PACK"/hooks/*.sh
+  bash -n "$PACK/hooks/session_start.sh"
+  bash -n "$PACK/hooks/before_submit_prompt.sh"
+  bash -n "$PACK/hooks/stop_gate.sh"
+  bash -n "$PACK/hooks/lean_gate.sh"
+  bash -n "$PACK/hooks/fleet_sync.sh"
+  echo '{"prompt":"test code","hook_event_name":"beforeSubmitPrompt"}' \
+    | bash "$PACK/hooks/before_submit_prompt.sh" | jq -e '.additional_context' >/dev/null
+  while IFS= read -r skill; do
+    [[ -z "$skill" ]] && continue
+    if [[ ! -L "$HOME_C/skills/$skill" ]]; then
+      echo "[fail] skill not symlink: $skill"; bad=1
+    elif [[ "$(readlink -f "$HOME_C/skills/$skill")" != "$(realpath "$PACK/skills/$skill")" ]]; then
+      echo "[fail] skill wrong target: $skill -> $(readlink "$HOME_C/skills/$skill")"; bad=1
+    fi
+  done < <(load_lines "$PACK/config/skills.txt")
+  [[ -f "$HOME_C/hooks.json" ]] || { echo "[fail] missing ~/.cursor/hooks.json"; bad=1; }
+  if grep -q 'kleos-gate' "$HOME_C/hooks.json"; then
+    echo "[fail] home hooks still kleos-gate"; bad=1
+  fi
+  [[ "$bad" -eq 0 ]] || return 1
+  echo "[ok] verify smoke"
+}
+
+case "$CMD" in
+  install)
+    install_home_hooks
+    install_global_rules
+    install_skills
+    ;;
+  sync)
+    sync_fleet
+    ;;
+  verify)
+    verify_smoke
+    ;;
+  all)
+    install_home_hooks
+    install_global_rules
+    install_skills
+    sync_fleet
+    verify_smoke
+    echo "[done] fleet_sync all FORCE=$FORCE"
+    echo "Manual: paste $PACK/user-rules/USER-RULES.paste.txt → Cursor Settings → User Rules"
+    ;;
+  *)
+    echo "usage: FORCE=1 $0 {install|sync|verify|all}" >&2
+    exit 2
+    ;;
+esac

@@ -1,12 +1,18 @@
 ---
-description: Always-on Obsidian vault memory (MCP user-obsidian)
+description: "Obsidian amnesia roofs (Thin Rule). Points to obsidian-memory skill."
 alwaysApply: true
 ---
 
-Obsidian memory (kleosr V2)
-Chat dies. Vault = Karpathy LLM Wiki. MCP user-obsidian -> /home/kleosr/rootsidian/kleosr
-Start: vault_read wiki/hot.md then wiki/index.md then project Index + Sessions
-During: durable fact -> vault_append COMPLETE (not stubs)
-End: Session Goal/Done-when/Residual + LAYER CHECK; refresh wiki/hot.md; mirror HANDOFF.md
-Never edit raw/. Amnesia preventiva: hooks force read and write-back.
-Bash harness: session_start, before_submit_prompt, stop_gate. No Rust gate.
+# OBSIDIAN MEMORY (THIN)
+
+Chat dies. Vault = durable memory. MCP `user-obsidian` → `/home/kleosr/rootsidian/kleosr`.
+
+## HARD PATHS
+- Start: `vault_read` `wiki/hot.md` then `wiki/index.md` then project Index + Sessions.
+- During: durable fact → COMPLETE `vault_append` (not stubs).
+- End: Session Goal/Done-when/Residual + LAYER CHECK; refresh `wiki/hot.md`; mirror `HANDOFF.md`.
+- Never edit `raw/`.
+
+## PROCEDURE
+CallMcpTool workflows, ingest/query/lint, COMPLETE CAPTURE:
+**Read `~/.cursor/skills/obsidian-memory/SKILL.md`** when memory work is non-trivial.

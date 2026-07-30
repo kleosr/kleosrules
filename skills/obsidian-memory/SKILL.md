@@ -1,4 +1,5 @@
 ---
+---
 name: obsidian-memory
 description: >-
   Persistent epistemic memory via Obsidian vault MCP (Karpathy LLM Wiki).
@@ -6,6 +7,13 @@ description: >-
   raw/ once; query wiki only. Mid-session durable facts, preCompact
   write-back (persist INTO vault), handoffs. Complements codebase-memory.
 ---
+
+# Obsidian memory (fat skill)
+
+Thin roof: `project-rules/obsidian-memory.mdc` (paths + amnesia).
+This file = CallMcpTool workflows, ingest/query/lint, COMPLETE CAPTURE.
+V2 harness: Bash `session_start` / `before_submit_prompt` / `stop_gate` (no Rust kleos-gate).
+
 
 # Obsidian memory (kleosr — LLM Wiki / no amnesia)
 

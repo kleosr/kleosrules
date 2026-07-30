@@ -2,7 +2,11 @@
 
 Cursor harness pack for the 5 Layers framework. Governance is Bash; memory is Obsidian MCP. No Rust. No Python.
 
-Doctrina: Cursor razona en una ventana que muere; Obsidian guarda lo que debe sobrevivir; los hooks obligan a leer y escribir para que no haya amnesia.
+Requires Obsidian (app running) plus an Obsidian MCP server in Cursor. Without that, durable memory does not work.
+
+Platform: Linux or WSL. Native Windows is experimental (I am testing it). If you want a PowerShell port, feel free.
+
+How it fits Cursor: Cursor is where you build. Chats are focused and finite by design. This pack pairs that with Obsidian so decisions and sessions persist across chats. Hooks nudge a quick vault read at start and a write-back when you finish, so context carries forward without cluttering the window.
 
 ## Setup (no Cargo)
 
@@ -10,9 +14,9 @@ Doctrina: Cursor razona en una ventana que muere; Obsidian guarda lo que debe so
 2. Permissions: `chmod +x hooks/*.sh`
 3. Wire: register `session_start.sh`, `before_submit_prompt.sh`, and `stop_gate.sh` in `.cursor/hooks.json` (this pack ships `hooks/hooks.json`).
 4. Rules: paste `user-rules/USER-RULES.paste.txt` into Cursor → Settings → Rules → User Rules.
-5. MCP: point Obsidian MCP (`user-obsidian`) at your vault so Layer 5 stays durable.
+5. MCP: point Obsidian MCP (`user-obsidian`) at your vault so Layer 5 stays durable. Obsidian must be installed and open.
 
-Needs `jq` on PATH for the hooks.
+Needs `bash` and `jq` on PATH.
 
 ## The loop (injection vs declaration)
 
