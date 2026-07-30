@@ -24,7 +24,7 @@
     "stop": [
       {
         "command": "./hooks/stop_gate.sh",
-        "loop_limit": 1,
+        "loop_limit": 5,
         "failClosed": false
       }
     ]

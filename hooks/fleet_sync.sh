@@ -91,7 +91,7 @@ install_home_hooks() {
       {"command": "bash ${HOME_C}/hooks/session_start.sh", "failClosed": false}
     ],
     "stop": [
-      {"command": "bash ${HOME_C}/hooks/stop_gate.sh", "loop_limit": 1, "failClosed": false}
+      {"command": "bash ${HOME_C}/hooks/stop_gate.sh", "loop_limit": 5, "failClosed": false}
     ],
     "preToolUse": [
       {
