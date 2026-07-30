@@ -1,14 +1,16 @@
 TAREA
-FORCE fleet realign — STOP ACCEPTED write-back COMPLETE
+V2 architecture seal commit
 
 ARCHIVOS
-wiki/projects/kleosr/Sessions/2026-07-30-force-fleet-realign.md
-wiki/projects/kleosr/Sessions/2026-07-30-force-fleet-realign-stop-accepted.md
-wiki/hot.md
+hooks/stop_gate.sh
+hooks/fleet_sync.sh
+hooks/hooks.json
+hooks/hooks.project.json
+project-rules/agent.mdc
 HANDOFF.md
 
 ESTADO
-complete — Done-when: met; Session+hot+HANDOFF flushed
+complete — Done-when: met; commit 08476f7 on master (ahead 1 of origin)
 
 SIGUIENTE
-reload Cursor; commit when explicitly asked
+push when explicitly asked; reload Cursor
