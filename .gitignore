@@ -1,12 +1,8 @@
 .cursor/
 **/.cursor/
 
-hooks/kleos-gate/target/
-/target/
-**/*.rs.bk
-
-hooks/bin/kleos-gate
-hooks/bin/
+state/
+!state/.gitkeep
 
 *.log
 .scan-and-sync.log
@@ -30,4 +26,3 @@ __pycache__/
 *.pyc
 *.pyo
 node_modules/
-glob

@@ -1,89 +1,31 @@
 {
   "version": 1,
   "hooks": {
-    "beforeSubmitPrompt": [
-      {
-        "command": ".cursor/hooks/bin/kleos-gate beforeSubmitPrompt",
-        "failClosed": true
-      }
-    ],
-    "beforeShellExecution": [
-      {
-        "command": ".cursor/hooks/bin/kleos-gate beforeShellExecution",
-        "failClosed": true
-      }
-    ],
     "preToolUse": [
       {
-        "command": ".cursor/hooks/bin/kleos-gate preToolUse",
-        "matcher": "Write|StrReplace|EditNotebook|EditFile|ApplyPatch",
-        "failClosed": true
-      },
-      {
-        "command": ".cursor/hooks/bin/kleos-gate delete",
-        "matcher": "Delete",
+        "matcher": "Write|StrReplace",
+        "command": ".cursor/hooks/lean_gate.sh",
+        "timeoutSec": 5,
         "failClosed": true
       }
     ],
-    "postToolUse": [
+    "beforeSubmitPrompt": [
       {
-        "command": ".cursor/hooks/bin/kleos-gate postToolUse",
-        "failClosed": true
-      }
-    ],
-    "postToolUseFailure": [
-      {
-        "command": ".cursor/hooks/bin/kleos-gate postToolUseFailure",
-        "failClosed": true
-      }
-    ],
-    "beforeReadFile": [
-      {
-        "command": ".cursor/hooks/bin/kleos-gate beforeReadFile",
-        "failClosed": true
-      }
-    ],
-    "beforeTabFileRead": [
-      {
-        "command": ".cursor/hooks/bin/kleos-gate beforeTabFileRead",
-        "failClosed": true
-      }
-    ],
-    "beforeMCPExecution": [
-      {
-        "command": ".cursor/hooks/bin/kleos-gate beforeMCPExecution",
-        "failClosed": true
-      }
-    ],
-    "subagentStart": [
-      {
-        "command": ".cursor/hooks/bin/kleos-gate subagentStart",
-        "failClosed": true
-      }
-    ],
-    "subagentStop": [
-      {
-        "command": ".cursor/hooks/bin/kleos-gate subagentStop",
+        "command": ".cursor/hooks/before_submit_prompt.sh",
         "failClosed": true
       }
     ],
     "sessionStart": [
       {
-        "command": ".cursor/hooks/bin/kleos-gate sessionStart",
-        "failClosed": true
-      }
-    ],
-    "preCompact": [
-      {
-        "command": ".cursor/hooks/bin/kleos-gate preCompact",
-        "failClosed": true
+        "command": ".cursor/hooks/session_start.sh",
+        "failClosed": false
       }
     ],
     "stop": [
       {
-        "command": ".cursor/hooks/bin/kleos-gate stop",
+        "command": ".cursor/hooks/stop_gate.sh",
         "loop_limit": 1,
-        "failClosed": true
+        "failClosed": false
       }
     ]
   }

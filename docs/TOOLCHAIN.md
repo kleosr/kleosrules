@@ -1,21 +1,13 @@
-# TOOLCHAIN — this pack (Master Mind V16.0.22)
+TOOLCHAIN — kleosr V2
 
-```bash
-PACK="$(cd "$(dirname "$0")/.." && pwd)"
-(cd "$PACK"/hooks/kleos-gate && cargo test && cargo build --release)
-mkdir -p "$PACK"/hooks/bin
-cp -f "$PACK"/hooks/kleos-gate/target/release/kleos-gate "$PACK"/hooks/bin/kleos-gate
-chmod +x "$PACK"/hooks/bin/kleos-gate
-FORCE_SKILLS=1 "$PACK"/hooks/bin/kleos-gate install
-"$PACK"/hooks/bin/kleos-gate sync-hooks
-"$PACK"/hooks/bin/kleos-gate verify
-"$PACK"/hooks/bin/kleos-gate bench
-"$PACK"/hooks/bin/kleos-gate gate-diff
-"$PACK"/hooks/bin/kleos-gate check-user-rules
-```
+Requires: bash, jq
 
-After editing `project-rules/*.mdc` or `config/*`:
+Smoke
+chmod +x hooks/session_start.sh hooks/before_submit_prompt.sh hooks/stop_gate.sh
+bash -n hooks/session_start.sh hooks/before_submit_prompt.sh hooks/stop_gate.sh
+echo '{}' | hooks/session_start.sh | jq -e .additional_context
+echo '{"prompt":"fix the gate"}' | hooks/before_submit_prompt.sh | jq -e .additional_context
+echo '{"status":"completed"}' | hooks/stop_gate.sh | jq -e .followup_message
+echo '{"status":"completed","text":"INTENT: x\nDone-when: y"}' | hooks/stop_gate.sh | jq -e .followup_message
 
-```bash
-hooks/bin/kleos-gate sync
-```
+Green means jq keys present. Residual: no former Rust cargo suites.
