@@ -1,15 +1,18 @@
 TAREA
-FORCE fleet sync Cursor + all scan.roots; push pack
+README modern badges + Cursor SVG — stop-flush complete
 
 ARCHIVOS
-hooks/fleet_sync.sh
-hooks/lean_gate.sh
-docs/TOOLCHAIN.md
-~/.cursor/hooks.json rules skills
-Documents/*/.cursor/{hooks,rules}
+README.md
+assets/cursor.svg
+assets/cursor-light.svg
+assets/cursor-mark.svg
+wiki/projects/kleosr/Sessions/2026-07-30-readme-modern-badges-cursor-svg.md
+wiki/projects/kleosr/Sessions/2026-07-30-readme-modern-badges-cursor-svg-stop-flush.md
+wiki/hot.md
+HANDOFF.md
 
 ESTADO
-complete — FORCE=1 fleet_sync all GREEN; 18 projects; zero kleos-gate hooks.json; verify smoke OK
+complete — INTENT restated; Session+hot+HANDOFF flushed; README+assets uncommitted
 
 SIGUIENTE
-reload Cursor; paste user-rules/USER-RULES.paste.txt if Settings paste stale
+optional commit/push
