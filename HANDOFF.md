@@ -1,16 +1,13 @@
-TAREA
-V2 architecture seal commit
+TASK
+English HANDOFF labels (TASK / FILES / STATUS / NEXT) — STOP ACCEPTED write-back
 
-ARCHIVOS
-hooks/stop_gate.sh
-hooks/fleet_sync.sh
-hooks/hooks.json
-hooks/hooks.project.json
-project-rules/agent.mdc
+FILES
+wiki/projects/kleosr/Sessions/2026-07-30-handoff-english-labels-stop-accepted.md
+wiki/hot.md
 HANDOFF.md
 
-ESTADO
-complete — Done-when: met; commit 08476f7 on master (ahead 1 of origin)
+STATUS
+complete — Done-when: met; stop_gate + vernacular English; fleet synced
 
-SIGUIENTE
-push when explicitly asked; reload Cursor
+NEXT
+Reload Cursor; commit/push when asked

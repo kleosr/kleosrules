@@ -40,7 +40,7 @@ Required: jq; exit non-zero on parse failure; max 80 LOC.
 ## Markdown & memory
 - Bullets/tables. No fluff.
 - System docs max 80 lines (HANDOFF, ARCHITECTURE).
-- HANDOFF: TAREA / ARCHIVOS / ESTADO / SIGUIENTE.
+- HANDOFF: TASK / FILES / STATUS / NEXT.
 - Sessions: `wiki/projects/<project>/Sessions/<YYYY-MM-DD>-<topic>.md`
 - Summaries not chat dumps.
 

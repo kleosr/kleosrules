@@ -14,7 +14,7 @@ Doctrina: Smallest Diff. Cero slop.
 - Early-return only. Nesting >2 levels banned.
 - Infer loading from data. No redundant `isLoading` when data starts null.
 - Hooks Bash: max 80 LOC; `set -euo pipefail`; `jq`; fail-closed. No Python/Node/`cd`/`updated_input`.
-- Markdown system files max 80 LOC. HANDOFF: TAREA / ARCHIVOS / ESTADO / SIGUIENTE.
+- Markdown system files max 80 LOC. HANDOFF: TASK / FILES / STATUS / NEXT.
 - JSON: no comments; atomic policy files; camelCase hook keys.
 - State: overwrite only; clear on stop success.
 - Chat: `INTENT:` + `Done-when:` before write tools.

@@ -38,7 +38,19 @@ accept() {
   date="$(date +%Y-%m-%d)"
   rm -rf "$STATE"
   mkdir -p "$STATE"
-  printf '%s\n' "TAREA: Session complete ${date}" "ARCHIVOS: (agent fills)" "ESTADO: Done-when met" "SIGUIENTE: vault_write Session + hot" "INTENT: (see chat)" >"$HANDOFF"
+  cat >"$HANDOFF" <<EOF
+TASK
+Session complete ${date}
+
+FILES
+(agent fills)
+
+STATUS
+Done-when: met
+
+NEXT
+vault_write Session + refresh hot + mirror HANDOFF.md
+EOF
   if [[ "${LOOP:-0}" -ge 1 ]]; then
     quiet
   fi

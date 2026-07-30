@@ -15,9 +15,9 @@ Clear `/state/` after a successful loop so old intent does not poison the next o
 
 Structured state at the repo root.
 
-- **Format:** TAREA, ARCHIVOS, ESTADO, SIGUIENTE, INTENT
+- **Format:** TASK, FILES, STATUS, NEXT (English; written by `stop_gate.sh` stub, then agent mirror)
 - **Injection:** `session_start.sh` takes only the last 15 lines (`tail -n 15`)
-- **Update:** `stop_gate.sh` makes the agent refresh this file before stop
+- **Update:** `stop_gate.sh` seeds HANDOFF on accept; agent rewrites it COMPLETE before Done-when: met
 
 ## Durable graph (Obsidian MCP)
 

@@ -30,14 +30,21 @@ Template: `skills/session-handoff/references/handoff-template.md`
 
 ## Pause / update
 
-Rewrite the handoff with:
+Default compact root `HANDOFF.md` (also seeded by `stop_gate.sh`):
 
-- Goal (one sentence)
-- Done (paths + evidence commands actually run)
-- Open (checkbox list; same goal only — append, do not spawn a new epic)
-- Blockers
-- Next (single concrete action)
-- Model note (optional: which model owned this thread)
+```
+TASK
+…
+FILES
+…
+STATUS
+…
+NEXT
+…
+```
+
+For richer multi-session pauses, use the template (`Goal` / `Done` / `Open` / `Next`) under
+`skills/session-handoff/references/handoff-template.md`. Always English labels.
 
 When MCP `user-obsidian` is ready: **also** write/append a Session note under
 `wiki/projects/<slug>/Sessions/` with `[[wikilinks]]` to Index/Decisions/Learnings
