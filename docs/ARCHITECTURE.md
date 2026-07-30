@@ -1,27 +1,27 @@
-ARCHITECTURE — kleosr V2
+# Architecture: 5 Layers & Deterministic Containment
 
-Five layers
-1. Prompt — user message; model starts empty
-2. Context — HANDOFF tail + before_submit_prompt classify + Obsidian hot/index
-3. Harness — Cursor + Bash hooks + tools
-4. Loop — Done-when + stop_gate followups
-5. Graph — Obsidian vault Sessions/hot (durable)
+kleosrules V2 uses the 5 Layers framework. Layers nest; they do not replace each other. When something breaks, fix the layer whose unit failed.
 
-Amnesia preventiva
-Cursor window dies. Obsidian vault survives.
-Hooks force read wiki/hot.md + wiki/index.md and write Session + hot.
+| # | Layer | Unit | kleosrules Implementation |
+|---|-------|------|---------------------------|
+| 1 | Prompt | Input | User message. The model remembers nothing before this call. |
+| 2 | Context | Window | `HANDOFF.md` (tail 15), `before_submit_prompt.sh` classify. |
+| 3 | Harness | Pass | Cursor + Bash hooks + tools. Without `stop_gate`, you only have an API. |
+| 4 | Loop | Run | `stop_gate.sh` audits `Done-when`. Auto-brakes stop early exits. |
+| 5 | Graph | Job | Obsidian vault (Markdown + wikilinks). Shared durable state. |
 
-Injection vs Declaration
-Hooks emit additional_context only. Never updated_input.
-Agent declares INTENT: and Done-when: in chat before write tools.
+## Preventive Amnesia
 
-Hook map
-- sessionStart -> session_start.sh (HANDOFF tail 15 + amnesia duty)
-- beforeSubmitPrompt -> before_submit_prompt.sh (ROUTE_CLASSIFY + DEBERES)
-- stop -> stop_gate.sh (require INTENT + Done-when; order Obsidian Session)
+Cursor reasons in a window that dies. Obsidian keeps what must survive. Bash hooks force a read of `hot`/`index` and a write of `Session`/`hot` so the next chat is not blank.
 
-Session path
-wiki/projects/project/Sessions/YYYY-MM-DD-topic
+## Injection vs Declaration
 
-Residual
-Former Rust M roofs (comments, lean LOC, vernacular machine, secrets regex, recall deny) are not reimplemented in this Bash pass.
+1. **Injection (Layer 2):** `before_submit_prompt.sh` adds route duties through `additional_context`. It must not mutate the user prompt (`updated_input` is banned).
+2. **Declaration (Layer 1/4):** The agent writes `INTENT:` and `Done-when:` in chat before tools run.
+3. **Audit (Layer 3):** `stop_gate.sh` reads chat history. If `Done-when:` is missing or unmet, it forces another pass.
+
+## Runtime map
+
+- **Muscles:** Bash scripts under `/hooks` (max 80 LOC each, fail-closed).
+- **Brain:** Obsidian via MCP. No local datasets, no Rust binaries.
+- **State:** Ephemeral files in `/state/` (gitignored). Cleared each run.

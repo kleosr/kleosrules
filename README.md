@@ -14,7 +14,8 @@ Prompt -> before_submit inject -> agent INTENT/Done-when -> tools -> stop_gate -
 
 Docs
 - docs/ARCHITECTURE.md — five layers, amnesia, injection vs declaration
-- docs/TOOLCHAIN.md — smoke verify
+- docs/CURATOR.md — state, HANDOFF, Obsidian read/write
+- docs/TOOLCHAIN.md — bash -n and smoke fixtures
 - HANDOFF.md — TAREA ARCHIVOS ESTADO SIGUIENTE INTENT
 
 License: MIT

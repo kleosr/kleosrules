@@ -12,6 +12,7 @@ Where to look
 - Paste: user-rules/USER-RULES.paste.txt
 - Hooks: hooks/session_start.sh before_submit_prompt.sh stop_gate.sh
 - Architecture: docs/ARCHITECTURE.md
+- Curator: docs/CURATOR.md
 - Verify: docs/TOOLCHAIN.md
 - HANDOFF: HANDOFF.md
 

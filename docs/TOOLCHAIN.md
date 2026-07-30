@@ -1,13 +1,33 @@
-TOOLCHAIN — kleosr V2
+# Toolchain: Bash & jq Validation
 
-Requires: bash, jq
+No Rust. No Cargo. No Python. Mechanical checks are Bash.
 
-Smoke
-chmod +x hooks/session_start.sh hooks/before_submit_prompt.sh hooks/stop_gate.sh
-bash -n hooks/session_start.sh hooks/before_submit_prompt.sh hooks/stop_gate.sh
-echo '{}' | hooks/session_start.sh | jq -e .additional_context
-echo '{"prompt":"fix the gate"}' | hooks/before_submit_prompt.sh | jq -e .additional_context
-echo '{"status":"completed"}' | hooks/stop_gate.sh | jq -e .followup_message
-echo '{"status":"completed","text":"INTENT: x\nDone-when: y"}' | hooks/stop_gate.sh | jq -e .followup_message
+## Prerequisites
 
-Green means jq keys present. Residual: no former Rust cargo suites.
+- `bash` (v4+)
+- `jq` (JSON parsing in hooks)
+- Cursor IDE (runs the hooks)
+- Obsidian MCP configured locally
+
+## Syntax check
+
+```bash
+chmod +x hooks/*.sh
+
+bash -n hooks/session_start.sh
+bash -n hooks/before_submit_prompt.sh
+bash -n hooks/stop_gate.sh
+```
+
+## Smoke test
+
+```bash
+echo '{"prompt": "test code", "hook_event_name": "beforeSubmitPrompt"}' \
+  | bash hooks/before_submit_prompt.sh
+```
+
+Expect JSON with `additional_context` (and, on stop fixtures, `followup_message` when INTENT is missing).
+
+## Size roofs
+
+Keep each hook under 80 LOC. Fail closed: bad parse or failed exec should block or return deny JSON. Review catches the rest.
