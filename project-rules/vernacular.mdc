@@ -3,48 +3,29 @@ description: Private vernacular for this repo — naming, files, visibility.
 alwaysApply: true
 ---
 
-# Vernacular
+Vernacular (kleosr V2)
 
-Machine fields (hooks parse these):
-
-```
+Machine fields (reference; Bash hooks do not enforce):
 file_name_pattern: pack_native
-allowed_kinds: []
-allowed_path_prefixes: hooks/, skills/, docs/, user-rules/, project-rules/, config/, .cursor/
+allowed_path_prefixes: hooks/, skills/, docs/, user-rules/, project-rules/, config/, state/, .cursor/
 forbidden_class_suffixes: UseCase, Repository, Interactor, Presenter, Controller
 class_pattern: PascalCase
 function_pattern: snake_case
 boolean_prefixes: is, has, can, should
 constant_pattern: SCREAMING_SNAKE_CASE
 no_prose_comments: true
-machine_directives_only: ts-expect-error, eslint-disable-next-line, shebang, type: ignore, noqa
-```
 
-## Topology
-- Shape: single pack (kleosr: rules + hooks + skills + config + docs)
-- New files allowed under: machine `allowed_path_prefixes` (gated)
-- Never create: monorepo workspace roots, Clean Architecture trees
-- Pack tooling is **Rust-only** (`hooks/kleos-gate`). No pack Python runtime. No pack `.sh` tooling.
-- Shell/Python **file-write denies** = anti-bypass only (agents must use Cursor Write/StrReplace).
+Topology
+- Shape: single pack (rules + Bash hooks + skills + config + docs)
+- Pack tooling is Bash-only (hooks scripts). No Rust. No pack Python.
+- Obsidian vault = durable memory (MCP user-obsidian).
 
-## File names (`pack_native`)
-- Default: `snake_case` / `kebab-case` + extension (Rust modules, skills, docs)
-- React/Vue/Svelte components: **PascalCase** basename + `.tsx`/`.jsx`/`.vue`/`.svelte` allowed
-- Also allowed: `main.tsx`, `index.tsx`, `App.tsx` (entry)
-- Dotted domain files (`hub.home.page.tsx`) match snake/kebab segments — allowed
-- Theater: `FooUseCase.rs` still denied
+File names
+- Default: snake_case or kebab-case + extension
+- Hooks: snake_case.sh
+- React components: PascalCase basename for tsx/jsx/vue/svelte OK
 
-## Types / classes
-- Prefer functions; classes rare — PascalCase when needed
-- Theater suffixes gated via `forbidden_class_suffixes`
-
-## Functions
-- Rust / Go / Python-shaped paths: `snake_case` (gated)
-- `.tsx`/`.jsx`/`.vue`/`.svelte`/CSS/HTML: snake_case function gate **off** (React camelCase OK)
-- Boolean-shaped names need `boolean_prefixes` (gated)
-
-## Forbidden
-- Prose comments in CODE_EXT
+Forbidden
+- Prose comments in application code
 - Foreign UseCase folder theater
-- Pack shell or Python tooling
-- Fingerprint dodge (reorder CSS / trivial diff) after a deny — fix root deny, then Write/StrReplace
+- Rust kleos-gate or pack Python

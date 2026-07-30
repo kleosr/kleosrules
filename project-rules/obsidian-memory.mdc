@@ -1,57 +1,12 @@
 ---
-description: Obsidian LLM Wiki as durable agent memory (always)
+description: Always-on Obsidian vault memory (MCP user-obsidian)
 alwaysApply: true
 ---
 
-# Obsidian memory (always on — max memory / no amnesia)
-
-Chat dies. Context ≠ memory
-([Iolld](https://x.com/EvgeniyIolld/status/2081103929392169211);
-[Dezo](https://x.com/0xDezo/status/2079595162955571339)).
-Vault = Karpathy LLM Wiki + continuous refeed
-([gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f);
-[Degen](https://x.com/Degen_calls_sol/status/2070846650780664143)).
-
-MCP `user-obsidian` → `/home/kleosr/rootsidian/kleosr`.
-Skill `obsidian-memory`. Rules: `instructions/PROCESSING.md` + `instructions/MAX-MEMORY.md`.
-Fleet map: `wiki/catalogs/Fleet.md`.
-
-## Graphs + layers
-
-- **Code/AST:** skill `codebase-memory`
-- **Knowledge/intent:** this companion + skill `obsidian-memory`
-- **Work lineage:** git / HANDOFF / Sessions
-- **Org/workflow:** skills + subagents + `eval-pass` reviewer (0xJeyx) — not Neo4j
-
-Never conflate. Model choice ≠ memory — vault is SSOT.
-Units: prompt→context→harness→loop→graph (`docs/LAYER-STACK.md`).
-Debug by unit. Fix process/rulebook, not hand-patches. Write-back = persist INTO vault.
-
-## Mandatory loop (every chat — not optional)
-
-When MCP `user-obsidian` is **ready**:
-
-1. **Start** — `vault_read` `wiki/hot.md` then `wiki/index.md`, then
-   `wiki/projects/<slug>/Index.md` + latest `Sessions/`.
-2. **Missing hub** — refeed from disk AGENTS/README/HANDOFF into wiki (MAX-MEMORY).
-3. **During** — durable fact → `vault_append` **COMPLETE** (options/why/evidence/residual — not a stub) + journal + hot when context shifts.
-4. **Ingest** — new `raw/` → compile **all** durable facts FULL into wiki (sources/concepts/entities) → log → `raw/processed/`.
-5. **Query** — wiki only; write back durable answers at actionable depth (complete pages).
-6. **Lint** — orphans/contradictions/stale/**thin/summary-only pages of any type** → `wiki/audits/` when asked or weekly.
-7. **Before Done / stop** — Session (**complete**: goal / what ran / evidence / outcomes / open / residual) + HANDOFF + hot/log.
-8. **preCompact** — write-back INTO vault immediately (save memory; never wipe).
-
-kleos-gate recall/duty/write-back roofs apply. Obey — do not ignore.
-
-When Obsidian is down: say so; use repo HANDOFF/AGENTS/DEBT. Never invent vault contents.
-
-## Hard floors
-
-- No secrets. Never edit `raw/` (only move to `processed/` after ingest).
-- No full codebases in wiki — hubs + decisions only (AST = codebase-memory).
-- **COMPLETE CAPTURE (universal):** every durable write-back (ingest, sources, concepts, Decisions, Learnings, Sessions, journals) must be complete enough to recall without the chat or external URL. Thin summary-only = defect. Law: vault `instructions/PROCESSING.md`.
-- **INTENT + LAYER CHECK:** restate ask + done-when before CODE; Session must include Goal / Done-when / Residual and a five-layer evidence table before Done (`docs/CURSOR-CURATOR.md`). Never rewrite the user prompt.
-- GetMcpTools before CallMcpTool on `user-obsidian`.
-- Recall ledger: Cursor `MCP:vault_read` / `MCP:search_*` of hot|index counts (no blob `user-obsidian` required).
-- Vault ≠ TOOLCHAIN proof.
-- Soft J-authority; never waives MUST-NEVER/M or fights a deny.
+Obsidian memory (kleosr V2)
+Chat dies. Vault = Karpathy LLM Wiki. MCP user-obsidian -> /home/kleosr/rootsidian/kleosr
+Start: vault_read wiki/hot.md then wiki/index.md then project Index + Sessions
+During: durable fact -> vault_append COMPLETE (not stubs)
+End: Session Goal/Done-when/Residual + LAYER CHECK; refresh wiki/hot.md; mirror HANDOFF.md
+Never edit raw/. Amnesia preventiva: hooks force read and write-back.
+Bash harness: session_start, before_submit_prompt, stop_gate. No Rust gate.
